@@ -1,0 +1,15 @@
+name: PrimeCore
+author: PrimeAPI
+version: 0.0.0
+main: de.primeapi.primeplugins.spigotapi.PrimeCore
+softdepend:
+  - PlaceholderAPI
+  - CloudNet-Bridge
+  - CloudNetAPI
+commands:
+  coins:
+  primecore:
+load: STARTUP
+loadbefore:
+  - PrimePermissionsSystem
+  - LobbySystem
