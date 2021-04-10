@@ -5,6 +5,8 @@ import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 public class CorePlaceholders extends PlaceholderExpansion {
     @Override
     public String getIdentifier() {
@@ -25,8 +27,35 @@ public class CorePlaceholders extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, String params) {
         PrimePlayer p = new PrimePlayer(player);
-        if(params.equalsIgnoreCase("coins")){
-            return String.valueOf(p.getCoins());
+        switch (params.toLowerCase()){
+            case "coins":
+                return String.valueOf(p.getCoins());
+            case "onmins":
+                return String.valueOf(p.retrieveOnMins());
+            case "ontime_1": {
+                int onmins = p.retrieveOnMins();
+                int h = onmins / 60;
+                int m = onmins % 60;
+                return h + ":" + m;
+            }
+            case "ontime_2": {
+                int onmins = p.retrieveOnMins();
+                int h = onmins / 60;
+                int m = onmins % 60;
+                return h + "Stunden " + m + " Minuten";
+            }
+            case "ontime_3": {
+                int onmins = p.retrieveOnMins();
+                int h = onmins / 60;
+                int m = onmins % 60;
+                return h + "h " + m + " m";
+            }
+            case "ontime_4": {
+                int onmins = p.retrieveOnMins();
+                int h = onmins / 60;
+                int m = onmins % 60;
+                return h + "h ";
+            }
         }
 
         return null;

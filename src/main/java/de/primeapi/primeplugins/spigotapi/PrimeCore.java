@@ -99,7 +99,15 @@ public class PrimeCore extends JavaPlugin {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + AccesDataConfig.getInstance().getString("mysql.host") + "/" + AccesDataConfig.getInstance().getString("mysql.database") + "?autoReconnect=true", AccesDataConfig.getInstance().getString("mysql.username"), AccesDataConfig.getInstance().getString("mysql.password"));
             getCoreLogger().sendInfo("MySQL-Connection established");
-            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_players` (`id` INT NOT NULL AUTO_INCREMENT UNIQUE,`uuid` VARCHAR(36) NOT NULL UNIQUE,`name` VARCHAR(16) NOT NULL UNIQUE,`realname` VARCHAR(16) NOT NULL UNIQUE,`coins` INT NOT NULL,PRIMARY KEY (`id`));").execute();
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_players` (`id` INT NOT NULL AUTO_INCREMENT UNIQUE,`uuid` VARCHAR(36) NOT NULL UNIQUE,`name` VARCHAR(16) NOT NULL UNIQUE,`realname` VARCHAR(16) NOT NULL UNIQUE,`coins` INT NOT NULL,`playtime` INT NOT NULL,PRIMARY KEY (`id`));").execute();
+            connection.prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS `core_settings` (" +
+                            "`id` INT NOT NULL AUTO_INCREMENT UNIQUE," +
+                            "`uuid` VARCHAR(36) NOT NULL," +
+                            "`setting` VARCHAR(36) NOT NULL," +
+                            "`value` INT," +
+                            "PRIMARY KEY (`id`));"
+            ).execute();
         } catch (SQLException throwables) {
             getCoreLogger().sendInfo("MySQL-Connection failed: " + throwables.getMessage());
         }

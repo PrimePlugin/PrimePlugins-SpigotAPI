@@ -29,8 +29,8 @@ public class CoreConfig extends Config {
             scoreboard.add("§7Coins");
             scoreboard.add("§8➥ §e%prime_coins%");
             scoreboard.add("§3 ");
-            scoreboard.add("§7Teamspeak");
-            scoreboard.add("§8➥ §ets.deinserver.de");
+            scoreboard.add("§7Spielzeit");
+            scoreboard.add("§8➥ §e%prime_ontime_4%");
             scoreboard.add("§4 ");
             saveAddEntry("scoreboard.use", true);
             saveAddEntry("scoreboard.default.title", "§7» §eServer.de §7«");

@@ -2,6 +2,7 @@ package de.primeapi.primeplugins.spigotapi.sql;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.events.CoinsChanceEvent;
+import de.primeapi.primeplugins.spigotapi.enums.PlayerSetting;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -21,11 +22,12 @@ public class SQLPlayer {
     public static SQLPlayer create(UUID uuid, String name){
         Integer id = null;
         try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("INSERT INTO core_players values (id, ?,?,?,?)");
+            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("INSERT INTO core_players values (id, ?,?,?,?,?)");
             st.setString(1, uuid.toString());
             st.setString(2, name.toLowerCase());
             st.setString(3, name);
             st.setInt(4, CoreConfig.getInstance().getInt("settings.coins.startAmount"));
+            st.setInt(5,0);
             st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if(rs.next()){
@@ -195,8 +197,106 @@ public class SQLPlayer {
         });
     }
 
+    public int retrieveOnMins(){
+        load();
+        int i  = 0;
+        try {
+            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT playtime FROM core_players WHERE id = ?");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                i = rs.getInt("playtime");
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return i;
+    }
+
+    public void setOnMins(int i){
+        load();
+        PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("UPDATE core_players SET playtime = ? WHERE id=?");
+                st.setInt(1, i);
+                st.setInt(2, id);
+                st.execute();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
+    }
+
+    public void addOnMins(int i){
+        setOnMins(retrieveOnMins() + i);
+    }
+
     public void addCoins(int i){
         setCoins(getCoins() + i);
+    }
+
+    public Integer retrieveSetting(PlayerSetting setting){
+        load();
+        Integer i = null;
+        try {
+            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
+                    "SELECT * FROM core_settings WHERE uuid = ? AND setting = ?"
+            );
+            st.setString(1, getUniqueId().toString());
+            st.setString(2, setting.toString());
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                i = rs.getInt("value");
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return i;
+    }
+
+    public int retrieveSettingSave(PlayerSetting setting){
+        Integer i = retrieveSetting(setting);
+        if(Objects.isNull(i)){
+            return setting.getStandartValue();
+        }else {
+            return i;
+        }
+    }
+
+    public void setSetting(PlayerSetting setting, int value){
+        load();
+
+        PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
+           if(Objects.isNull(retrieveSetting(setting))){
+               try {
+                   PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
+                           "INSERT INTO core_settings value (id, ?,?,?)"
+                   );
+                   st.setString(1, getUniqueId().toString());
+                   st.setString(2, setting.toString());
+                   st.setInt(3, value);
+                   st.execute();
+               }catch (SQLException e) {
+                   e.printStackTrace();
+               }
+           }else{
+               try {
+                   PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
+                           "UPDATE core_settings SET value = ? WHERE uuid = ? AND setting = ?"
+                   );
+                   st.setInt(1, value);
+                   st.setString(2, getUniqueId().toString());
+                   st.setString(3, setting.toString());
+                   st.execute();
+               } catch (SQLException throwables) {
+                   throwables.printStackTrace();
+               }
+           }
+        });
     }
 
 }
