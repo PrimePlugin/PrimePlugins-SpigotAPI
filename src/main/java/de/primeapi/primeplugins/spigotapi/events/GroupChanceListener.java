@@ -12,12 +12,14 @@ public class GroupChanceListener implements Listener {
 
     @EventHandler
     public void onGroupChance(GroupChanceEvent e){
-        Player player = Bukkit.getPlayer(e.getPlayer().getUniqueId());
-        if(player != null){
-            PrimePlayer p = new PrimePlayer(player);
-            p.sendScoreboard();
-            PrimeCore.getInstance().getScoreboardManager().sendTeams();
-        }
+        e.getPlayer().retrieveUniqueId().submit(uuid -> {
+            Player player = Bukkit.getPlayer(uuid);
+            if(player != null){
+                PrimePlayer p = new PrimePlayer(player);
+                p.sendScoreboard();
+                PrimeCore.getInstance().getScoreboardManager().sendTeams();
+            }
+        });
     }
 
 }

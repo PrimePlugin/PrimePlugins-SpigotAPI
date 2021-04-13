@@ -1,5 +1,6 @@
 package de.primeapi.primeplugins.spigotapi;
 
+import com.github.davidmoten.rx.jdbc.Database;
 import de.dytanic.cloudnet.ext.bridge.player.ICloudOfflinePlayer;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
@@ -24,6 +25,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.logging.Level;
 
 @Getter
 public class PrimeCore extends JavaPlugin {
@@ -42,6 +44,7 @@ public class PrimeCore extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     private ChatManager chatManager;
     private CloudNetAdapter cloudNetAdapter;
+    private Database db;
 
     @Override
     public void onEnable() {
@@ -108,6 +111,8 @@ public class PrimeCore extends JavaPlugin {
                             "`value` INT," +
                             "PRIMARY KEY (`id`));"
             ).execute();
+            db = Database.from(connection).asynchronous();
+            getLogger().log(Level.INFO, "Asynchronous MySQL-Connection established");
         } catch (SQLException throwables) {
             getCoreLogger().sendInfo("MySQL-Connection failed: " + throwables.getMessage());
         }

@@ -13,8 +13,9 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         {
-            SQLPlayer sqlPlayer = SQLPlayer.create(e.getPlayer().getUniqueId(), e.getPlayer().getName());
-            sqlPlayer.updateName(e.getPlayer().getName());
+            SQLPlayer.create(e.getPlayer().getUniqueId(), e.getPlayer().getName()).submit(sqlPlayer -> {
+                sqlPlayer.updateName(e.getPlayer().getName());
+            });
         }
         PrimePlayer p = new PrimePlayer(e.getPlayer());
 

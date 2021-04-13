@@ -36,7 +36,6 @@ public class PrimePlayer extends SQLPlayer {
         PrimeCore.getInstance().getScoreboardManager().sendScoreboard(p);
     }
 
-    @Override
     public UUID getUniqueId(){
         return thePlayer().getUniqueId();
     }
