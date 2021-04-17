@@ -11,8 +11,15 @@ public class DatabaseTask<T> {
 
     private CompletableFuture<T> future;
 
+
     public void submit(Consumer<T> consumer){
-        future.thenAccept(consumer);
+        future.handle((unused, throwable) -> {
+            if(throwable != null) {
+                throwable.printStackTrace();
+                return null;
+            }
+            return unused;
+        }).thenAcceptAsync(consumer);
     }
 
 
