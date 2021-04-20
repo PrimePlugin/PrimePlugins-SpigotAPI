@@ -40,6 +40,8 @@ public class CoreConfig extends Config {
             saveAddEntry("prefix.use", true);
             saveAddEntry("prefix.defaultPrefix", "§7");
             saveAddEntry("prefix.defaultSuffix", "");
+            saveAddEntry("prefix.overrideSuffixClanTags", true);
+            saveAddEntry("prefix.clanTagFormat", " §7[§e%tag%§7]");
 
             saveAddEntry("chatformat.use", true);
             saveAddEntry("chatformat.default", "§7%name% §8| §7%message%");

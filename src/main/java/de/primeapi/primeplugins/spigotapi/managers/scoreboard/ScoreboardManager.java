@@ -1,8 +1,12 @@
 package de.primeapi.primeplugins.spigotapi.managers.scoreboard;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
+import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
+import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.*;
+import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClan;
+import de.primeapi.primeplugins.spigotapi.sql.clan.SQLPlayerAllocation;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -82,7 +86,13 @@ public class ScoreboardManager {
                 teams) {
             Team scoreTeam = sb.registerNewTeam(String.format("%03d", i));
             scoreTeam.setPrefix(team.getPrefix());
-            scoreTeam.setSuffix(team.getSuffix());
+            if(CoreConfig.getInstance().getBoolean("prefix.overrideSuffixClanTags")){
+                PrimePlayer primePlayer = new PrimePlayer(team.getPlayer());
+                SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(primePlayer).complete();
+                scoreTeam.setSuffix(CoreConfig.getInstance().getString("prefix.clanTagFormat").replace("%tag%", clan.getTag().complete()));
+            }else {
+                scoreTeam.setSuffix(team.getSuffix());
+            }
             scoreTeam.addPlayer(team.getPlayer());
             i++;
         }
