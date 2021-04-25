@@ -292,7 +292,7 @@ public class SQLPlayer {
         load();
 
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
-            if(Objects.isNull(retrieveSetting(setting))){
+            if(Objects.isNull(retrieveSetting(setting).complete())){
                 try {
                     PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
                             "INSERT INTO core_settings value (id, ?,?,?)"
