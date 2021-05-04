@@ -33,7 +33,7 @@ public class ClanAPI {
             ResultSet rs = md.getTables(null, null, "prime_clan_clans", null);
             online = rs.next();
             rs.close();
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             throwables.printStackTrace();
         }
         if(online){
