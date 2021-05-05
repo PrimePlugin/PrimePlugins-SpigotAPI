@@ -86,10 +86,14 @@ public class ScoreboardManager {
                 teams) {
             Team scoreTeam = sb.registerNewTeam(String.format("%03d", i));
             scoreTeam.setPrefix(team.getPrefix());
-            if(CoreConfig.getInstance().getBoolean("prefix.overrideSuffixClanTags")){
+            if(CoreConfig.getInstance().getBoolean("prefix.overrideSuffixClanTags") && ClanAPI.getInstance().isOnline()){
                 PrimePlayer primePlayer = new PrimePlayer(team.getPlayer());
                 SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(primePlayer).complete();
-                scoreTeam.setSuffix(CoreConfig.getInstance().getString("prefix.clanTagFormat").replace("%tag%", clan.getTag().complete()));
+                if(clan != null) {
+                    scoreTeam.setSuffix(CoreConfig.getInstance().getString("prefix.clanTagFormat").replace("%tag%", clan.getTag().complete()));
+                }else{
+                    scoreTeam.setSuffix(team.getSuffix());
+                }
             }else {
                 scoreTeam.setSuffix(team.getSuffix());
             }
