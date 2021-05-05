@@ -5,6 +5,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -108,6 +109,11 @@ public class ItemBuilder {
 
     public ItemBuilder setGlowing() {
         glowing = true;
+        return this;
+    }
+
+    public ItemBuilder setAmount(int amount) {
+        this.amount = amount;
         return this;
     }
     public ItemStack build() {
