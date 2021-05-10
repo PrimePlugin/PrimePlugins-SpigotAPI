@@ -3,6 +3,8 @@ package de.primeapi.primeplugins.spigotapi;
 import com.github.davidmoten.rx.jdbc.Database;
 import de.dytanic.cloudnet.ext.bridge.player.ICloudOfflinePlayer;
 import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
+import de.primeapi.primeplugins.spigotapi.api.CoinsAPI;
+import de.primeapi.primeplugins.spigotapi.api.FriendsAPI;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
 import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
@@ -47,6 +49,8 @@ public class PrimeCore extends JavaPlugin {
     private CloudNetAdapter cloudNetAdapter;
     private Database db;
     private ClanAPI clanAPI;
+    private CoinsAPI coinsAPI;
+    private FriendsAPI friendsAPI;
 
     @Override
     public void onEnable() {
@@ -76,6 +80,8 @@ public class PrimeCore extends JavaPlugin {
         getCommand("primecore").setExecutor(new PrimeCoreCommand());
 
         clanAPI = new ClanAPI();
+        coinsAPI = new CoinsAPI();
+        friendsAPI = new FriendsAPI();
     }
 
     @Override
