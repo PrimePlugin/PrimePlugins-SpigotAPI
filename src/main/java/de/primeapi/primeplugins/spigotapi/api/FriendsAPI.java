@@ -63,7 +63,7 @@ public class FriendsAPI {
     /**
      * Removes a Friendship from the database
      * <br>
-     * You have to call {@link FriendsAPI#endFriendship(SQLPlayer, SQLPlayer) FriendsAPI#endFriendship(player2, player1)} in order to
+     * You have to call {@link FriendsAPI#endFriendship(SQLPlayer, SQLPlayer) FriendsAPI#endFriendship(player2, player1)} too in order to
      * remove this friendship completely.
      * @param player1 First Player
      * @param player2 Second Player

@@ -4,6 +4,7 @@ import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.events.CoinsChanceEvent;
 import de.primeapi.primeplugins.spigotapi.enums.PlayerSetting;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
+import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 
@@ -286,6 +287,10 @@ public class SQLPlayer {
                 return i;
             }
         }));
+    }
+
+    public DatabaseTask<Boolean> isOnline(){
+        return OnlineStats.getServer(retrieveUniqueId().complete()).map(Objects::nonNull);
     }
 
     public void setSetting(PlayerSetting setting, int value){

@@ -82,6 +82,7 @@ public class PrimeCore extends JavaPlugin {
         clanAPI = new ClanAPI();
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
+        getServer().getMessenger().registerOutgoingPluginChannel( this, "primemessaging");
     }
 
     @Override
