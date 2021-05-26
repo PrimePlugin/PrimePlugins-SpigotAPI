@@ -14,6 +14,7 @@ import de.primeapi.primeplugins.spigotapi.managers.config.ConfigManager;
 import de.primeapi.primeplugins.spigotapi.managers.api.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.AccesDataConfig;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
+import de.primeapi.primeplugins.spigotapi.managers.rest.RestManager;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.ScoreboardManager;
 import de.primeapi.primeplugins.spigotapi.managers.messages.MessageManager;
 import de.primeapi.primeplugins.spigotapi.utils.Logger;
@@ -51,6 +52,7 @@ public class PrimeCore extends JavaPlugin {
     private ClanAPI clanAPI;
     private CoinsAPI coinsAPI;
     private FriendsAPI friendsAPI;
+    private RestManager restManager;
 
     @Override
     public void onEnable() {
@@ -83,6 +85,7 @@ public class PrimeCore extends JavaPlugin {
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
         getServer().getMessenger().registerOutgoingPluginChannel( this, "primemessaging");
+        restManager = new RestManager();
     }
 
     @Override
