@@ -36,7 +36,39 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>com.licel</groupId>
+                <artifactId>stringer-maven-plugin</artifactId>
+                <version>3.1.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>stringer</goal>
+                        </goals>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <protectionElements>
+                                <protectionElement>
+                                    <stringEncryption>
+                                        <mode>filter</mode>
+                                        <checkCaller>true</checkCaller>
+                                        <filters>
+                                            <filter>de/primeapi/**</filter>
+                                        </filters>
+                                    </stringEncryption>
+                                    <hideAccess>
+                                        <mode>filter</mode>
+                                        <filters>
+                                            <filter>de/primeapi/**</filter>
+                                        </filters>
+                                    </hideAccess>
+                                </protectionElement>
+                            </protectionElements>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
