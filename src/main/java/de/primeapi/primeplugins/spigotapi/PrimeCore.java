@@ -1,6 +1,10 @@
 package de.primeapi.primeplugins.spigotapi;
 
+import com.github.davidmoten.rx.jdbc.Database;
 import de.dytanic.cloudnet.ext.bridge.player.ICloudOfflinePlayer;
+import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
+import de.primeapi.primeplugins.spigotapi.api.CoinsAPI;
+import de.primeapi.primeplugins.spigotapi.api.FriendsAPI;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
 import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
@@ -10,6 +14,7 @@ import de.primeapi.primeplugins.spigotapi.managers.config.ConfigManager;
 import de.primeapi.primeplugins.spigotapi.managers.api.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.AccesDataConfig;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
+import de.primeapi.primeplugins.spigotapi.managers.rest.RestManager;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.ScoreboardManager;
 import de.primeapi.primeplugins.spigotapi.managers.messages.MessageManager;
 import de.primeapi.primeplugins.spigotapi.utils.Logger;
@@ -24,6 +29,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.logging.Level;
 
 @Getter
 public class PrimeCore extends JavaPlugin {
@@ -42,6 +48,11 @@ public class PrimeCore extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     private ChatManager chatManager;
     private CloudNetAdapter cloudNetAdapter;
+    private Database db;
+    private ClanAPI clanAPI;
+    private CoinsAPI coinsAPI;
+    private FriendsAPI friendsAPI;
+    private RestManager restManager;
 
     @Override
     public void onEnable() {
@@ -69,6 +80,12 @@ public class PrimeCore extends JavaPlugin {
         registerEvents();
 
         getCommand("primecore").setExecutor(new PrimeCoreCommand());
+
+        clanAPI = new ClanAPI();
+        coinsAPI = new CoinsAPI();
+        friendsAPI = new FriendsAPI();
+        getServer().getMessenger().registerOutgoingPluginChannel( this, "primemessaging");
+        restManager = new RestManager();
     }
 
     @Override
@@ -99,7 +116,17 @@ public class PrimeCore extends JavaPlugin {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + AccesDataConfig.getInstance().getString("mysql.host") + "/" + AccesDataConfig.getInstance().getString("mysql.database") + "?autoReconnect=true", AccesDataConfig.getInstance().getString("mysql.username"), AccesDataConfig.getInstance().getString("mysql.password"));
             getCoreLogger().sendInfo("MySQL-Connection established");
-            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_players` (`id` INT NOT NULL AUTO_INCREMENT UNIQUE,`uuid` VARCHAR(36) NOT NULL UNIQUE,`name` VARCHAR(16) NOT NULL UNIQUE,`realname` VARCHAR(16) NOT NULL UNIQUE,`coins` INT NOT NULL,PRIMARY KEY (`id`));").execute();
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_players` (`id` INT NOT NULL AUTO_INCREMENT UNIQUE,`uuid` VARCHAR(36) NOT NULL UNIQUE,`name` VARCHAR(16) NOT NULL UNIQUE,`realname` VARCHAR(16) NOT NULL UNIQUE,`coins` INT NOT NULL,`playtime` INT NOT NULL,PRIMARY KEY (`id`));").execute();
+            connection.prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS `core_settings` (" +
+                            "`id` INT NOT NULL AUTO_INCREMENT UNIQUE," +
+                            "`uuid` VARCHAR(36) NOT NULL," +
+                            "`setting` VARCHAR(36) NOT NULL," +
+                            "`value` INT," +
+                            "PRIMARY KEY (`id`));"
+            ).execute();
+            db = Database.from(connection).asynchronous();
+            getLogger().log(Level.INFO, "Asynchronous MySQL-Connection established");
         } catch (SQLException throwables) {
             getCoreLogger().sendInfo("MySQL-Connection failed: " + throwables.getMessage());
         }

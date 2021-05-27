@@ -29,8 +29,8 @@ public class CoreConfig extends Config {
             scoreboard.add("§7Coins");
             scoreboard.add("§8➥ §e%prime_coins%");
             scoreboard.add("§3 ");
-            scoreboard.add("§7Teamspeak");
-            scoreboard.add("§8➥ §ets.deinserver.de");
+            scoreboard.add("§7Spielzeit");
+            scoreboard.add("§8➥ §e%prime_ontime_4%");
             scoreboard.add("§4 ");
             saveAddEntry("scoreboard.use", true);
             saveAddEntry("scoreboard.default.title", "§7» §eServer.de §7«");
@@ -40,6 +40,8 @@ public class CoreConfig extends Config {
             saveAddEntry("prefix.use", true);
             saveAddEntry("prefix.defaultPrefix", "§7");
             saveAddEntry("prefix.defaultSuffix", "");
+            saveAddEntry("prefix.overrideSuffixClanTags", true);
+            saveAddEntry("prefix.clanTagFormat", " §7[§e%tag%§7]");
 
             saveAddEntry("chatformat.use", true);
             saveAddEntry("chatformat.default", "§7%name% §8| §7%message%");

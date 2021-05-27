@@ -19,12 +19,13 @@ public class SeeSubCommand extends SubCommand {
             p.sendMessage(CoreMessage.COINS_REMOVE_USAGE);
             return true;
         }
-        SQLPlayer target = SQLPlayer.loadPlayerByName(args[1]);
-        if (target == null) {
-            p.sendMessage(CoreMessage.COINS_PLAYERNOTFOUND);
-            return true;
-        }
-        p.sendMessage(CoreMessage.COINS_SEE_SUCCESS.replace("player", target.getRealName()).replace("coins", target.getCoins()));
+        SQLPlayer.loadPlayerByName(args[1]).submit(target -> {
+            if (target == null) {
+                p.sendMessage(CoreMessage.COINS_PLAYERNOTFOUND);
+                return;
+            }
+            p.sendMessage(CoreMessage.COINS_SEE_SUCCESS.replace("player", target.retrieveRealName().complete()).replace("coins", target.retrieveCoins().complete()));
+        });
         return true;
     }
 }

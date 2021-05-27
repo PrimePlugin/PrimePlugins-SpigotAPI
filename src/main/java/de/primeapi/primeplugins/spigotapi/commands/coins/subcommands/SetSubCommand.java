@@ -26,13 +26,14 @@ public class SetSubCommand extends SubCommand {
             p.sendMessage(CoreMessage.COINS_NONUMBER);
             return true;
         }
-        SQLPlayer target = SQLPlayer.loadPlayerByName(args[1]);
-        if (target == null) {
-            p.sendMessage(CoreMessage.COINS_PLAYERNOTFOUND);
-            return true;
-        }
-        target.setCoins(amount);
-        p.sendMessage(CoreMessage.COINS_SET_SUCCESS.replace("player", target.getRealName()).replace("coins", amount));
+        SQLPlayer.loadPlayerByName(args[1]).submit(target -> {
+            if (target == null) {
+                p.sendMessage(CoreMessage.COINS_PLAYERNOTFOUND);
+                return;
+            }
+            target.setCoins(amount);
+            p.sendMessage(CoreMessage.COINS_SET_SUCCESS.replace("player", target.retrieveRealName().complete()).replace("coins", amount));
+        });
         return true;
     }
 }

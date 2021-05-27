@@ -20,7 +20,9 @@ public class CoinsCommand implements CommandExecutor {
         PrimePlayer p = new PrimePlayer((Player) commandSender);
 
         if(args.length == 0){
-            p.sendMessage(CoreMessage.COINS_AMOUNT.replace("coins", p.getCoins()));
+            p.retrieveCoins().submit(coins -> {
+                p.sendMessage(CoreMessage.COINS_AMOUNT.replace("coins", coins));
+            });
             return true;
         }
 

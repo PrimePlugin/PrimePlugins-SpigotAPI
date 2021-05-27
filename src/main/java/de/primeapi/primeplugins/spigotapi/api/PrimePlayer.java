@@ -3,7 +3,11 @@ package de.primeapi.primeplugins.spigotapi.api;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.ScoreboardSettings;
+import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
+import de.primeapi.primeplugins.spigotapi.sql.party.PlayerParty;
+import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
+import lombok.NonNull;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -36,7 +40,6 @@ public class PrimePlayer extends SQLPlayer {
         PrimeCore.getInstance().getScoreboardManager().sendScoreboard(p);
     }
 
-    @Override
     public UUID getUniqueId(){
         return thePlayer().getUniqueId();
     }
@@ -53,5 +56,22 @@ public class PrimePlayer extends SQLPlayer {
             return true;
         }
     }
+
+    public void setAFK(boolean b){
+        OnlineStats.setAFK(getUniqueId(), b);
+    }
+
+    public void setParty(PlayerParty party){
+        OnlineStats.setParty(getUniqueId(), party.getOwner());
+    }
+
+    public DatabaseTask<Boolean> getAFK() {
+        return OnlineStats.getAFK(getUniqueId());
+    }
+
+    public DatabaseTask<PlayerParty> getParty() {
+        return OnlineStats.getParty(getUniqueId());
+    }
+
 
 }

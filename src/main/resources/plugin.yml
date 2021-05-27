@@ -13,3 +13,4 @@ load: STARTUP
 loadbefore:
   - PrimePermissionsSystem
   - LobbySystem
+  - MLGRush

@@ -26,7 +26,7 @@ public class PrimeCoreCommand implements CommandExecutor {
         switch (args[0].toLowerCase()){
             case "reload": {
                 if (args.length < 2) {
-                    p.thePlayer().sendMessage("§7Benutze: §e/primecore reload <all/config/prefix/scoreboard>");
+                    p.thePlayer().sendMessage("§7Benutze: §e/primecore reload <all/prefix/scoreboard>");
                     return true;
                 }
 
@@ -40,7 +40,28 @@ public class PrimeCoreCommand implements CommandExecutor {
                         p.thePlayer().sendMessage("§aErfolgreich");
                         return true;
                     }
-                    //TODO
+                    case "prefix":
+                    {
+                        if(!p.checkPermission("primecore.reload.prefix")){
+                            return true;
+                        }
+                        PrimeCore.getInstance().getScoreboardManager().sendTeams();
+                        p.thePlayer().sendMessage("§aErfolgreich");
+                        return true;
+                    }
+                    case "all":
+                    {
+                        if(!p.checkPermission("primecore.reload.all")){
+                            return true;
+                        }
+                        PrimeCore.getInstance().getScoreboardManager().sendScoreboard();
+                        PrimeCore.getInstance().getScoreboardManager().sendTeams();
+                        p.thePlayer().sendMessage("§aErfolgreich");
+                        return true;
+                    }
+                    default:
+                        p.thePlayer().sendMessage("§7Benutze: §e/primecore reload <all/prefix/scoreboard>");
+                        return true;
                 }
             }
         }
