@@ -7,7 +7,10 @@ import de.primeapi.primeplugins.spigotapi.managers.cloud.adapter.version.CloudNe
 import de.primeapi.primeplugins.spigotapi.managers.cloud.adapter.version.SimpleCloud;
 import de.primeapi.primeplugins.spigotapi.managers.cloud.types.CloudTypes;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,10 +26,10 @@ public class CloudManager implements CloudAdapter {
     private CloudTypes found = null;
 
     public CloudManager() {
-
+        check();
     }
 
-    public void check() {
+    private void check() {
         PrimeCore.getInstance().getLogger().log(Level.INFO, "Versuche Cloud zu finden...");
         for (CloudTypes cloudTypes : CloudTypes.values()) {
             if (Bukkit.getPluginManager().getPlugin(cloudTypes.getPlugin()) != null) {
@@ -80,6 +83,20 @@ public class CloudManager implements CloudAdapter {
                 return new SimpleCloud().getPlayersOnServer(name);
             default:
                 return -1;
+        }
+    }
+
+    public void sendPlayerToServer(Player player, String server) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+            dataOutputStream.writeUTF("Connect");
+            dataOutputStream.writeUTF(server);
+            player.sendPluginMessage(PrimeCore.getInstance(), "BungeeCord", byteArrayOutputStream.toByteArray());
+            byteArrayOutputStream.close();
+            dataOutputStream.close();
+        } catch (Exception exception) {
+            player.sendMessage("§cEs gab ein Fehler mit der Server connection!");
         }
     }
 }
