@@ -1,10 +1,13 @@
 package de.primeapi.primeplugins.spigotapi.managers.vault;
 
+import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
 import net.milkbowl.vault.economy.AbstractEconomy;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.ServicePriority;
 
 import java.util.List;
 
@@ -14,6 +17,11 @@ import java.util.List;
  * crated for PrimePlugins
  */
 public class VaultEconomy implements Economy {
+
+    public VaultEconomy(){
+        Bukkit.getServicesManager().register(Economy.class, this, PrimeCore.getInstance(), ServicePriority.High);
+    }
+
     @Override
     public boolean isEnabled() {
         return true;
