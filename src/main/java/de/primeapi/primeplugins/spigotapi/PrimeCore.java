@@ -17,6 +17,7 @@ import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.rest.RestManager;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.ScoreboardManager;
 import de.primeapi.primeplugins.spigotapi.managers.messages.MessageManager;
+import de.primeapi.primeplugins.spigotapi.managers.vault.VaultManager;
 import de.primeapi.primeplugins.spigotapi.utils.Logger;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.GroupDataEntity;
@@ -53,6 +54,7 @@ public class PrimeCore extends JavaPlugin {
     private CoinsAPI coinsAPI;
     private FriendsAPI friendsAPI;
     private RestManager restManager;
+    private VaultManager vaultManager;
 
     @Override
     public void onEnable() {
@@ -86,6 +88,7 @@ public class PrimeCore extends JavaPlugin {
         friendsAPI = new FriendsAPI();
         getServer().getMessenger().registerOutgoingPluginChannel( this, "primemessaging");
         restManager = new RestManager();
+        vaultManager = new VaultManager();
     }
 
     @Override
