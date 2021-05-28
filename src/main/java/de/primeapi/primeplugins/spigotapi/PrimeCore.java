@@ -9,6 +9,7 @@ import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
 import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
 import de.primeapi.primeplugins.spigotapi.managers.chat.ChatManager;
+import de.primeapi.primeplugins.spigotapi.managers.cloud.CloudManager;
 import de.primeapi.primeplugins.spigotapi.managers.commands.CommandsManager;
 import de.primeapi.primeplugins.spigotapi.managers.config.ConfigManager;
 import de.primeapi.primeplugins.spigotapi.managers.api.PlaceholderAPIManager;
@@ -55,6 +56,7 @@ public class PrimeCore extends JavaPlugin {
     private FriendsAPI friendsAPI;
     private RestManager restManager;
     private VaultManager vaultManager;
+    private CloudManager cloudManager;
 
     @Override
     public void onEnable() {
@@ -89,6 +91,8 @@ public class PrimeCore extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel( this, "primemessaging");
         restManager = new RestManager();
         vaultManager = new VaultManager();
+        cloudManager = new CloudManager();
+        cloudManager.check();
     }
 
     @Override
