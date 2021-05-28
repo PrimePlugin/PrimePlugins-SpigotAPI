@@ -39,6 +39,7 @@ public class CloudManager implements CloudAdapter {
             }
         }
         PrimeCore.getInstance().getLogger().log(Level.WARNING, "Es wurde keine Cloud gefunden!");
+        found = CloudTypes.NOCLOUD;
     }
 
     @Override
