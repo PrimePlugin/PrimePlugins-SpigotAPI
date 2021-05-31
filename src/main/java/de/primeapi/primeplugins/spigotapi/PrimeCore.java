@@ -91,7 +91,7 @@ public class PrimeCore extends JavaPlugin {
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getServer().getMessenger().registerOutgoingPluginChannel( this, "primemessaging");
+        getServer().getMessenger().registerOutgoingPluginChannel( this, "prime:primemessaging");
         restManager = new RestManager();
         vaultManager = new VaultManager();
         cloudManager = new CloudManager();
