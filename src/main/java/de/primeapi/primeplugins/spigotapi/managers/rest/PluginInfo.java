@@ -37,7 +37,7 @@ public class PluginInfo {
             }
         }
 
-        return true;
+        return false;
     }
 
 }
