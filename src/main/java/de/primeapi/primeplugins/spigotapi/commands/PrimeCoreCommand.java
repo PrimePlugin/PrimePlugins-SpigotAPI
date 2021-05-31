@@ -70,6 +70,9 @@ public class PrimeCoreCommand implements CommandExecutor {
                 }
             }
             case "update":{
+                if(!p.checkPermission("primeplugins.update")){
+                    return true;
+                }
                 if (args.length < 2) {
                     p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §7Benutze: §e/spigotapi update <all/[PluginName]>");
                     p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §ePluginName §8| §7Aktuelle Version §8| §bNeueste Version ");

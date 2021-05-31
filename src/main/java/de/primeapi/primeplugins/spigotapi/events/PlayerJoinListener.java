@@ -52,7 +52,7 @@ public class PlayerJoinListener implements Listener {
             PrimeCore.getInstance().getRestManager().setChecked(true);
         }
 
-        if(update){
+        if(update && e.getPlayer().hasPermission("primeplugins.update")){
             e.getPlayer().sendMessage(msg);
         }
     }
