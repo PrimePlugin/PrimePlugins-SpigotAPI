@@ -5,10 +5,12 @@ import de.dytanic.cloudnet.ext.bridge.player.ICloudOfflinePlayer;
 import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.CoinsAPI;
 import de.primeapi.primeplugins.spigotapi.api.FriendsAPI;
+import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
 import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
 import de.primeapi.primeplugins.spigotapi.managers.chat.ChatManager;
+import de.primeapi.primeplugins.spigotapi.managers.cloud.CloudManager;
 import de.primeapi.primeplugins.spigotapi.managers.commands.CommandsManager;
 import de.primeapi.primeplugins.spigotapi.managers.config.ConfigManager;
 import de.primeapi.primeplugins.spigotapi.managers.api.PlaceholderAPIManager;
@@ -55,6 +57,7 @@ public class PrimeCore extends JavaPlugin {
     private FriendsAPI friendsAPI;
     private RestManager restManager;
     private VaultManager vaultManager;
+    private CloudManager cloudManager;
 
     @Override
     public void onEnable() {
@@ -82,13 +85,17 @@ public class PrimeCore extends JavaPlugin {
         registerEvents();
 
         getCommand("primecore").setExecutor(new PrimeCoreCommand());
+        getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
 
         clanAPI = new ClanAPI();
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerOutgoingPluginChannel( this, "primemessaging");
         restManager = new RestManager();
         vaultManager = new VaultManager();
+        cloudManager = new CloudManager();
+        restManager.registerPlugin(new RestCore(this));
     }
 
     @Override

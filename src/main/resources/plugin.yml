@@ -9,6 +9,8 @@ softdepend:
 commands:
   coins:
   primecore:
+    aliases:
+      - spigotapi
 load: STARTUP
 loadbefore:
   - PrimePermissionsSystem
