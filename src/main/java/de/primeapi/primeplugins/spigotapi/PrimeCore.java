@@ -5,6 +5,7 @@ import de.dytanic.cloudnet.ext.bridge.player.ICloudOfflinePlayer;
 import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.CoinsAPI;
 import de.primeapi.primeplugins.spigotapi.api.FriendsAPI;
+import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
 import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
@@ -84,6 +85,7 @@ public class PrimeCore extends JavaPlugin {
         registerEvents();
 
         getCommand("primecore").setExecutor(new PrimeCoreCommand());
+        getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
 
         clanAPI = new ClanAPI();
         coinsAPI = new CoinsAPI();
@@ -93,6 +95,7 @@ public class PrimeCore extends JavaPlugin {
         restManager = new RestManager();
         vaultManager = new VaultManager();
         cloudManager = new CloudManager();
+        restManager.registerPlugin(new RestCore(this));
     }
 
     @Override

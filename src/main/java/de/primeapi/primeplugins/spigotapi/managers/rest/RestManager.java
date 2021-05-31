@@ -6,6 +6,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
+import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +18,9 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.logging.Level;
 
 
@@ -24,13 +29,24 @@ import java.util.logging.Level;
  * created on 26.05.2021
  * crated for PrimePlugins
  */
+@Getter
 public class RestManager {
 
-    private String server = "https://cp.primeapi.de/api.php";
+    private final static String SERVER = "https://cp.primeapi.de/api.php";
+
+    private Set<RestPlugin> plugins = new HashSet<>();
+    @Setter
+    private boolean checked = false;
+
+    public void registerPlugin(RestPlugin plugin){
+        plugins.add(plugin);
+        checked = false;
+        PrimeCore.getInstance().getLogger().log(Level.INFO, "Das Plugin " + plugin.getName() + " wurde registriert!");
+    }
 
     public PluginInfo getPlugininfo(String plugin){
         try {
-            String url = server + "?action=plinfo&name=" + plugin;
+            String url = SERVER + "?action=plinfo&name=" + plugin;
             InputStream in = new URL(url).openStream();
             String jsonString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
             return new Gson().fromJson(jsonString, PluginInfo.class);
@@ -42,7 +58,7 @@ public class RestManager {
 
     public boolean validateLicense(String license, String plugin) {
         try {
-            String url = server + "?action=verify&plugin=" + plugin + "&license=" + license;
+            String url = SERVER + "?action=verify&plugin=" + plugin + "&license=" + license;
             InputStream in = new URL(url).openStream();
             String jsonString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
             JsonElement element = new JsonParser().parse(jsonString);
@@ -67,7 +83,7 @@ public class RestManager {
 
     public boolean downloadPlugin(String plugin, String license, String path){
         try {
-            String url = server + "?action=download&plugin=" + plugin + "&license=" + license;
+            String url = SERVER + "?action=download&plugin=" + plugin + "&license=" + license;
             InputStream in = new URL(url).openStream();
             String jsonString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
             JsonElement element = new JsonParser().parse(jsonString);
@@ -76,7 +92,7 @@ public class RestManager {
             e.printStackTrace();
         } catch (JsonParseException e){
             try {
-                String url = server + "?action=download&plugin=" + plugin + "&license=" + license;
+                String url = SERVER + "?action=download&plugin=" + plugin + "&license=" + license;
                 InputStream in = new URL(url).openStream();
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
                 return true;
