@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -24,6 +26,7 @@ public class MoveListener implements Listener {
 
     boolean active = false;
     public static HashMap<UUID, Long> lastMove = new HashMap<>();
+    private Set<UUID> blocked = new HashSet<>();
     int sec;
     int delay;
 
@@ -38,13 +41,15 @@ public class MoveListener implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e){
-        if(active){
+        if(active && !blocked.contains(e.getPlayer().getUniqueId())){
+            blocked.add(e.getPlayer().getUniqueId());
             OnlineStats.getAFK(e.getPlayer().getUniqueId()).submit(aBoolean -> {
                 if(aBoolean){
                     OnlineStats.setAFK(e.getPlayer().getUniqueId(), false);
                     e.getPlayer().sendMessage(CoreMessage.AFK_OFF.getContent());
                 }
                 lastMove.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+                blocked.remove(e.getPlayer().getUniqueId());
             });
         }
     }
