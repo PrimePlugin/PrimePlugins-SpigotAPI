@@ -1,12 +1,15 @@
 package de.primeapi.primeplugins.spigotapi.managers.scoreboard;
 
+import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
+import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.*;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.BPlayerBoard;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.Board;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClan;
+import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -22,6 +25,7 @@ public class ScoreboardManager {
 
     public ScoreboardSettings defaultSettings;
     public PrefixScoreboardSetting defaultPrefix;
+    public int updateTick;
 
     public HashMap<UUID, ScoreboardSettings> customScoreboard;
 
@@ -29,6 +33,8 @@ public class ScoreboardManager {
         defaultSettings = new DefaultScoreboard();
         defaultPrefix = new DefaultPrefixScoreboard();
         customScoreboard = new HashMap<>();
+        updateTick = CoreConfig.getInstance().getInt("scoreboard.update.seconds");
+        startUpdateTick();
     }
 
     public void sendScoreboard(@Nonnull Player p){
@@ -104,6 +110,19 @@ public class ScoreboardManager {
                 Bukkit.getOnlinePlayers()) {
             sendScoreboard(p);
         }
+    }
+
+    private void startUpdateTick(){
+        PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
+            while (!Thread.currentThread().isInterrupted()){
+                try {
+                    sendScoreboard();
+                    Thread.sleep(updateTick * 1000L);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }

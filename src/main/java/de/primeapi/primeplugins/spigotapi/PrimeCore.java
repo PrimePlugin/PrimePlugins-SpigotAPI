@@ -73,13 +73,13 @@ public class PrimeCore extends JavaPlugin {
 
         messageManager = new MessageManager();
         configManager = new ConfigManager();
+        registerConfigs();
         commandsManager = new CommandsManager();
         cloudNetAdapter = new CloudNetAdapter();
         placeholderAPIManager = new PlaceholderAPIManager();
         scoreboardManager = new ScoreboardManager();
         chatManager = new ChatManager();
 
-        registerConfigs();
         initSql();
 
         getCommand("primecore").setExecutor(new PrimeCoreCommand());
