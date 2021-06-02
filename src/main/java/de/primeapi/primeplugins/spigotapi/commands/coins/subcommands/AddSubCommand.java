@@ -4,6 +4,7 @@ import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.api.SubCommand;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
+import de.primeapi.primeplugins.spigotapi.utils.PrimeUtils;
 
 public class AddSubCommand extends SubCommand {
 
@@ -34,7 +35,7 @@ public class AddSubCommand extends SubCommand {
                 return;
             }
             target.addCoins(amount);
-            p.sendMessage(CoreMessage.COINS_ADD_SUCCESS.replace("player", target.retrieveRealName().complete()).replace("coins", amount));
+            p.sendMessage(CoreMessage.COINS_ADD_SUCCESS.replace("player", target.retrieveRealName().complete()).replace("coins", PrimeUtils.formatInteger(amount)));
         });
         return true;
     }
