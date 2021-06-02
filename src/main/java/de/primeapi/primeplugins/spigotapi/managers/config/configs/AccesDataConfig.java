@@ -11,7 +11,7 @@ public class AccesDataConfig extends Config {
     }
 
     public AccesDataConfig() {
-        super("Access data", "plugins/primeplugins/accessdata.yml");
+        super("Access data", "plugins/primeplugins/config.yml");
         instance = this;
     }
 
