@@ -22,6 +22,9 @@ public enum CoreMessage {
     COINS_SEE_USAGE("§7 Verwendung: §e/coins see <Spieler>", true),
     COINS_SEE_SUCCESS("§7 Der Spieler §e%player% §7hat §6%coins% Coins§7!", true),
 
+    AFK_ON("§7 Du wurdest als §cAFK§7 markiert!", true),
+    AFK_OFF("§7 Du bist nun §anicht mehr §7als AFK markiert!", true),
+
     PLACEHOLDER("DO NOT TOUCH", false);
 
     String path;

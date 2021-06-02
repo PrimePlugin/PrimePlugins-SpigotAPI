@@ -2,10 +2,7 @@ package de.primeapi.primeplugins.spigotapi;
 
 import com.github.davidmoten.rx.jdbc.Database;
 import de.dytanic.cloudnet.ext.bridge.player.ICloudOfflinePlayer;
-import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
-import de.primeapi.primeplugins.spigotapi.api.CoinsAPI;
-import de.primeapi.primeplugins.spigotapi.api.FriendsAPI;
-import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
+import de.primeapi.primeplugins.spigotapi.api.*;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
 import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
@@ -54,6 +51,7 @@ public class PrimeCore extends JavaPlugin {
     private Database db;
     private ClanAPI clanAPI;
     private CoinsAPI coinsAPI;
+    private BungeeAPI bungeeAPI;
     private FriendsAPI friendsAPI;
     private RestManager restManager;
     private VaultManager vaultManager;
@@ -90,6 +88,7 @@ public class PrimeCore extends JavaPlugin {
         clanAPI = new ClanAPI();
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
+        bungeeAPI = new BungeeAPI();
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerOutgoingPluginChannel( this, "prime:primemessaging");
         restManager = new RestManager();

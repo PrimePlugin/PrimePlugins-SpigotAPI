@@ -8,6 +8,7 @@ softdepend:
   - CloudNetAPI
 commands:
   coins:
+  afk:
   primecore:
     aliases:
       - spigotapi

@@ -1,5 +1,6 @@
 package de.primeapi.primeplugins.spigotapi.managers.commands;
 
+import de.primeapi.primeplugins.spigotapi.commands.AFKCommand;
 import de.primeapi.primeplugins.spigotapi.commands.coins.CoinsCommand;
 import lombok.Getter;
 import org.bukkit.command.CommandExecutor;
@@ -7,7 +8,9 @@ import org.bukkit.command.TabCompleter;
 
 @Getter
 public enum Command {
-    COINS("coins", new CoinsCommand());
+    COINS("coins", new CoinsCommand()),
+    AFK("afk", new AFKCommand()),
+    ;
 
     String name;
     CommandExecutor command;
