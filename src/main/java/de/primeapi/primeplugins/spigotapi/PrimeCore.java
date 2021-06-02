@@ -21,6 +21,7 @@ import de.primeapi.primeplugins.spigotapi.utils.Logger;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.GroupDataEntity;
 import org.bukkit.Bukkit;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -80,7 +81,6 @@ public class PrimeCore extends JavaPlugin {
 
         registerConfigs();
         initSql();
-        registerEvents();
 
         getCommand("primecore").setExecutor(new PrimeCoreCommand());
         getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
@@ -95,6 +95,7 @@ public class PrimeCore extends JavaPlugin {
         vaultManager = new VaultManager();
         cloudManager = new CloudManager();
         restManager.registerPlugin(new RestCore(this));
+        registerEvents();
     }
 
     @Override
@@ -118,6 +119,7 @@ public class PrimeCore extends JavaPlugin {
         pm.registerEvents(new GroupChanceListener(), this);
         pm.registerEvents(new PlayerQuitListener(), this);
         pm.registerEvents(new PlayerChatListener(), this);
+        pm.registerEvents(new MoveListener(), this);
     }
 
 

@@ -55,6 +55,7 @@ public class PlayerJoinListener implements Listener {
         if(update && e.getPlayer().hasPermission("primeplugins.update")){
             e.getPlayer().sendMessage(msg);
         }
+        MoveListener.lastMove.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
     }
 
 }
