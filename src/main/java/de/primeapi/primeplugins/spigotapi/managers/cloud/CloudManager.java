@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -70,6 +71,7 @@ public class CloudManager implements CloudAdapter {
                 lobbyList = new CloudNetV3().getAllLobbies(name);
                 break;
         }
+        Collections.sort(lobbyList);
         return lobbyList;
     }
 

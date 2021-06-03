@@ -2,10 +2,7 @@ package de.primeapi.primeplugins.spigotapi;
 
 import com.github.davidmoten.rx.jdbc.Database;
 import de.dytanic.cloudnet.ext.bridge.player.ICloudOfflinePlayer;
-import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
-import de.primeapi.primeplugins.spigotapi.api.CoinsAPI;
-import de.primeapi.primeplugins.spigotapi.api.FriendsAPI;
-import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
+import de.primeapi.primeplugins.spigotapi.api.*;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
 import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
@@ -24,6 +21,7 @@ import de.primeapi.primeplugins.spigotapi.utils.Logger;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.GroupDataEntity;
 import org.bukkit.Bukkit;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -54,6 +52,7 @@ public class PrimeCore extends JavaPlugin {
     private Database db;
     private ClanAPI clanAPI;
     private CoinsAPI coinsAPI;
+    private BungeeAPI bungeeAPI;
     private FriendsAPI friendsAPI;
     private RestManager restManager;
     private VaultManager vaultManager;
@@ -74,15 +73,14 @@ public class PrimeCore extends JavaPlugin {
 
         messageManager = new MessageManager();
         configManager = new ConfigManager();
+        registerConfigs();
         commandsManager = new CommandsManager();
         cloudNetAdapter = new CloudNetAdapter();
         placeholderAPIManager = new PlaceholderAPIManager();
         scoreboardManager = new ScoreboardManager();
         chatManager = new ChatManager();
 
-        registerConfigs();
         initSql();
-        registerEvents();
 
         getCommand("primecore").setExecutor(new PrimeCoreCommand());
         getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
@@ -90,12 +88,14 @@ public class PrimeCore extends JavaPlugin {
         clanAPI = new ClanAPI();
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
+        bungeeAPI = new BungeeAPI();
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getServer().getMessenger().registerOutgoingPluginChannel( this, "primemessaging");
+        getServer().getMessenger().registerOutgoingPluginChannel( this, "prime:primemessaging");
         restManager = new RestManager();
         vaultManager = new VaultManager();
         cloudManager = new CloudManager();
         restManager.registerPlugin(new RestCore(this));
+        registerEvents();
     }
 
     @Override
@@ -119,6 +119,7 @@ public class PrimeCore extends JavaPlugin {
         pm.registerEvents(new GroupChanceListener(), this);
         pm.registerEvents(new PlayerQuitListener(), this);
         pm.registerEvents(new PlayerChatListener(), this);
+        pm.registerEvents(new MoveListener(), this);
     }
 
 

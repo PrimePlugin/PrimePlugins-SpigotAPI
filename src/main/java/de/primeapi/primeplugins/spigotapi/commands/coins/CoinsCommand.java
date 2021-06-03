@@ -7,6 +7,7 @@ import de.primeapi.primeplugins.spigotapi.commands.coins.subcommands.SeeSubComma
 import de.primeapi.primeplugins.spigotapi.commands.coins.subcommands.SetSubCommand;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
+import de.primeapi.primeplugins.spigotapi.utils.PrimeUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,15 +22,12 @@ public class CoinsCommand implements CommandExecutor {
 
         if(args.length == 0){
             p.retrieveCoins().submit(coins -> {
-                p.sendMessage(CoreMessage.COINS_AMOUNT.replace("coins", coins));
+                p.sendMessage(CoreMessage.COINS_AMOUNT.replace("coins", PrimeUtils.formatInteger(coins)));
             });
             return true;
         }
 
         switch (args[0].toLowerCase()){
-            case "help":
-                p.sendMessage(CoreMessage.COINS_USAGE);
-                break;
             case "add":
             {
                 return new AddSubCommand().execute(p, args);

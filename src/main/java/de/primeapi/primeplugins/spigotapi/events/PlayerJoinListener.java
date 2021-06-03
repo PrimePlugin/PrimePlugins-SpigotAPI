@@ -31,7 +31,9 @@ public class PlayerJoinListener implements Listener {
             p.sendScoreboard();
         }
 
-        PrimeCore.getInstance().getScoreboardManager().sendTeams();
+        if (CoreConfig.getInstance().getBoolean("prefix.use")) {
+            PrimeCore.getInstance().getScoreboardManager().sendTeams();
+        }
 
         if(!PrimeCore.getInstance().getRestManager().isChecked()){
             List<String> updates = new ArrayList<>();
@@ -55,6 +57,7 @@ public class PlayerJoinListener implements Listener {
         if(update && e.getPlayer().hasPermission("primeplugins.update")){
             e.getPlayer().sendMessage(msg);
         }
+        MoveListener.lastMove.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
     }
 
 }

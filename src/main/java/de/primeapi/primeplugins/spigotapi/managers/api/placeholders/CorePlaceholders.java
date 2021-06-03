@@ -2,6 +2,7 @@ package de.primeapi.primeplugins.spigotapi.managers.api.placeholders;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
+import de.primeapi.primeplugins.spigotapi.utils.PrimeUtils;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
@@ -29,7 +30,7 @@ public class CorePlaceholders extends PlaceholderExpansion {
         PrimePlayer p = new PrimePlayer(player);
         switch (params.toLowerCase()){
             case "coins":
-                return String.valueOf(p.retrieveCoins().complete());
+                return PrimeUtils.formatInteger(p.retrieveCoins().complete());
             case "onmins":
                 return String.valueOf(p.retrieveOnMins());
             case "ontime_1": {

@@ -4,20 +4,18 @@ import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
+import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.*;
+import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.BPlayerBoard;
+import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.Board;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClan;
-import de.primeapi.primeplugins.spigotapi.sql.clan.SQLPlayerAllocation;
-import net.minecraft.server.v1_8_R3.*;
+import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Team;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +25,7 @@ public class ScoreboardManager {
 
     public ScoreboardSettings defaultSettings;
     public PrefixScoreboardSetting defaultPrefix;
+    public int updateTick;
 
     public HashMap<UUID, ScoreboardSettings> customScoreboard;
 
@@ -34,44 +33,39 @@ public class ScoreboardManager {
         defaultSettings = new DefaultScoreboard();
         defaultPrefix = new DefaultPrefixScoreboard();
         customScoreboard = new HashMap<>();
+        updateTick = CoreConfig.getInstance().getInt("scoreboard.update.seconds");
+        startUpdateTick();
     }
 
     public void sendScoreboard(@Nonnull Player p){
         if(!CoreConfig.getInstance().getBoolean("scoreboard.use")) return;
-        Scoreboard scoreboard = new net.minecraft.server.v1_8_R3.Scoreboard();
-        ScoreboardObjective obj = scoreboard.registerObjective("aaa", IScoreboardCriteria.b);
         ScoreboardSettings settings;
         if(!customScoreboard.containsKey(p.getUniqueId())){
             settings = defaultSettings;
         }else{
             settings = customScoreboard.get(p.getUniqueId());
         }
-        obj.setDisplayName(settings.getTitle());
-        PacketPlayOutScoreboardObjective createPacket = new PacketPlayOutScoreboardObjective(obj, 0);
-        PacketPlayOutScoreboardDisplayObjective display = new PacketPlayOutScoreboardDisplayObjective(1, obj);
-        PacketPlayOutScoreboardObjective removePacket = new PacketPlayOutScoreboardObjective(obj, 1);
-        sendPacket(removePacket, p);
-        sendPacket(createPacket, p);
-        sendPacket(display, p);
+
+        BPlayerBoard bPlayerBoard =
+                (Board.instance().getBoard(p) != null) ?
+                        Board.instance().getBoard(p) :
+                        Board.instance().createBoard(p, ChatColor.translateAlternateColorCodes('&', settings.getTitle()));
 
         List<String> list = settings.apply(p);
         int i = list.size();
         for (String s :
                 list) {
-            ScoreboardScore score = new ScoreboardScore(scoreboard, obj, s);
-            score.setScore(i);
-            PacketPlayOutScoreboardScore pa = new PacketPlayOutScoreboardScore(score);
-            sendPacket(pa, p);
+            bPlayerBoard.set(s, i);
             i--;
         }
     }
 
-    public void sendTeams(@Nonnull Player p){
-        if(!CoreConfig.getInstance().getBoolean("prefix.use")) return;
+    public void sendTeams(@Nonnull Player p) {
+        if (!CoreConfig.getInstance().getBoolean("prefix.use")) return;
         org.bukkit.scoreboard.Scoreboard sb;
-        if(p.getScoreboard() != null){
+        if (p.getScoreboard() != null) {
             sb = p.getScoreboard();
-        }else {
+        } else {
             sb = Bukkit.getScoreboardManager().getNewScoreboard();
         }
 
@@ -118,7 +112,17 @@ public class ScoreboardManager {
         }
     }
 
-    private void sendPacket(@SuppressWarnings("rawtypes") Packet packet, Player p) {
-        ((CraftPlayer)p).getHandle().playerConnection.sendPacket(packet);
+    private void startUpdateTick(){
+        PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
+            while (!Thread.currentThread().isInterrupted()){
+                try {
+                    sendScoreboard();
+                    Thread.sleep(updateTick * 1000L);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
+
 }

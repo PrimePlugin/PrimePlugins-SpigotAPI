@@ -36,6 +36,7 @@ public class CoreConfig extends Config {
             saveAddEntry("scoreboard.default.title", "§7» §eServer.de §7«");
             saveAddEntry("scoreboard.default.content", scoreboard);
             saveAddEntry("scoreboard.default.applyOnJoin", true);
+            saveAddEntry("scoreboard.update.seconds", 5);
 
             saveAddEntry("prefix.use", true);
             saveAddEntry("prefix.defaultPrefix", "§7");
@@ -45,6 +46,10 @@ public class CoreConfig extends Config {
 
             saveAddEntry("chatformat.use", true);
             saveAddEntry("chatformat.default", "§7%name% §8| §7%message%");
+
+            saveAddEntry("autoafk.use", true);
+            saveAddEntry("autoafk.detect.seconds", 30);
+            saveAddEntry("autoafk.detect.delay", 30);
         }
 
     }
