@@ -1,6 +1,7 @@
 package de.primeapi.primeplugins.spigotapi.managers.vault;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
+import de.primeapi.primeplugins.spigotapi.api.PermsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 
@@ -20,6 +21,10 @@ public class VaultManager {
             return;
         }
         new VaultEconomy();
+        if(PermsAPI.getInstance().isOnline()){
+            new VaultPermission();
+            PrimeCore.getInstance().getLogger().log(Level.INFO, "Permissions-Hook wurde geladen");
+        }
         PrimeCore.getInstance().getLogger().log(Level.INFO, "Economy-Hook wurde geladen");
     }
 }
