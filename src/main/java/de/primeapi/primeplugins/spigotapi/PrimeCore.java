@@ -54,6 +54,7 @@ public class PrimeCore extends JavaPlugin {
     private CoinsAPI coinsAPI;
     private BungeeAPI bungeeAPI;
     private FriendsAPI friendsAPI;
+    private PermsAPI permsAPI;
     private RestManager restManager;
     private VaultManager vaultManager;
     private CloudManager cloudManager;
@@ -89,6 +90,7 @@ public class PrimeCore extends JavaPlugin {
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
         bungeeAPI = new BungeeAPI();
+        permsAPI = new PermsAPI();
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerOutgoingPluginChannel( this, "prime:primemessaging");
         restManager = new RestManager();
