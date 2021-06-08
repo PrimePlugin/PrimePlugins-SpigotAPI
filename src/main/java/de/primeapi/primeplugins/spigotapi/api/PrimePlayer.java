@@ -1,6 +1,7 @@
 package de.primeapi.primeplugins.spigotapi.api;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
+import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.ScoreboardSettings;
 import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
@@ -37,7 +38,9 @@ public class PrimePlayer extends SQLPlayer {
     }
 
     public void sendScoreboard(){
-        PrimeCore.getInstance().getScoreboardManager().sendScoreboard(p);
+        if(CoreConfig.getInstance().getBoolean("scoreboard.use")) {
+            PrimeCore.getInstance().getScoreboardManager().sendScoreboard(p);
+        }
     }
 
     public UUID getUniqueId(){

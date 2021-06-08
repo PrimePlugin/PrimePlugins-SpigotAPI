@@ -23,7 +23,7 @@ public class PluginMessage {
         return new PluginMessage(channel, subChannel, data);
     }
     public static PluginMessage build(PluginCommand command, String... data){
-        return new PluginMessage("primemessaging", command.toString(), data);
+        return new PluginMessage("prime:primemessaging", command.toString(), data);
     }
 
     private PluginMessage(String channel, String subChannel, String[] data) {
