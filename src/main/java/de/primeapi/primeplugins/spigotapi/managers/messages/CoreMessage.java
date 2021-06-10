@@ -25,6 +25,8 @@ public enum CoreMessage {
     AFK_ON("§7 Du wurdest als §cAFK§7 markiert!", true),
     AFK_OFF("§7 Du bist nun §anicht mehr §7als AFK markiert!", true),
 
+    CLANPLACEHOLDER_NOCLAN("Kein Clan", false),
+
     PLACEHOLDER("DO NOT TOUCH", false);
 
     String path;
