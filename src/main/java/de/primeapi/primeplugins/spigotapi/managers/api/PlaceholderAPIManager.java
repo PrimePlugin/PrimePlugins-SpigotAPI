@@ -1,6 +1,8 @@
 package de.primeapi.primeplugins.spigotapi.managers.api;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
+import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
+import de.primeapi.primeplugins.spigotapi.managers.api.placeholders.ClanPlaceholder;
 import de.primeapi.primeplugins.spigotapi.managers.api.placeholders.CorePlaceholders;
 import de.primeapi.primeplugins.spigotapi.managers.api.placeholders.cloud.CloudGroupOnlinePlaceholder;
 import de.primeapi.primeplugins.spigotapi.managers.api.placeholders.cloud.CloudServerOnlinePlaceholder;
@@ -20,6 +22,9 @@ public class PlaceholderAPIManager {
             new CorePlaceholders().register();
             new CloudServerOnlinePlaceholder().register();
             new CloudGroupOnlinePlaceholder().register();
+            if(ClanAPI.getInstance().isOnline()){
+                new ClanPlaceholder().register();
+            }
         }else {
             isActive = false;
             PrimeCore.getInstance().getCoreLogger().sendInfo("PlaceholderAPI wurde nicht aktiviert");
