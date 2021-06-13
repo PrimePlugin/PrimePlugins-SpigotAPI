@@ -11,10 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -55,10 +52,10 @@ public class MoveListener implements Listener {
     }
 
     private void runCheck(){
-        PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
-           while (!Thread.currentThread().isInterrupted()){
-               try {
-                lastMove.forEach((uuid, aLong) -> {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(PrimeCore.getInstance(), () -> {
+            try {
+                HashMap<UUID, Long> clone = new HashMap<>(lastMove);
+                clone.forEach((uuid, aLong) -> {
                     Player target = Bukkit.getPlayer(uuid);
                     if(target == null){
                         lastMove.remove(uuid);
@@ -70,11 +67,10 @@ public class MoveListener implements Listener {
                         lastMove.remove(uuid);
                     }
                 });
-                   Thread.sleep(delay * 1000L);
-               } catch (Exception e) {
-               }
-           }
-        });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, delay * 20L, delay * 20L);
     }
 
 }

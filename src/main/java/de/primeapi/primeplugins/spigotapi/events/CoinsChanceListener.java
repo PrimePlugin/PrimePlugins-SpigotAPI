@@ -11,13 +11,9 @@ public class CoinsChanceListener implements Listener {
 
     @EventHandler
     public void onCoinsChance(CoinsChanceEvent e){
-        e.getPlayer().retrieveUniqueId().submit(uuid -> {
-            Player player = Bukkit.getPlayer(uuid);
-            if(player != null){
-                PrimePlayer p = new PrimePlayer(player);
-                p.sendScoreboard();
-            }
-        });
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            new PrimePlayer(onlinePlayer).sendScoreboard();
+        }
     }
 
 }

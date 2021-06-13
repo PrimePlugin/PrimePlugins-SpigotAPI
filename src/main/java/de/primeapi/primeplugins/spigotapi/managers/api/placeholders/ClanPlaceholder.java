@@ -3,6 +3,7 @@ package de.primeapi.primeplugins.spigotapi.managers.api.placeholders;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
+import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClan;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -35,6 +36,9 @@ public class ClanPlaceholder extends PlaceholderExpansion {
         if(ClanAPI.getInstance().isOnline()) {
             SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(new PrimePlayer(player)).complete();
             if(clan == null){
+                if(params.toLowerCase().equalsIgnoreCase("tag_formatted")){
+                    return CoreConfig.getInstance().getString("clanplaceholder.formattedTag.noClan");
+                }
                 return CoreMessage.CLANPLACEHOLDER_NOCLAN.getContent();
             }
             switch (params.toLowerCase()) {
@@ -43,6 +47,9 @@ public class ClanPlaceholder extends PlaceholderExpansion {
                 }
                 case "tag": {
                     return clan.getTag().complete();
+                }
+                case "tag_formatted": {
+                    return CoreConfig.getInstance().getString("clanplaceholder.formattedTag.format").replaceAll("%tag%", clan.getTag().complete());
                 }
                 case "count":{
                     return String.valueOf(clan.getMembers().complete().size());

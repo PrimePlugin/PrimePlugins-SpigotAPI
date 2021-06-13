@@ -50,6 +50,9 @@ public class CoreConfig extends Config {
             saveAddEntry("autoafk.use", true);
             saveAddEntry("autoafk.detect.seconds", 30);
             saveAddEntry("autoafk.detect.delay", 30);
+
+            saveAddEntry("clanplaceholder.formattedTag.format" , "§8[§e%tag%§8]");
+            saveAddEntry("clanplaceholder.formattedTag.noClan" , "");
         }
 
     }

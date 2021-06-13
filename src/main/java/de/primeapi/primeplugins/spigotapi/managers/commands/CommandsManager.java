@@ -36,7 +36,7 @@ public class CommandsManager {
                 b = cfg.getBoolean("commands." + c.getName());
             }else{
                 b = true;
-                PrimeCore.getInstance().getCoreLogger().sendInfo("Command '" + c.getName() + "' wurde eingetragen!");
+                PrimeCore.getInstance().getLogger().info("Command '" + c.getName() + "' wurde eingetragen!");
                 cfg.set("commands." + c.getName(), true);
             }
 
@@ -53,8 +53,8 @@ public class CommandsManager {
                 deactiveCount++;
             }
         }
-        PrimeCore.getInstance().getCoreLogger().sendInfo("Aktivierte Commands (" + activeCount + "): " + active);
-        PrimeCore.getInstance().getCoreLogger().sendInfo("Deaktivierte Commands (" + deactiveCount + "): " + deactive);
+        PrimeCore.getInstance().getLogger().info("Aktivierte Commands (" + activeCount + "): " + active);
+        PrimeCore.getInstance().getLogger().info("Deaktivierte Commands (" + deactiveCount + "): " + deactive);
 
 
         try {
