@@ -68,18 +68,18 @@ public class PrimeCore extends JavaPlugin {
         messageManager = new MessageManager();
         configManager = new ConfigManager();
         registerConfigs();
+        initSql();
         commandsManager = new CommandsManager();
         cloudNetAdapter = new CloudNetAdapter();
+        clanAPI = new ClanAPI();
         placeholderAPIManager = new PlaceholderAPIManager();
         scoreboardManager = new ScoreboardManager();
         chatManager = new ChatManager();
 
-        initSql();
 
         getCommand("primecore").setExecutor(new PrimeCoreCommand());
         getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
 
-        clanAPI = new ClanAPI();
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
         bungeeAPI = new BungeeAPI();
