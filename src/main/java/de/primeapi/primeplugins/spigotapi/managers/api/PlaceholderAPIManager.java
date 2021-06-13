@@ -18,7 +18,7 @@ public class PlaceholderAPIManager {
     public PlaceholderAPIManager(){
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
             isActive = true;
-            PrimeCore.getInstance().getCoreLogger().sendInfo("PlaceholderAPI gefunden");
+            PrimeCore.getInstance().getLogger().info("PlaceholderAPI gefunden");
             new CorePlaceholders().register();
             new CloudServerOnlinePlaceholder().register();
             new CloudGroupOnlinePlaceholder().register();
@@ -27,7 +27,7 @@ public class PlaceholderAPIManager {
             }
         }else {
             isActive = false;
-            PrimeCore.getInstance().getCoreLogger().sendInfo("PlaceholderAPI wurde nicht aktiviert");
+            PrimeCore.getInstance().getLogger().info("PlaceholderAPI wurde nicht aktiviert");
         }
     }
 

@@ -113,16 +113,13 @@ public class ScoreboardManager {
     }
 
     private void startUpdateTick(){
-        PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
-            while (!Thread.currentThread().isInterrupted()){
-                try {
-                    sendScoreboard();
-                    Thread.sleep(updateTick * 1000L);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(PrimeCore.getInstance(), () -> {
+            try {
+                sendScoreboard();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+        }, updateTick * 20L, updateTick * 20L);
     }
 
 }

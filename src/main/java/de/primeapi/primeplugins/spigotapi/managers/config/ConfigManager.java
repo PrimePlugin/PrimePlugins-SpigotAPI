@@ -25,7 +25,7 @@ public class ConfigManager {
 
     public void registerConfig(Config config){
         registeredConfigs.add(config);
-        PrimeCore.getInstance().getCoreLogger().sendInfo("Config '" + config.getName() + "' loaded");
+        PrimeCore.getInstance().getLogger().info("Config '" + config.getName() + "' loaded");
     }
 
     public void generateDirs(String path){

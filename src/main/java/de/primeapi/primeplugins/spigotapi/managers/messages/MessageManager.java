@@ -36,7 +36,7 @@ public class MessageManager {
                     message.setContent(ChatColor.translateAlternateColorCodes('&', s.replaceAll("%prefix%", CoreMessage.PREFIX.getContent())));
                 }
             }
-            PrimeCore.getInstance().getCoreLogger().sendInfo("Es wurde(n) " + i + " neue Nachricht(en) in die messages.yml eingefügt!");
+            PrimeCore.getInstance().getLogger().info("Es wurde(n) " + i + " neue Nachricht(en) in die messages.yml eingefügt!");
             try {
                 cfg.save(file);
             } catch (IOException e) {

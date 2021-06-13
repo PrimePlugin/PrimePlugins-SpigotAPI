@@ -1,7 +1,6 @@
 package de.primeapi.primeplugins.spigotapi;
 
 import com.github.davidmoten.rx.jdbc.Database;
-import de.dytanic.cloudnet.ext.bridge.player.ICloudOfflinePlayer;
 import de.primeapi.primeplugins.spigotapi.api.*;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
@@ -17,11 +16,8 @@ import de.primeapi.primeplugins.spigotapi.managers.rest.RestManager;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.ScoreboardManager;
 import de.primeapi.primeplugins.spigotapi.managers.messages.MessageManager;
 import de.primeapi.primeplugins.spigotapi.managers.vault.VaultManager;
-import de.primeapi.primeplugins.spigotapi.utils.Logger;
 import lombok.Getter;
-import net.minecraft.server.v1_8_R3.GroupDataEntity;
 import org.bukkit.Bukkit;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -45,7 +41,6 @@ public class PrimeCore extends JavaPlugin {
     private ThreadPoolExecutor threadPoolExecutor;
     private CommandsManager commandsManager;
     private PlaceholderAPIManager placeholderAPIManager;
-    private Logger coreLogger;
     private ScoreboardManager scoreboardManager;
     private ChatManager chatManager;
     private CloudNetAdapter cloudNetAdapter;
@@ -62,15 +57,13 @@ public class PrimeCore extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        coreLogger = new Logger();
         threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
-        getCoreLogger().sendInfo("---------------[ PrimeAPI | core ]---------------");
-        getCoreLogger().sendInfo("Plugin: PrimeCore");
-        getCoreLogger().sendInfo("Author: PrimeAPI");
-        getCoreLogger().sendInfo("Version: " + getDescription().getVersion());
-        getCoreLogger().sendInfo("---------------[ PrimeAPI | core ]---------------");
-
+        getLogger().info("---------------[ PrimeAPI | core ]---------------");
+        getLogger().info("Plugin: PrimeCore");
+        getLogger().info("Author: PrimeAPI");
+        getLogger().info("Version: " + getDescription().getVersion());
+        getLogger().info("---------------[ PrimeAPI | core ]---------------");
 
         messageManager = new MessageManager();
         configManager = new ConfigManager();
@@ -91,11 +84,14 @@ public class PrimeCore extends JavaPlugin {
         friendsAPI = new FriendsAPI();
         bungeeAPI = new BungeeAPI();
         permsAPI = new PermsAPI();
+
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerOutgoingPluginChannel( this, "prime:primemessaging");
+
         restManager = new RestManager();
         vaultManager = new VaultManager();
         cloudManager = new CloudManager();
+
         restManager.registerPlugin(new RestCore(this));
         registerEvents();
     }
@@ -128,7 +124,7 @@ public class PrimeCore extends JavaPlugin {
     private void initSql(){
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + AccesDataConfig.getInstance().getString("mysql.host") + "/" + AccesDataConfig.getInstance().getString("mysql.database") + "?autoReconnect=true", AccesDataConfig.getInstance().getString("mysql.username"), AccesDataConfig.getInstance().getString("mysql.password"));
-            getCoreLogger().sendInfo("MySQL-Connection established");
+            getLogger().info("MySQL-Connection established");
             connection.prepareStatement("CREATE TABLE IF NOT EXISTS `core_players` (`id` INT NOT NULL AUTO_INCREMENT UNIQUE,`uuid` VARCHAR(36) NOT NULL UNIQUE,`name` VARCHAR(16) NOT NULL UNIQUE,`realname` VARCHAR(16) NOT NULL UNIQUE,`coins` INT NOT NULL,`playtime` INT NOT NULL,PRIMARY KEY (`id`));").execute();
             connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS `core_settings` (" +
@@ -141,7 +137,7 @@ public class PrimeCore extends JavaPlugin {
             db = Database.from(connection).asynchronous();
             getLogger().log(Level.INFO, "Asynchronous MySQL-Connection established");
         } catch (SQLException throwables) {
-            getCoreLogger().sendInfo("MySQL-Connection failed: " + throwables.getMessage());
+            getLogger().info("MySQL-Connection failed: " + throwables.getMessage());
         }
     }
 
