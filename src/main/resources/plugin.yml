@@ -6,6 +6,7 @@ softdepend:
   - PlaceholderAPI
   - CloudNet-Bridge
   - CloudNetAPI
+  - Vault
 commands:
   coins:
   afk:
