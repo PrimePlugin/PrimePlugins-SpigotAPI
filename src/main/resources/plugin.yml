@@ -1,11 +1,12 @@
 name: PrimeCore
 author: PrimeAPI
-version: 1.0.3
+version: 1.0.4
 main: de.primeapi.primeplugins.spigotapi.PrimeCore
 softdepend:
   - PlaceholderAPI
   - CloudNet-Bridge
   - CloudNetAPI
+  - Vault
 commands:
   coins:
   afk:

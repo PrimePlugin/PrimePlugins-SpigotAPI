@@ -10,7 +10,9 @@ public enum PlayerSetting {
     FRIEND_MSG(1),
     FRIEND_NOTIFY(1),
 
-    LOBBY_SAVELOCATION(1);
+    LOBBY_SAVELOCATION(1),
+    LOBBY_HOTBAR_SOUND(1),
+    ;
 
 
     int standartValue;

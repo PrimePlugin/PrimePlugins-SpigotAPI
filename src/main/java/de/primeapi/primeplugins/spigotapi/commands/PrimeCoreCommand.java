@@ -80,9 +80,9 @@ public class PrimeCoreCommand implements CommandExecutor {
                         PluginInfo info = plugin.getPluginInfo();
                         String currVersion = plugin.getPlugin().getDescription().getVersion();
                         if(info.isNeverVersion(currVersion)){
-                            p.thePlayer().sendMessage("§8[§c§8[§cSpigotAPI§8] §8] §e" + plugin.getName() + " §8| §7" + currVersion + "§8 | §b" + info.getVersion() + " §c§l✖");
+                            p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §e" + plugin.getName() + " §8| §7" + currVersion + "§8 | §b" + info.getVersion() + " §c§l✖");
                         }else {
-                            p.thePlayer().sendMessage("§8[§c§8[§cSpigotAPI§8] §8] §e" + plugin.getName() + " §8| §7" + currVersion + "§8 | §b" + info.getVersion() + " §a§l✔");
+                            p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §e" + plugin.getName() + " §8| §7" + currVersion + "§8 | §b" + info.getVersion() + " §a§l✔");
                         }
                     }
                     return true;
@@ -99,6 +99,7 @@ public class PrimeCoreCommand implements CommandExecutor {
                             p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §e" + plugin.getName() + "§7 konnte §cnicht §7herruntergeladen werden: §c" + e.getMessage());
                         }
                     }
+                    p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §7Das Updaten aller Plugins wurde §aabgeschlossen!");
 
                     return true;
                 }else {
