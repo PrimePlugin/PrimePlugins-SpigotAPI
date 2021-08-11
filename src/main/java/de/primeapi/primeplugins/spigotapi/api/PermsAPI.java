@@ -5,7 +5,6 @@ import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLGroup;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLRanking;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLUserPermission;
-import jdk.nashorn.internal.runtime.URIUtils;
 import lombok.Getter;
 
 import java.sql.DatabaseMetaData;
