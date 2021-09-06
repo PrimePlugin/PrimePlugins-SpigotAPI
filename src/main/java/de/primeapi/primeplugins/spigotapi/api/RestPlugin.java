@@ -25,7 +25,13 @@ public class RestPlugin {
         this.plugin = plugin;
         PrimeCore.getInstance().getRestManager().registerPlugin(this);
     }
-
+    /**
+     * @deprecated
+     * This function will no longer be supported, as there are massive security lacks.
+     * Call a custom http request instead.
+     * @param license The License to be checked
+     * @return Weather or not the license is valid
+     */
     public boolean checkLicense(String license){
         setLicense(license);
         try{
