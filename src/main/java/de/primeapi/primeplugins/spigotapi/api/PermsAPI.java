@@ -6,6 +6,7 @@ import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLGroup;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLRanking;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLUserPermission;
 import lombok.Getter;
+import lombok.NonNull;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -51,6 +52,7 @@ public class PermsAPI { //TOOD
 
 
     public DatabaseTask<SQLGroup> getHighestGroup(UUID uuid){
+        if(!online) throw new IllegalStateException("PermsAPI was not loaded");
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             List<SQLRanking> list = SQLRanking.fromUser(uuid).complete();
             if(list.size() == 0){
@@ -61,6 +63,7 @@ public class PermsAPI { //TOOD
     }
 
     public DatabaseTask<List<String>> getPermissions(UUID uuid){
+        if(!online) throw new IllegalStateException("PermsAPI was not loaded");
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             SQLGroup defaultGroup = SQLGroup.fromName("default").complete();
             List<String> list;
@@ -86,7 +89,28 @@ public class PermsAPI { //TOOD
         }));
     }
 
+    /**
+     * Adding a group for a user
+     * @param uuid The UUID of the Player
+     * @param groupName The name of the Group (NOT the displayname)
+     * @param lenght The timeout as UNIX Timestamp. -1 being permanent
+     * @param potency The potency of this. The higher, the more important this role is for the user
+     * @throws IllegalStateException If the PermsAPI is offline
+     * @throws IllegalArgumentException If the groupname was not found
+     * @throws Exception If there was an unknown error while creating the sql record
+     */
+    public void addGroup(@NonNull UUID uuid, @NonNull String groupName, @NonNull Long lenght, @NonNull int potency) throws Exception {
+        if(!online) throw new IllegalStateException("PermsAPI was not loaded");
+
+        SQLGroup sqlGroup = SQLGroup.fromName(groupName).complete();
+        if(sqlGroup == null) throw new IllegalArgumentException("Group was not found");
+
+        SQLRanking ranking = SQLRanking.create(uuid, sqlGroup, lenght, potency).complete();
+        if(ranking == null) throw new Exception("An unknown error accrued while creating sql record");
+    }
+
     public DatabaseTask<Boolean> hasSelfPermission(UUID uuid,String permission){
+        if(!online) throw new IllegalStateException("PermsAPI was not loaded");
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             List<String> list = getPermissions(uuid).complete();
             if(list.contains("*")){
