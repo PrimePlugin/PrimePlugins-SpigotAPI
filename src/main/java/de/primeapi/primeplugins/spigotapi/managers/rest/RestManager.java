@@ -51,11 +51,13 @@ public class RestManager {
             String jsonString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
             return new Gson().fromJson(jsonString, PluginInfo.class);
         }catch (Exception ex){
-            PrimeCore.getInstance().getLogger().log(Level.INFO, "Info-Anfrage für " + plugin + " fehlgeschlagen: " + ex.getMessage());
+            System.out.println("Info-Anfrage für " + plugin + " fehlgeschlagen: " + ex.getMessage());
             return null;
         }
     }
 
+
+    //able to be tested
     public boolean validateLicense(String license, String plugin) {
         try {
             String url = SERVER + "?action=verify&plugin=" + plugin + "&license=" + license;
@@ -65,18 +67,18 @@ public class RestManager {
             if (element.getAsJsonObject().get("code").getAsInt() == 200) {
                 int result = element.getAsJsonObject().get("result").getAsInt();
                 if (result == 1) {
-                    PrimeCore.getInstance().getLogger().log(Level.INFO, "Lizenz für " + plugin + " erfolgreich überprüft");
+                    System.out.println("Lizenz für " + plugin + " erfolgreich überprüft");
                     return true;
                 } else {
-                    PrimeCore.getInstance().getLogger().log(Level.INFO, "Lizenz für " + plugin + " wurde abgelehnt: " + element.getAsJsonObject().get("resultMessage").getAsString());
+                    System.out.println("Lizenz für " + plugin + " wurde abgelehnt: " + element.getAsJsonObject().get("resultMessage").getAsString());
                     return false;
                 }
             } else {
-                PrimeCore.getInstance().getLogger().log(Level.INFO, "Lizenzüberprüfung fehlgeschlagen: " + element.getAsJsonObject().get("message").getAsString());
+                System.out.println("Lizenzüberprüfung fehlgeschlagen: " + element.getAsJsonObject().get("message").getAsString());
                 return false;
             }
         }catch (Exception ex){
-            PrimeCore.getInstance().getLogger().log(Level.INFO, "Lizenzabfrage für " + plugin + " fehlgeschlagen: " + ex.getMessage());
+            System.out.println("Lizenzabfrage für " + plugin + " fehlgeschlagen: " + ex.getMessage());
             return true;
         }
     }
