@@ -3,6 +3,7 @@ package de.primeapi.primeplugins.spigotapi.api;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLGroup;
+import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLGroupPermission;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLRanking;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLUserPermission;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * @author Lukas S. PrimeAPI
@@ -99,7 +101,7 @@ public class PermsAPI { //TOOD
      * @throws IllegalArgumentException If the groupname was not found
      * @throws Exception If there was an unknown error while creating the sql record
      */
-    public void addGroup(@NonNull UUID uuid, @NonNull String groupName, @NonNull Long lenght, @NonNull int potency) throws Exception {
+    public void addGroup(@NonNull UUID uuid, @NonNull String groupName, @NonNull Long lenght, int potency) throws Exception {
         if(!online) throw new IllegalStateException("PermsAPI was not loaded");
 
         SQLGroup sqlGroup = SQLGroup.fromName(groupName).complete();
@@ -107,6 +109,76 @@ public class PermsAPI { //TOOD
 
         SQLRanking ranking = SQLRanking.create(uuid, sqlGroup, lenght, potency).complete();
         if(ranking == null) throw new Exception("An unknown error accrued while creating sql record");
+    }
+
+
+    /**
+     * Adding a permission to a specific player
+     * @param uuid The UUID of the Player
+     * @param permission The plain permission that shall be added
+     * @throws IllegalStateException If the PermsAPI is offline
+     * @throws Exception If there was an unknown error while creating the sql record
+     */
+    public void addPlayerPermission(@NonNull UUID uuid, @NonNull String permission) throws Exception {
+        if(!online) throw new IllegalStateException("PermsAPI was not loaded");
+
+        SQLUserPermission userPermission = SQLUserPermission.create(uuid, permission, false).complete();
+        if(userPermission == null) throw new Exception("An unknown error accrued while creating sql record");
+    }
+
+
+    /**
+     * Adding a permission to a group
+     * @param groupName The name of the group
+     * @param permission The plain permission that shall be added
+     * @throws IllegalStateException If the PermsAPI is offline
+     * @throws IllegalArgumentException If the groupname was not found
+     * @throws Exception If there was an unknown error while creating the sql record
+     */
+    public void addGroupPermission(@NonNull String groupName, @NonNull String permission) throws Exception {
+        if(!online) throw new IllegalStateException("PermsAPI was not loaded");
+
+        SQLGroup sqlGroup = SQLGroup.fromName(groupName).complete();
+        if(sqlGroup == null) throw new IllegalArgumentException("Group was not found");
+
+        SQLGroupPermission userPermission = SQLGroupPermission.create(sqlGroup, permission, false).complete();
+        if(userPermission == null) throw new Exception("An unknown error accrued while creating sql record");
+    }
+
+    /**
+     * Removes a player from a specific group
+     * @param uuid The UUID of the Player
+     * @param groupName The name of the group
+     * @throws IllegalStateException If the PermsAPI is offline
+     * @throws IllegalArgumentException If the groupname was not found
+     */
+    public void removeGroupFromUser(@NonNull UUID uuid, @NonNull String groupName){
+        if(!online) throw new IllegalStateException("PermsAPI was not loaded");
+
+        SQLGroup sqlGroup = SQLGroup.fromName(groupName).complete();
+        if(sqlGroup == null) throw new IllegalArgumentException("Group was not found");
+
+        SQLRanking.fromUser(uuid).submit(
+                sqlRankings ->
+                        sqlRankings
+                                .stream()
+                                .filter(sqlRanking ->
+                                    sqlRanking.getGroup().complete().getId() == sqlGroup.getId()
+                                )
+                                .forEach(
+                                        SQLRanking::delete
+                                )
+        );
+
+    }
+
+    /**
+     * Used to get a List of all Groups a Player is part of
+     * @param uuid The UUID of the Player
+     * @return A {@link DatabaseTask} of a List containing all {@link SQLGroup SQLGroups}
+     */
+    public DatabaseTask<List<SQLGroup>> getGroups(UUID uuid){
+        return SQLRanking.fromUser(uuid).map(sqlRankings -> sqlRankings.stream().map(sqlRanking -> sqlRanking.getGroup().complete()).collect(Collectors.toList()));
     }
 
     public DatabaseTask<Boolean> hasSelfPermission(UUID uuid,String permission){
@@ -126,7 +198,7 @@ public class PermsAPI { //TOOD
             }
 
 
-            String perm[] = permission.toLowerCase().split("\\.");
+            String[] perm = permission.toLowerCase().split("\\.");
             String splitted = perm[0];
             for (int i = 1; i < perm.length; i++) {
                 if(list.contains(splitted + ".*")){
