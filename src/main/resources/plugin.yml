@@ -1,6 +1,6 @@
 name: PrimeCore
 author: PrimeAPI
-version: 1.0.5
+version: 1.0.6
 main: de.primeapi.primeplugins.spigotapi.PrimeCore
 softdepend:
   - PlaceholderAPI
