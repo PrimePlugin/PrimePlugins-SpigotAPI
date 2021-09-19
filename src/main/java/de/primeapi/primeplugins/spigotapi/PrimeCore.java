@@ -16,6 +16,7 @@ import de.primeapi.primeplugins.spigotapi.managers.rest.RestManager;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.ScoreboardManager;
 import de.primeapi.primeplugins.spigotapi.managers.messages.MessageManager;
 import de.primeapi.primeplugins.spigotapi.managers.vault.VaultManager;
+import de.primeapi.primeplugins.spigotapi.managers.versions.VersionManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -53,6 +54,7 @@ public class PrimeCore extends JavaPlugin {
     private RestManager restManager;
     private VaultManager vaultManager;
     private CloudManager cloudManager;
+    private VersionManager versionManager;
 
     @Override
     public void onEnable() {
@@ -64,6 +66,9 @@ public class PrimeCore extends JavaPlugin {
         getLogger().info("Author: PrimeAPI");
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("---------------[ PrimeAPI | core ]---------------");
+
+
+        versionManager = new VersionManager();
 
         messageManager = new MessageManager();
         configManager = new ConfigManager();
