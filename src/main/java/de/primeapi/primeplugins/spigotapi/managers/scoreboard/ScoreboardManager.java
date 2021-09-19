@@ -8,6 +8,9 @@ import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.*;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.BPlayerBoard;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.Board;
+import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.NMS;
+import de.primeapi.primeplugins.spigotapi.managers.versions.MinecraftVersion;
+import de.primeapi.primeplugins.spigotapi.managers.versions.VersionManager;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClan;
 import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import org.bukkit.Bukkit;
@@ -16,6 +19,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -79,7 +84,19 @@ public class ScoreboardManager {
         for (ScoreboradTeam team :
                 teams) {
             Team scoreTeam = sb.registerNewTeam(String.format("%03d", i));
-            scoreTeam.setPrefix(team.getPrefix());
+            if(PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_16)){
+                ChatColor chatColor = ChatColor.getByChar(team.getColor().replace("&", "").replace("§", ""));
+                scoreTeam.setPrefix(team.getPrefix());
+                try {
+                    Method method = scoreTeam.getClass().getMethod("setColor", ChatColor.class);
+                    method.setAccessible(true);
+                    method.invoke(scoreTeam, chatColor);
+                } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                scoreTeam.setPrefix(team.getPrefix() + team.getColor());
+            }
             if(CoreConfig.getInstance().getBoolean("prefix.overrideSuffixClanTags") && ClanAPI.getInstance().isOnline()){
                 PrimePlayer primePlayer = new PrimePlayer(team.getPlayer());
                 SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(primePlayer).complete();

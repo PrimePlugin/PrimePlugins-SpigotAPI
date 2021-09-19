@@ -10,5 +10,6 @@ public class ScoreboradTeam {
     public final Player player;
     public final String prefix;
     public final String suffix;
+    public final String color;
 
 }

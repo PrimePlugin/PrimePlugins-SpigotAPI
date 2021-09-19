@@ -39,7 +39,8 @@ public class CoreConfig extends Config {
             saveAddEntry("scoreboard.update.seconds", 5);
 
             saveAddEntry("prefix.use", true);
-            saveAddEntry("prefix.defaultPrefix", "§7");
+            saveAddEntry("prefix.defaultPrefix", "");
+            saveAddEntry("prefix.defaultColor", "§7");
             saveAddEntry("prefix.defaultSuffix", "");
             saveAddEntry("prefix.overrideSuffixClanTags", true);
             saveAddEntry("prefix.clanTagFormat", " §7[§e%tag%§7]");
