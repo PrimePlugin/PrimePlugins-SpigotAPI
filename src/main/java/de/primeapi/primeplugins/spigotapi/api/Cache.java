@@ -29,7 +29,7 @@ public class Cache<K,V> {
     }
 
     /**
-     * This cashes an Value with a specific Key
+     * This cashes a Value with a specific Key
      * @param key The Key of the Entry
      * @param value The Value
      */
@@ -39,8 +39,8 @@ public class Cache<K,V> {
 
     /**
      * Gets a cached value
-     * @param key The key the value was cahched to (see: {@link Cache#cacheEntry(Object, Object)}
-     * @return Null if the key is not set. Otherwise returns the value;
+     * @param key The key the value was cached to (see: {@link Cache#cacheEntry(Object, Object)}
+     * @return Null if the key is not set. Otherwise, returns the value;
      */
     public V getCachedValue(K key){
         if(!map.containsKey(key)){
@@ -53,5 +53,21 @@ public class Cache<K,V> {
         }else {
             return item.getValue();
         }
+    }
+
+    /**
+     * Removes the cached V prior to timeout
+     * @param key The key which shall be removed
+     */
+    public void unCache(K key){
+        map.remove(key);
+    }
+
+    /**
+     * Removes the cached V prior to timeout
+     * @param key The key which shall be removed
+     */
+    public void remove(K key){
+        map.remove(key);
     }
 }
