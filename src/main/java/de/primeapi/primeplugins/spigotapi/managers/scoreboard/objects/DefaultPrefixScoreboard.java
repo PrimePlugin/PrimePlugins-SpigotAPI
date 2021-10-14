@@ -15,7 +15,8 @@ public class DefaultPrefixScoreboard implements PrefixScoreboardSetting {
         for (Player all : Bukkit.getOnlinePlayers()){
             list.add(new ScoreboradTeam(all,
                     CoreConfig.getInstance().getString("prefix.defaultPrefix"),
-                    CoreConfig.getInstance().getString("prefix.defaultSuffix")
+                    CoreConfig.getInstance().getString("prefix.defaultSuffix"),
+                    CoreConfig.getInstance().getString("prefix.defaultColor")
             ));
         }
         return list;
