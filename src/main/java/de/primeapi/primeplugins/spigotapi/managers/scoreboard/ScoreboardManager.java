@@ -4,15 +4,11 @@ import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
-import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.*;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.BPlayerBoard;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.Board;
-import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.NMS;
 import de.primeapi.primeplugins.spigotapi.managers.versions.MinecraftVersion;
-import de.primeapi.primeplugins.spigotapi.managers.versions.VersionManager;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClan;
-import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -55,6 +51,8 @@ public class ScoreboardManager {
                 (Board.instance().getBoard(p) != null) ?
                         Board.instance().getBoard(p) :
                         Board.instance().createBoard(p, ChatColor.translateAlternateColorCodes('&', settings.getTitle()));
+
+        bPlayerBoard.clear();
 
         List<String> list = settings.apply(p);
         int i = list.size();
