@@ -35,7 +35,7 @@ public class ItemBuilder {
     String skullTexture;
     boolean glowing = false;
     boolean unbreakeble = false;
-    HashMap<Enchantment, Integer> enchantments = new HashMap<>();
+    HashMap<String, Integer> enchantments = new HashMap<>();
 
 
     //builder
@@ -80,7 +80,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addEnchantment(Enchantment enchantment, Integer level){
-        enchantments.put(enchantment,level);
+        enchantments.put(enchantment.getName(),level);
         return this;
     }
 
@@ -160,7 +160,9 @@ public class ItemBuilder {
             itemStack.setItemMeta(skullMeta);
             return itemStack;
         }
-        itemStack.addUnsafeEnchantments(enchantments);
+        enchantments.forEach((s, integer) -> {
+            itemStack.addUnsafeEnchantment(Enchantment.getByName(s), integer);
+        });
         return itemStack;
     }
 
