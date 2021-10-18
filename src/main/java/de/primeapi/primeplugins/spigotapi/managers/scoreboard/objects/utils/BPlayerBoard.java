@@ -35,7 +35,11 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         this.scoreboard = scoreboard;
 
         if(this.scoreboard == null) {
-            this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+            if(player.getScoreboard() == null) {
+                this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+            }else {
+                this.scoreboard = player.getScoreboard();
+            }
         }
 
         this.name = name;

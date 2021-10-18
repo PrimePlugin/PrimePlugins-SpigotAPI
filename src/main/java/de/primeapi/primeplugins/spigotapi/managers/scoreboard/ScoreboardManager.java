@@ -52,9 +52,12 @@ public class ScoreboardManager {
                         Board.instance().getBoard(p) :
                         Board.instance().createBoard(p, ChatColor.translateAlternateColorCodes('&', settings.getTitle()));
 
-        bPlayerBoard.clear();
-
         List<String> list = settings.apply(p);
+
+        if(bPlayerBoard.getLines().size() != list.size()) {
+            bPlayerBoard.clear();
+        }
+
         int i = list.size();
         for (String s :
                 list) {
