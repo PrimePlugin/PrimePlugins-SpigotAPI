@@ -11,15 +11,35 @@ import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import lombok.NonNull;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class PrimePlayer extends SQLPlayer {
 
+
+    private static Set<PrimePlayer> onlinePlayers = new HashSet<>();
+
     final Player p;
 
+    /**
+     * @deprecated use {@link PrimePlayer#fromPlayer(Player)}
+     * @param player
+     */
+    @Deprecated
     public PrimePlayer(Player player) {
         super(player.getUniqueId());
         this.p = player;
+    }
+
+    public static PrimePlayer fromPlayer(Player p){
+        return onlinePlayers
+                .stream()
+                .filter(primePlayer -> primePlayer.getUniqueId().equals(p.getUniqueId()))
+                .findFirst()
+                .orElseGet(() -> new PrimePlayer(p));
     }
 
     public Player getPlayer(){ return p;}

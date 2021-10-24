@@ -33,7 +33,7 @@ public class Cache<K,V> {
      * @param key The Key of the Entry
      * @param value The Value
      */
-    public void cacheEntry(@NonNull K key, @NonNull V value){
+    public void cacheEntry(@NonNull K key, V value){
         map.put(key, new CashedItem<>(value, System.currentTimeMillis() + timeout));
     }
 

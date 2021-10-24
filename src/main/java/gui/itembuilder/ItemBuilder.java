@@ -8,16 +8,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
 @Getter @AllArgsConstructor
 public class ItemBuilder {
 
@@ -36,6 +35,7 @@ public class ItemBuilder {
     String skullTexture;
     boolean glowing = false;
     boolean unbreakeble = false;
+    HashMap<String, Integer> enchantments = new HashMap<>();
 
 
     //builder
@@ -76,6 +76,11 @@ public class ItemBuilder {
         lore.add(s);
 
         this.lore = lore;
+        return this;
+    }
+
+    public ItemBuilder addEnchantment(Enchantment enchantment, Integer level){
+        enchantments.put(enchantment.getName(),level);
         return this;
     }
 
@@ -155,6 +160,9 @@ public class ItemBuilder {
             itemStack.setItemMeta(skullMeta);
             return itemStack;
         }
+        enchantments.forEach((s, integer) -> {
+            itemStack.addUnsafeEnchantment(Enchantment.getByName(s), integer);
+        });
         return itemStack;
     }
 

@@ -24,7 +24,7 @@ public abstract class Config {
     public Config(String name, String pathname){
         this.name = name;
         file = new File(pathname);
-        PrimeCore.getInstance().getConfigManager().generateDirs(pathname);
+        file.getParentFile().mkdirs();
         if(!file.exists()) {
             try {
                 file.createNewFile();
