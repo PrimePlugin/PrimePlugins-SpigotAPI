@@ -2,6 +2,7 @@ package de.primeapi.primeplugins.spigotapi.managers.scoreboard;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
+import de.primeapi.primeplugins.spigotapi.api.NickAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.*;
@@ -99,12 +100,16 @@ public class ScoreboardManager {
                 scoreTeam.setPrefix(team.getPrefix() + team.getColor());
             }
             if(CoreConfig.getInstance().getBoolean("prefix.overrideSuffixClanTags") && ClanAPI.getInstance().isOnline()){
-                PrimePlayer primePlayer = new PrimePlayer(team.getPlayer());
-                SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(primePlayer).complete();
-                if(clan != null) {
-                    scoreTeam.setSuffix(CoreConfig.getInstance().getString("prefix.clanTagFormat").replace("%tag%", clan.getTag().complete()));
-                }else{
+                if(NickAPI.getInstance().isNicked(team.getPlayer())){
                     scoreTeam.setSuffix(team.getSuffix());
+                }else {
+                    PrimePlayer primePlayer = new PrimePlayer(team.getPlayer());
+                    SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(primePlayer).complete();
+                    if (clan != null) {
+                        scoreTeam.setSuffix(CoreConfig.getInstance().getString("prefix.clanTagFormat").replace("%tag%", clan.getTag().complete()));
+                    } else {
+                        scoreTeam.setSuffix(team.getSuffix());
+                    }
                 }
             }else {
                 scoreTeam.setSuffix(team.getSuffix());
