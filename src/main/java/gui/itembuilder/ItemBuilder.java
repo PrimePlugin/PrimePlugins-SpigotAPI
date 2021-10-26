@@ -160,9 +160,11 @@ public class ItemBuilder {
             itemStack.setItemMeta(skullMeta);
             return itemStack;
         }
-        enchantments.forEach((s, integer) -> {
-            itemStack.addUnsafeEnchantment(Enchantment.getByName(s), integer);
-        });
+        if(enchantments != null) {
+            enchantments.forEach((s, integer) -> {
+                itemStack.addUnsafeEnchantment(Enchantment.getByName(s), integer);
+            });
+        }
         return itemStack;
     }
 
