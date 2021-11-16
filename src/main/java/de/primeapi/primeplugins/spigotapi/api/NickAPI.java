@@ -3,12 +3,14 @@ package de.primeapi.primeplugins.spigotapi.api;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.utils.Skin;
+import de.primeapi.primeplugins.spigotapi.events.InvalidListener;
+import de.primeapi.primeplugins.spigotapi.utils.FlatWorldGenerator;
+import de.primeapi.primeplugins.spigotapi.utils.nick.Skin;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
-import org.bukkit.Bukkit;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -16,6 +18,7 @@ import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -26,9 +29,13 @@ public class NickAPI {
     private static NickAPI instance;
     boolean online;
 
+    private  final String nickworldName = "NickWorld";
+
 
 
     private Cache<UUID, Boolean> isNicked = new Cache<>();
+
+    private HashMap<UUID, String> nickedGroup = new HashMap<>();
 
     public NickAPI() {
         instance = this;
@@ -39,7 +46,7 @@ public class NickAPI {
             throwables.printStackTrace();
         }
         if (online) {
-            PrimeCore.getInstance().getLogger().log(Level.INFO, "NickAPI wurde geladen");
+            PrimeCore.getInstance().getLogger().log(Level.INFO, "NickAPI wird geladen...");
             try {
                 PrimeCore.getInstance().getConnection().prepareStatement(
                         "CREATE TABLE IF NOT EXISTS prime_nick_current (" +
@@ -52,6 +59,14 @@ public class NickAPI {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
+            Bukkit.getScheduler().runTaskLater(
+                    PrimeCore.getInstance(),
+                    () -> {
+                        Bukkit.createWorld(WorldCreator.name(NickAPI.getInstance().getNickworldName()).generator(new FlatWorldGenerator()));
+                    },
+                    10*20L
+            );
 
         } else {
             PrimeCore.getInstance().getLogger().log(Level.INFO, "NickAPI wurde NICHT geladen");
@@ -67,10 +82,7 @@ public class NickAPI {
         if(!online) return false;
         Boolean cachedValue = isNicked.getCachedValue(player.getUniqueId());
         if(cachedValue != null){
-            System.out.println("cachedValue + \": \" + cachedValue = " + cachedValue + ": " + cachedValue);
             return cachedValue;
-        }else {
-            System.out.println("notcached");
         }
         boolean b = false;
         try {
@@ -87,20 +99,21 @@ public class NickAPI {
         return b;
     }
 
+
     public void unnickPlayer(Player player) {
         if(!online) throw new IllegalStateException("NickAPI not online!");
         String realname = getRealname(player);
         isNicked.remove(player.getUniqueId());
+        nickedGroup.remove(player.getUniqueId());
         if(realname != null){
             changeNick(player, realname);
             Skin skin = new Skin(getUUIDOffline(realname));
             if (skin.getSkinName() != null) {
-                setSkin(player, skin.getSkinValue(), skin.getSkinSignatur());
+                setSkin(player, skin);
                 Bukkit.getOnlinePlayers().forEach(players -> {
                     players.hidePlayer(player);
                     players.showPlayer(player);
                 });
-                PrimeCore.getInstance().getScoreboardManager().sendTeams();
             } else {
                 throw new IllegalArgumentException("The given nickname is not a valid nickname!");
             }
@@ -110,8 +123,8 @@ public class NickAPI {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            PrimeCore.getInstance().getScoreboardManager().sendTeams();
         }
+        PrimeCore.getInstance().getScoreboardManager().sendTeams();
         isNicked.remove(player.getUniqueId());
     }
 
@@ -133,6 +146,15 @@ public class NickAPI {
         return s;
     }
 
+    public String getNickGroup(Player player){
+        return nickedGroup.getOrDefault(player.getUniqueId(), null);
+    }
+
+
+    public void nickPlayer(Player player, String nickname, String group) {
+        nickedGroup.put(player.getUniqueId(), group);
+        nickPlayer(player, nickname);
+    }
 
 
     /**
@@ -155,15 +177,15 @@ public class NickAPI {
         Skin skin = new Skin(getUUIDOffline(nickname));
         isNicked.remove(player.getUniqueId());
         if (skin.getSkinName() != null) {
-            setSkin(player, skin.getSkinValue(), skin.getSkinSignatur());
+            setSkin(player, skin);
             Bukkit.getOnlinePlayers().forEach(players -> {
                 players.hidePlayer(player);
                 players.showPlayer(player);
             });
-            PrimeCore.getInstance().getScoreboardManager().sendTeams();
         } else {
             throw new IllegalArgumentException("The given nickname is not a valid nickname!");
         }
+        PrimeCore.getInstance().getScoreboardManager().sendTeams();
     }
 
 
@@ -192,14 +214,21 @@ public class NickAPI {
         return Bukkit.getOfflinePlayer(name).getUniqueId().toString().replace("-", "");
     }
 
+    private void setSkin(Player player, Skin skin){
+        setSkin(player, skin.getSkinValue(), skin.getSkinSignatur());
+    }
+
     private void setSkin(Player player, String value, String signature) {
         GameProfile gameProfile = ((CraftPlayer) player).getProfile();
+
         (((CraftPlayer) player).getHandle()).playerConnection.sendPacket(
                 new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER,
                         ((CraftPlayer) player)
                                 .getHandle()));
+
         gameProfile.getProperties().removeAll("textures");
         gameProfile.getProperties().put("textures", new Property("textures", value, signature));
+
         (((CraftPlayer) player).getHandle()).playerConnection.sendPacket(
                 new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
                         ((CraftPlayer) player)
@@ -224,6 +253,9 @@ public class NickAPI {
             (((CraftPlayer) all).getHandle()).playerConnection
                     .sendPacket(new PacketPlayOutNamedEntitySpawn(((CraftPlayer) player).getHandle()));
         }
+        Location location = player.getLocation().clone();
+        player.teleport(Bukkit.getWorld(nickworldName).getSpawnLocation());
+        player.teleport(location);
     }
 
     private void changeNick(Player player, String name) {

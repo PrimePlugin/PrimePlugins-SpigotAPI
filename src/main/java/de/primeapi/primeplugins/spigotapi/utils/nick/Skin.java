@@ -1,4 +1,4 @@
-package de.primeapi.primeplugins.spigotapi.utils;
+package de.primeapi.primeplugins.spigotapi.utils.nick;
 
 import org.bukkit.Bukkit;
 import org.json.simple.JSONArray;
