@@ -254,8 +254,11 @@ public class NickAPI {
                     .sendPacket(new PacketPlayOutNamedEntitySpawn(((CraftPlayer) player).getHandle()));
         }
         Location location = player.getLocation().clone();
-        player.teleport(Bukkit.getWorld(nickworldName).getSpawnLocation());
-        player.teleport(location);
+        World world = Bukkit.getWorld(nickworldName);
+        if(world != null) {
+            player.teleport(world.getSpawnLocation());
+            player.teleport(location);
+        }
     }
 
     private void changeNick(Player player, String name) {
