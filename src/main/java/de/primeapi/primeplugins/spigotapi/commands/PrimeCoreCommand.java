@@ -3,6 +3,7 @@ package de.primeapi.primeplugins.spigotapi.commands;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
+import de.primeapi.primeplugins.spigotapi.api.debugmessage.DebugMessage;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.managers.rest.PluginInfo;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
@@ -29,6 +30,16 @@ public class PrimeCoreCommand implements CommandExecutor {
         }
 
         switch (args[0].toLowerCase()){
+            case "debug": {
+                // /priemcore debug <secret>
+                if(args.length < 2){
+                    p.thePlayer().sendMessage("§7Verwende: §e/primecore debug <Secret>");
+                    return true;
+                }
+                p.thePlayer().sendMessage("§7Sende Daten...");
+                DebugMessage.send(args[1], p.thePlayer());
+                return true;
+            }
             case "reload": {
                 if (args.length < 2) {
                     p.thePlayer().sendMessage("§7Benutze: §e/primecore reload <all/prefix/scoreboard>");

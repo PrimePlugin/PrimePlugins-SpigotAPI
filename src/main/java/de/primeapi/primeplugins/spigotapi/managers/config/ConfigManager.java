@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class ConfigManager {
@@ -26,6 +27,10 @@ public class ConfigManager {
     public void registerConfig(Config config){
         registeredConfigs.add(config);
         PrimeCore.getInstance().getLogger().info("Config '" + config.getName() + "' loaded");
+    }
+
+    public List<File> getAllFiles(){
+       return registeredConfigs.stream().map(Config::getFile).collect(Collectors.toList());
     }
 
     public void generateDirs(String path){
