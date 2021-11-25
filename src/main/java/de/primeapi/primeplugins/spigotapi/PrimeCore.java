@@ -19,6 +19,7 @@ import de.primeapi.primeplugins.spigotapi.managers.vault.VaultManager;
 import de.primeapi.primeplugins.spigotapi.managers.versions.VersionManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -50,6 +51,7 @@ public class PrimeCore extends JavaPlugin {
     private CoinsAPI coinsAPI;
     private BungeeAPI bungeeAPI;
     private FriendsAPI friendsAPI;
+    private NickAPI nickAPI;
     private PermsAPI permsAPI;
     private RestManager restManager;
     private VaultManager vaultManager;
@@ -89,6 +91,7 @@ public class PrimeCore extends JavaPlugin {
         friendsAPI = new FriendsAPI();
         bungeeAPI = new BungeeAPI();
         permsAPI = new PermsAPI();
+        nickAPI = new NickAPI();
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerOutgoingPluginChannel( this, "prime:primemessaging");
@@ -104,6 +107,9 @@ public class PrimeCore extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                getNickAPI().removeFromDatabase(player);
+            }
             getConnection().close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

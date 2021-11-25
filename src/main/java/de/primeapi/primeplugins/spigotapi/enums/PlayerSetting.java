@@ -12,6 +12,8 @@ public enum PlayerSetting {
 
     LOBBY_SAVELOCATION(1),
     LOBBY_HOTBAR_SOUND(1),
+
+    NICK_AUTONICK(0),
     ;
 
 

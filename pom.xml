@@ -6,7 +6,7 @@
 
     <groupId>de.primeapi.primeplugins</groupId>
     <artifactId>SpigotAPI</artifactId>
-    <version>1.0.8_${v}</version>
+    <version>1.0.9_${v}</version>
 
     <build>
         <plugins>
@@ -136,6 +136,15 @@
             <version>1.5</version>
             <scope>compile</scope>
         </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java -->
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>1.4.9</version>
+        </dependency>
+
     </dependencies>
 
 
