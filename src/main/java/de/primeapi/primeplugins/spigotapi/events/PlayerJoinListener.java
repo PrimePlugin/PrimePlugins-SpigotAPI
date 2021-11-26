@@ -1,9 +1,11 @@
 package de.primeapi.primeplugins.spigotapi.events;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
+import de.primeapi.primeplugins.spigotapi.RestCore;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
+import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.managers.rest.RestManager;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
 import org.bukkit.event.EventHandler;
@@ -29,6 +31,13 @@ public class PlayerJoinListener implements Listener {
 
         if(CoreConfig.getInstance().getBoolean("scoreboard.default.applyOnJoin")){
             p.sendScoreboard();
+        }
+
+
+        if(!PrimeCore.getInstance().isMysql()) {
+            for(int i = 0; i < 5; i++) {
+                p.getPlayer().sendMessage("§8[§ePrimeCore§8] §4§lDie MySQL ist nicht verbunden§8! §7Bitte überprüfe deine Daten!");
+            }
         }
 
         if (CoreConfig.getInstance().getBoolean("prefix.use")) {
