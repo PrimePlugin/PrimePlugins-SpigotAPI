@@ -89,6 +89,20 @@ public class CloudManager implements CloudAdapter {
         }
     }
 
+    @Override
+    public String getServerState(String name) {
+        switch (found) {
+            case CLOUDNETV2:
+                return new CloudNetV2().getServerState(name);
+            case CLOUDNETV3:
+                return new CloudNetV3().getServerState(name);
+            case SIMPLECLOUD:
+                return new SimpleCloud().getServerState(name);
+            default:
+                return null;
+        }
+    }
+
     public void sendPlayerToServer(Player player, String server) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

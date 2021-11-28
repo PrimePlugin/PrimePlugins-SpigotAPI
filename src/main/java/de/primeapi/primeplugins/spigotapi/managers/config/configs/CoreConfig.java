@@ -37,6 +37,8 @@ public class CoreConfig extends Config {
             saveAddEntry("scoreboard.default.content", scoreboard);
             saveAddEntry("scoreboard.default.applyOnJoin", true);
             saveAddEntry("scoreboard.update.seconds", 5);
+            saveAddEntry("scoreboard.onlyOnState.use", true);
+            saveAddEntry("scoreboard.onlyOnState.state", "LOBBY");
 
             saveAddEntry("prefix.use", true);
             saveAddEntry("prefix.defaultPrefix", "");
@@ -44,6 +46,8 @@ public class CoreConfig extends Config {
             saveAddEntry("prefix.defaultSuffix", "");
             saveAddEntry("prefix.overrideSuffixClanTags", true);
             saveAddEntry("prefix.clanTagFormat", " §7[§e%tag%§7]");
+            saveAddEntry("prefix.onlyOnState.use", true);
+            saveAddEntry("prefix.onlyOnState.state", "LOBBY");
 
             saveAddEntry("chatformat.use", true);
             saveAddEntry("chatformat.default", "§7%name% §8| §7%message%");

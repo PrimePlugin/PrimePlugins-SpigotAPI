@@ -4,6 +4,7 @@ import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.NickAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
+import de.primeapi.primeplugins.spigotapi.managers.cloud.adapter.CloudAdapter;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.*;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.BPlayerBoard;
@@ -20,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ScoreboardManager {
@@ -41,6 +43,11 @@ public class ScoreboardManager {
 
     public void sendScoreboard(@Nonnull Player p){
         if(!CoreConfig.getInstance().getBoolean("scoreboard.use")) return;
+        if(CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")){
+            if(CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName())){
+                return;
+            }
+        }
         ScoreboardSettings settings;
         if(!customScoreboard.containsKey(p.getUniqueId())){
             settings = defaultSettings;
@@ -69,6 +76,13 @@ public class ScoreboardManager {
 
     public void sendTeams(@Nonnull Player p) {
         if (!CoreConfig.getInstance().getBoolean("prefix.use")) return;
+        if(CoreConfig.getInstance().getBoolean("prefix.onlyOnState.use")){
+            String state = PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName());
+            String isState = CoreConfig.getInstance().getString("prefix.onlyOnState.state");
+            if(!Objects.equals(state, isState)){
+                return;
+            }
+        }
         org.bukkit.scoreboard.Scoreboard sb;
         if (p.getScoreboard() != null) {
             sb = p.getScoreboard();

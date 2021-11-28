@@ -28,4 +28,9 @@ public class SimpleCloud implements CloudAdapter {
     public int getPlayersOnServer(String name) {
         return 0;
     }
+
+    @Override
+    public String getServerState(String name) {
+        return null;
+    }
 }
