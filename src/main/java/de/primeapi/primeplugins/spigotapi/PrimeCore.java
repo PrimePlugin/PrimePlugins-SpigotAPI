@@ -57,6 +57,7 @@ public class PrimeCore extends JavaPlugin {
     private VaultManager vaultManager;
     private CloudManager cloudManager;
     private VersionManager versionManager;
+    private boolean mysql;
 
     @Override
     public void onEnable() {
@@ -146,8 +147,10 @@ public class PrimeCore extends JavaPlugin {
                             "PRIMARY KEY (`id`));"
             ).execute();
             db = Database.from(connection).asynchronous();
+            mysql = true;
             getLogger().log(Level.INFO, "Asynchronous MySQL-Connection established");
         } catch (SQLException throwables) {
+            mysql = false;
             getLogger().info("MySQL-Connection failed: " + throwables.getMessage());
         }
     }
