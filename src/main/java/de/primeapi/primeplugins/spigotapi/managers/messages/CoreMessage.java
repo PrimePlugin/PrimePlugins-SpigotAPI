@@ -27,6 +27,9 @@ public enum CoreMessage {
 
     CLANPLACEHOLDER_NOCLAN("Kein Clan", false),
 
+    ACCEPTGUI_ACCEPT("§aAkzeptieren", false),
+    ACCEPTGUI_DECLINE("§cAbbrechen", false),
+
     PLACEHOLDER("DO NOT TOUCH", false);
 
     String path;
