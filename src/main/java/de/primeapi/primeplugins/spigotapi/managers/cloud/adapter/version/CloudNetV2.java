@@ -40,4 +40,10 @@ public class CloudNetV2 implements CloudAdapter {
         if(info == null) return -1;
         return info.getOnlineCount();
     }
+
+    @Override
+    public String getServerState(String name) {
+        ServerInfo info = CloudAPI.getInstance().getServerInfo(name);
+        return info.getServerState().toString();
+    }
 }

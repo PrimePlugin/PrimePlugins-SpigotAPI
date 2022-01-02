@@ -15,4 +15,6 @@ public interface CloudAdapter {
     List<String> getAllLobbies(String name);
 
     int getPlayersOnServer(String name);
+
+    String getServerState(String name);
 }

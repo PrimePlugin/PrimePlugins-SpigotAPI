@@ -1,6 +1,8 @@
 package de.primeapi.primeplugins.spigotapi.managers.cloud.adapter.version;
 
 import de.dytanic.cloudnet.driver.CloudNetDriver;
+import de.dytanic.cloudnet.driver.service.ServiceInfoSnapshot;
+import de.dytanic.cloudnet.ext.bridge.BridgeServiceProperty;
 import de.dytanic.cloudnet.ext.bridge.ServiceInfoSnapshotUtil;
 import de.primeapi.primeplugins.spigotapi.managers.cloud.adapter.CloudAdapter;
 
@@ -33,4 +35,9 @@ public class CloudNetV3 implements CloudAdapter {
     public int getPlayersOnServer(String name) {
         return ServiceInfoSnapshotUtil.getOnlineCount(CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServiceByName(name));
     }
+
+    public String getServerState(String name){
+        return CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServiceByName(name).getProperty(BridgeServiceProperty.STATE).orElse(null);
+    }
+
 }

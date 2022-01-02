@@ -57,6 +57,7 @@ public class PrimeCore extends JavaPlugin {
     private VaultManager vaultManager;
     private CloudManager cloudManager;
     private VersionManager versionManager;
+    private boolean mysql;
 
     @Override
     public void onEnable() {
@@ -75,7 +76,15 @@ public class PrimeCore extends JavaPlugin {
         messageManager = new MessageManager();
         configManager = new ConfigManager();
         registerConfigs();
+        getCommand("primecore").setExecutor(new PrimeCoreCommand());
+        getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
         initSql();
+        restManager = new RestManager();
+        restManager.registerPlugin(new RestCore(this));
+        if(!mysql){
+            Bukkit.getPluginManager().registerEvents(new InvalidListener("§4§lFehler: §cDie MySQL Verbindung ist Fehlerhaft!"), this);
+            return;
+        }
         commandsManager = new CommandsManager();
         cloudNetAdapter = new CloudNetAdapter();
         clanAPI = new ClanAPI();
@@ -83,9 +92,6 @@ public class PrimeCore extends JavaPlugin {
         scoreboardManager = new ScoreboardManager();
         chatManager = new ChatManager();
 
-
-        getCommand("primecore").setExecutor(new PrimeCoreCommand());
-        getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
 
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
@@ -96,11 +102,9 @@ public class PrimeCore extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerOutgoingPluginChannel( this, "prime:primemessaging");
 
-        restManager = new RestManager();
         vaultManager = new VaultManager();
         cloudManager = new CloudManager();
 
-        restManager.registerPlugin(new RestCore(this));
         registerEvents();
     }
 
@@ -146,8 +150,10 @@ public class PrimeCore extends JavaPlugin {
                             "PRIMARY KEY (`id`));"
             ).execute();
             db = Database.from(connection).asynchronous();
+            mysql = true;
             getLogger().log(Level.INFO, "Asynchronous MySQL-Connection established");
         } catch (SQLException throwables) {
+            mysql = false;
             getLogger().info("MySQL-Connection failed: " + throwables.getMessage());
         }
     }
