@@ -42,12 +42,11 @@ public class ScoreboardManager {
 
     public void sendScoreboard(@Nonnull Player p) {
         if (!CoreConfig.getInstance().getBoolean("scoreboard.use")) return;
+        if (PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_17)) return;
         try {
             if (CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")) {
-                if (!PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_17)) {
-                    if (CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName())) {
-                        return;
-                    }
+                if (CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName())) {
+                    return;
                 }
             }
         } catch (Exception ignored) {
@@ -80,7 +79,7 @@ public class ScoreboardManager {
 
     public void sendTeams(@Nonnull Player p) {
         if (!CoreConfig.getInstance().getBoolean("prefix.use")) return;
-        if (CoreConfig.getInstance().getBoolean("prefix.onlyOnState.use")) {
+        if (CoreConfig.getInstance().getBoolean("prefix.onlyOnState.use") && !PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_17)) {
             String state = PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName());
             String isState = CoreConfig.getInstance().getString("prefix.onlyOnState.state");
             if (!Objects.equals(state, isState)) {
