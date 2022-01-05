@@ -12,19 +12,13 @@ import java.io.DataOutputStream;
  * created on 14.05.2021
  * crated for PrimePlugins
  */
-@Getter @Setter
+@Getter
+@Setter
 public class PluginMessage {
 
     String channel;
     String subChannel;
     String[] data;
-
-    public static PluginMessage build(String channel, String subChannel, String... data){
-        return new PluginMessage(channel, subChannel, data);
-    }
-    public static PluginMessage build(PluginCommand command, String... data){
-        return new PluginMessage("prime:primemessaging", command.toString(), data);
-    }
 
     private PluginMessage(String channel, String subChannel, String[] data) {
         this.channel = channel;
@@ -32,7 +26,15 @@ public class PluginMessage {
         this.data = data;
     }
 
-    public void send(){
+    public static PluginMessage build(String channel, String subChannel, String... data) {
+        return new PluginMessage(channel, subChannel, data);
+    }
+
+    public static PluginMessage build(PluginCommand command, String... data) {
+        return new PluginMessage("prime:primemessaging", command.toString(), data);
+    }
+
+    public void send() {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         try {

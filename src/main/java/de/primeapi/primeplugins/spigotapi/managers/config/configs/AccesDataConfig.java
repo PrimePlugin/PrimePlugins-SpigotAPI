@@ -6,13 +6,14 @@ import lombok.SneakyThrows;
 public class AccesDataConfig extends Config {
 
     private static AccesDataConfig instance;
-    public static AccesDataConfig getInstance() {
-        return instance;
-    }
 
     public AccesDataConfig() {
         super("Access data", "plugins/primeplugins/config.yml");
         instance = this;
+    }
+
+    public static AccesDataConfig getInstance() {
+        return instance;
     }
 
     @SneakyThrows

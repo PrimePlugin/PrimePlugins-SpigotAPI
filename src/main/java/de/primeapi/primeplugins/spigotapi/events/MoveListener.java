@@ -11,8 +11,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.*;
-import java.util.logging.Level;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Lukas S. PrimeAPI
@@ -21,15 +23,15 @@ import java.util.logging.Level;
  */
 public class MoveListener implements Listener {
 
-    boolean active = false;
     public static HashMap<UUID, Long> lastMove = new HashMap<>();
-    private Set<UUID> blocked = new HashSet<>();
+    boolean active = false;
     int sec;
     int delay;
+    private final Set<UUID> blocked = new HashSet<>();
 
-    public MoveListener(){
+    public MoveListener() {
         active = (BungeeAPI.getInstance().isOnline() && CoreConfig.getInstance().getBoolean("autoafk.use"));
-        if(active) {
+        if (active) {
             sec = CoreConfig.getInstance().getInt("autoafk.detect.seconds");
             sec = CoreConfig.getInstance().getInt("autoafk.detect.delay");
             runCheck();
@@ -37,11 +39,11 @@ public class MoveListener implements Listener {
     }
 
     @EventHandler
-    public void onMove(PlayerMoveEvent e){
-        if(active && !blocked.contains(e.getPlayer().getUniqueId())){
+    public void onMove(PlayerMoveEvent e) {
+        if (active && !blocked.contains(e.getPlayer().getUniqueId())) {
             blocked.add(e.getPlayer().getUniqueId());
             OnlineStats.getAFK(e.getPlayer().getUniqueId()).submit(aBoolean -> {
-                if(aBoolean){
+                if (aBoolean) {
                     OnlineStats.setAFK(e.getPlayer().getUniqueId(), false);
                     e.getPlayer().sendMessage(CoreMessage.AFK_OFF.getContent());
                 }
@@ -51,17 +53,17 @@ public class MoveListener implements Listener {
         }
     }
 
-    private void runCheck(){
+    private void runCheck() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(PrimeCore.getInstance(), () -> {
             try {
                 HashMap<UUID, Long> clone = new HashMap<>(lastMove);
                 clone.forEach((uuid, aLong) -> {
                     Player target = Bukkit.getPlayer(uuid);
-                    if(target == null){
+                    if (target == null) {
                         lastMove.remove(uuid);
                         return;
                     }
-                    if(aLong + (sec * 1000L) <= System.currentTimeMillis()){
+                    if (aLong + (sec * 1000L) <= System.currentTimeMillis()) {
                         OnlineStats.setAFK(target.getUniqueId(), true);
                         target.sendMessage(CoreMessage.AFK_ON.getContent());
                         lastMove.remove(uuid);

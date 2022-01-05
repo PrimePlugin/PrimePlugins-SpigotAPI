@@ -11,11 +11,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class PlayerChatListener implements Listener {
 
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent e){
+    public void onPlayerChat(AsyncPlayerChatEvent e) {
         PrimePlayer p = new PrimePlayer(e.getPlayer());
-        if(CoreConfig.getInstance().getBoolean("chatformat.use")){
+        if (CoreConfig.getInstance().getBoolean("chatformat.use")) {
             String s = e.getMessage();
-            if(p.hasPermission("chat.color")) {
+            if (p.hasPermission("chat.color")) {
                 s = ChatColor.translateAlternateColorCodes('&', s);
             }
             e.setFormat(PrimeCore.getInstance().getChatManager().format(p, s));

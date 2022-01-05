@@ -4,9 +4,7 @@ import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.api.debugmessage.DebugMessage;
-import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.managers.rest.PluginInfo;
-import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,21 +16,21 @@ import java.net.URISyntaxException;
 public class PrimeCoreCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-        if(!(commandSender instanceof Player)) {
+        if (!(commandSender instanceof Player)) {
             return true;
         }
         PrimePlayer p = new PrimePlayer((Player) commandSender);
-        if(args.length == 0){
+        if (args.length == 0) {
             p.thePlayer().sendMessage("PrimeCore v" + PrimeCore.getInstance().getDescription().getVersion() + " by PrimeAPI");
             p.thePlayer().sendMessage("Website: primeapi.de");
             p.thePlayer().sendMessage("Verwendung: /primecore <reload>");
             return true;
         }
 
-        switch (args[0].toLowerCase()){
+        switch (args[0].toLowerCase()) {
             case "debug": {
                 // /priemcore debug <secret>
-                if(args.length < 2){
+                if (args.length < 2) {
                     p.thePlayer().sendMessage("§7Verwende: §e/primecore debug <Secret>");
                     return true;
                 }
@@ -47,27 +45,24 @@ public class PrimeCoreCommand implements CommandExecutor {
                 }
 
                 switch (args[1].toLowerCase()) {
-                    case "scoreboard":
-                    {
-                        if(!p.checkPermission("primecore.reload.scoreboard")){
+                    case "scoreboard": {
+                        if (!p.checkPermission("primecore.reload.scoreboard")) {
                             return true;
                         }
                         PrimeCore.getInstance().getScoreboardManager().sendScoreboard();
                         p.thePlayer().sendMessage("§aErfolgreich");
                         return true;
                     }
-                    case "prefix":
-                    {
-                        if(!p.checkPermission("primecore.reload.prefix")){
+                    case "prefix": {
+                        if (!p.checkPermission("primecore.reload.prefix")) {
                             return true;
                         }
                         PrimeCore.getInstance().getScoreboardManager().sendTeams();
                         p.thePlayer().sendMessage("§aErfolgreich");
                         return true;
                     }
-                    case "all":
-                    {
-                        if(!p.checkPermission("primecore.reload.all")){
+                    case "all": {
+                        if (!p.checkPermission("primecore.reload.all")) {
                             return true;
                         }
                         PrimeCore.getInstance().getScoreboardManager().sendScoreboard();
@@ -80,8 +75,8 @@ public class PrimeCoreCommand implements CommandExecutor {
                         return true;
                 }
             }
-            case "update":{
-                if(!p.checkPermission("primeplugins.update")){
+            case "update": {
+                if (!p.checkPermission("primeplugins.update")) {
                     return true;
                 }
                 if (args.length < 2) {
@@ -90,15 +85,15 @@ public class PrimeCoreCommand implements CommandExecutor {
                     for (RestPlugin plugin : PrimeCore.getInstance().getRestManager().getPlugins()) {
                         PluginInfo info = plugin.getPluginInfo();
                         String currVersion = plugin.getPlugin().getDescription().getVersion();
-                        if(info.isNeverVersion(currVersion)){
+                        if (info.isNeverVersion(currVersion)) {
                             p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §e" + plugin.getName() + " §8| §7" + currVersion + "§8 | §b" + info.getVersion() + " §c§l✖");
-                        }else {
+                        } else {
                             p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §e" + plugin.getName() + " §8| §7" + currVersion + "§8 | §b" + info.getVersion() + " §a§l✔");
                         }
                     }
                     return true;
                 }
-                if(args[1].equalsIgnoreCase("all")){
+                if (args[1].equalsIgnoreCase("all")) {
                     for (RestPlugin plugin : PrimeCore.getInstance().getRestManager().getPlugins()) {
                         p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §7Installiere §e" + plugin.getName() + "§7...");
                         try {
@@ -113,7 +108,7 @@ public class PrimeCoreCommand implements CommandExecutor {
                     p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §7Das Updaten aller Plugins wurde §aabgeschlossen!");
 
                     return true;
-                }else {
+                } else {
                     PrimeCore.getInstance().getRestManager().getPlugins().stream().filter(plugin -> plugin.getName().equalsIgnoreCase(args[1]))
                             .forEach(plugin -> {
                                 p.thePlayer().sendMessage("§8[§cSpigotAPI§8] §7Installiere §e" + plugin.getName() + "§7...");
@@ -129,8 +124,6 @@ public class PrimeCoreCommand implements CommandExecutor {
                 }
             }
         }
-
-
 
 
         return true;

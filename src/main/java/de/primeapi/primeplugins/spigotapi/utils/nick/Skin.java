@@ -56,7 +56,7 @@ public class Skin {
                 }
             }
         } catch (Exception e) {
-            ; // Failed to load skin
+            // Failed to load skin
         }
     }
 

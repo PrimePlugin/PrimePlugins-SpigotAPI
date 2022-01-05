@@ -8,14 +8,16 @@ import java.util.List;
 public class CoreConfig extends Config {
 
     private static CoreConfig instance;
-    public static CoreConfig getInstance() {
-        return instance;
-    }
 
     public CoreConfig() {
         super("Core-Config", "plugins/primeplugins/core/config.yml");
         instance = this;
     }
+
+    public static CoreConfig getInstance() {
+        return instance;
+    }
+
     @Override
     public void loadContent() {
         saveAddEntry("settings.coins.startAmount", 1000);
@@ -59,8 +61,8 @@ public class CoreConfig extends Config {
             saveAddEntry("vault.permissions", true);
             saveAddEntry("vault.coins", true);
 
-            saveAddEntry("clanplaceholder.formattedTag.format" , "§8[§e%tag%§8]");
-            saveAddEntry("clanplaceholder.formattedTag.noClan" , "");
+            saveAddEntry("clanplaceholder.formattedTag.format", "§8[§e%tag%§8]");
+            saveAddEntry("clanplaceholder.formattedTag.noClan", "");
         }
 
     }

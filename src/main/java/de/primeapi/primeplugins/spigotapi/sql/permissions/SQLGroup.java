@@ -158,10 +158,10 @@ public class SQLGroup {
                 }
                 return null;
             }
-            if(group.getName().complete().equalsIgnoreCase(name)){
+            if (group.getName().complete().equalsIgnoreCase(name)) {
                 if (!name.equals("default")) {
                     return SQLGroup.fromName("default").complete();
-                }else{
+                } else {
                     return null;
                 }
             }

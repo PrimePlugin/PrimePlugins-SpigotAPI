@@ -2,7 +2,6 @@ package de.primeapi.primeplugins.spigotapi.managers.commands;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +12,10 @@ public class CommandsManager {
 
     public ArrayList<Command> registeredCommands = new ArrayList<>();
 
-    public CommandsManager(){
+    public CommandsManager() {
         File file = new File("plugins/primeplugins/core/commands.yml");
         PrimeCore.getInstance().getConfigManager().generateDirs("plugins/primeplugins/core/commands.yml");
-        if(!file.exists()) {
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -29,26 +28,26 @@ public class CommandsManager {
         String deactive = "";
         int deactiveCount = 0;
 
-        for(Command c : Command.values()){
+        for (Command c : Command.values()) {
             boolean b;
 
-            if(cfg.contains("commands." + c.getName())) {
+            if (cfg.contains("commands." + c.getName())) {
                 b = cfg.getBoolean("commands." + c.getName());
-            }else{
+            } else {
                 b = true;
                 PrimeCore.getInstance().getLogger().info("Command '" + c.getName() + "' wurde eingetragen!");
                 cfg.set("commands." + c.getName(), true);
             }
 
-            if(b){
+            if (b) {
                 PrimeCore.getInstance().getCommand(c.getName()).setExecutor(c.getCommand());
-                if(c.getCompleter() != null){
+                if (c.getCompleter() != null) {
                     PrimeCore.getInstance().getCommand(c.getName()).setTabCompleter(c.getCompleter());
                 }
                 registeredCommands.add(c);
                 active += c.getName() + ", ";
                 activeCount++;
-            }else {
+            } else {
                 deactive += c.getName() + ", ";
                 deactiveCount++;
             }

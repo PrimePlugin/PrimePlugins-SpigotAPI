@@ -12,8 +12,12 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor @Getter @Setter
+@AllArgsConstructor
+@Getter
+@Setter
 public class PrimePluginInfo {
+    private static ArrayList<CompletableFuture<PrimePluginInfo>> registeredPlugins;
+
     static {
         registeredPlugins = new ArrayList<>();
         registerPlugin(
@@ -30,20 +34,17 @@ public class PrimePluginInfo {
         );
     }
 
-    private static ArrayList<CompletableFuture<PrimePluginInfo>> registeredPlugins;
-
-    public static void registerPlugin(CompletableFuture<PrimePluginInfo> plugin){
-        registeredPlugins.add(plugin);
-    }
-
-    public static List<PrimePluginInfo> getPlugins(){
-        return registeredPlugins.stream().map(CompletableFuture::join).collect(Collectors.toList());
-    }
-
-
     String name;
     String license;
     String version;
     HashMap<String, Object> properties;
+
+    public static void registerPlugin(CompletableFuture<PrimePluginInfo> plugin) {
+        registeredPlugins.add(plugin);
+    }
+
+    public static List<PrimePluginInfo> getPlugins() {
+        return registeredPlugins.stream().map(CompletableFuture::join).collect(Collectors.toList());
+    }
 
 }

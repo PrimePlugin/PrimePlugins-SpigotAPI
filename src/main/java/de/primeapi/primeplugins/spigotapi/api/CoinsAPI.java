@@ -1,14 +1,10 @@
 package de.primeapi.primeplugins.spigotapi.api;
 
-import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
 import lombok.Getter;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.util.UUID;
-import java.util.logging.Level;
 
 /**
  * @author Lukas S. PrimeAPI
@@ -30,15 +26,15 @@ public class CoinsAPI {
         return instance;
     }
 
-    public void setCoins(UUID uuid, int coins){
+    public void setCoins(UUID uuid, int coins) {
         new SQLPlayer(uuid).setCoins(coins);
     }
 
-    public void addCoins(UUID uuid, int coins){
+    public void addCoins(UUID uuid, int coins) {
         new SQLPlayer(uuid).addCoins(coins);
     }
 
-    public DatabaseTask<Integer> getCoins(UUID uuid){
+    public DatabaseTask<Integer> getCoins(UUID uuid) {
         return new SQLPlayer(uuid).retrieveCoins();
     }
 

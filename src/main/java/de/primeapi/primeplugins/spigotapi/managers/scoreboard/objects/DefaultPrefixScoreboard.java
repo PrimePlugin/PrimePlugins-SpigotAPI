@@ -12,7 +12,7 @@ public class DefaultPrefixScoreboard implements PrefixScoreboardSetting {
     @Override
     public List<ScoreboradTeam> getTeams(Player p) {
         List<ScoreboradTeam> list = new ArrayList<>();
-        for (Player all : Bukkit.getOnlinePlayers()){
+        for (Player all : Bukkit.getOnlinePlayers()) {
             list.add(new ScoreboradTeam(all,
                     CoreConfig.getInstance().getString("prefix.defaultPrefix"),
                     CoreConfig.getInstance().getString("prefix.defaultSuffix"),

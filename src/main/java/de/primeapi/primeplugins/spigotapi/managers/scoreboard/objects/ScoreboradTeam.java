@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 
-@RequiredArgsConstructor @Getter
+@RequiredArgsConstructor
+@Getter
 public class ScoreboradTeam {
 
     public final Player player;

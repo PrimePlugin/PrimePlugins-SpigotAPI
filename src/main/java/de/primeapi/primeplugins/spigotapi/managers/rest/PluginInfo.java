@@ -9,7 +9,9 @@ import lombok.Setter;
  * created on 26.05.2021
  * crated for PrimePlugins
  */
-@Getter @Setter @AllArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public class PluginInfo {
     int code;
     String message;
@@ -20,11 +22,11 @@ public class PluginInfo {
     String updateMessage;
     Long updateTime;
 
-    public boolean isNeverVersion(String olderVersion){
+    public boolean isNeverVersion(String olderVersion) {
         String[] curr = olderVersion.split("\\.");
         String[] neww = getVersion().split("\\.");
         for (int i = 0; i < curr.length; i++) {
-            if(neww.length > i) {
+            if (neww.length > i) {
                 int oldI = Integer.parseInt(curr[i]);
                 int newI = Integer.parseInt(neww[i]);
                 if (newI > oldI) {

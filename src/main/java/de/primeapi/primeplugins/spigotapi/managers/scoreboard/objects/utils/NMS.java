@@ -13,25 +13,20 @@ import java.util.Map;
 public class NMS {
 
 
-    private static String packageName;
-    private static Version version;
-
     public static final Field PLAYER_SCORES;
-
     public static final Constructor<?> PACKET_SCORE_REMOVE;
     public static final Constructor<?> PACKET_SCORE;
-
     public static final Object ENUM_SCORE_ACTION_CHANGE;
     public static final Object ENUM_SCORE_ACTION_REMOVE;
-
     public static final Constructor<?> SB_SCORE;
     public static final Method SB_SCORE_SET;
-
     public static final Constructor<?> PACKET_OBJ;
     public static final Constructor<?> PACKET_DISPLAY;
-
     public static final Field PLAYER_CONNECTION;
     public static final Method SEND_PACKET;
+    private static final String packageName;
+    private static final Version version;
+    private static final Map<Class<?>, Method> handles = new HashMap<>();
 
     static {
         String name = Bukkit.getServer().getClass().getPackage().getName();
@@ -81,7 +76,7 @@ public class NMS {
 
             packetObj = packetObjClass.getConstructor(objClass, int.class);
 
-            switch(version.getMajor()) {
+            switch (version.getMajor()) {
                 case "1.7":
                     packetScore = packetScoreClass.getConstructor(scoreClass, int.class);
                     break;
@@ -106,7 +101,7 @@ public class NMS {
 
             playerConnection = playerClass.getField("playerConnection");
             sendPacket = playerConnectionClass.getMethod("sendPacket", packetClass);
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
 
         PLAYER_SCORES = playerScores;
@@ -134,21 +129,20 @@ public class NMS {
     public static Class<?> getClass(String name) {
         try {
             return Class.forName(packageName + "." + name);
-        } catch(ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             return null;
         }
     }
 
-    private static Map<Class<?>, Method> handles = new HashMap<>();
     public static Object getHandle(Object obj) throws NoSuchMethodException,
             InvocationTargetException, IllegalAccessException {
 
         Class<?> clazz = obj.getClass();
 
-        if(!handles.containsKey(clazz)) {
+        if (!handles.containsKey(clazz)) {
             Method method = clazz.getDeclaredMethod("getHandle");
 
-            if(!method.isAccessible())
+            if (!method.isAccessible())
                 method.setAccessible(true);
 
             handles.put(clazz, method);
@@ -158,21 +152,21 @@ public class NMS {
     }
 
     public static void sendPacket(Object packet, Player... players) {
-        for(Player p : players) {
+        for (Player p : players) {
             try {
                 Object playerConnection = PLAYER_CONNECTION.get(getHandle(p));
                 SEND_PACKET.invoke(playerConnection, packet);
-            } catch(IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             }
         }
     }
 
     public static class Version {
 
-        private String name;
+        private final String name;
 
-        private String major;
-        private String minor;
+        private final String major;
+        private final String minor;
 
         Version(String name) {
             this.name = name;
@@ -183,10 +177,17 @@ public class NMS {
             this.minor = splitted[2].substring(1);
         }
 
-        public String getName() { return name; }
+        public String getName() {
+            return name;
+        }
 
-        public String getMajor() { return major; }
-        public String getMinor() { return minor; }
+        public String getMajor() {
+            return major;
+        }
+
+        public String getMinor() {
+            return minor;
+        }
 
     }
 

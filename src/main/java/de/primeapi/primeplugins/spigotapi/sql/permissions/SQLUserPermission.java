@@ -20,128 +20,129 @@ public class SQLUserPermission {
     public final int id;
 
 
-    public static DatabaseTask<List<SQLUserPermission>> fromUser(UUID uuid){
+    public static DatabaseTask<List<SQLUserPermission>> fromUser(UUID uuid) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        List<SQLUserPermission> list = new ArrayList<>();
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_userpermissions WHERE uuid = ?");
-            st.setString(1, uuid.toString());
-            ResultSet rs = st.executeQuery();
-            while (rs.next()){
-                list.add(new SQLUserPermission((rs.getInt("id"))));
+            List<SQLUserPermission> list = new ArrayList<>();
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_userpermissions WHERE uuid = ?");
+                st.setString(1, uuid.toString());
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    list.add(new SQLUserPermission((rs.getInt("id"))));
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return list;
+            return list;
         }));
     }
-    public static DatabaseTask<SQLUserPermission> create(UUID uuid, String permission, boolean negativ){
+
+    public static DatabaseTask<SQLUserPermission> create(UUID uuid, String permission, boolean negativ) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        SQLUserPermission perm = null;
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("INSERT INTO prime_perms_userpermissions values (id, ?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            st.setString(1, uuid.toString());
-            st.setString(2, permission.toLowerCase());
-            st.setBoolean(3, negativ);
-            st.executeUpdate();
-            ResultSet rs = st.getGeneratedKeys();
-            if(rs.next()){
-                perm = new SQLUserPermission(rs.getInt(1));
+            SQLUserPermission perm = null;
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("INSERT INTO prime_perms_userpermissions values (id, ?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                st.setString(1, uuid.toString());
+                st.setString(2, permission.toLowerCase());
+                st.setBoolean(3, negativ);
+                st.executeUpdate();
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    perm = new SQLUserPermission(rs.getInt(1));
+                }
+                rs.close();
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                return null;
             }
-            rs.close();
-            st.close();;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
-        return perm;
+            return perm;
         }));
     }
 
-    public static DatabaseTask<Boolean> deletePermission(UUID uuid, String permission){
+    public static DatabaseTask<Boolean> deletePermission(UUID uuid, String permission) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        boolean b = false;
-        for (SQLUserPermission userPermission : fromUser(uuid).complete()){
-            if(userPermission.getPermission().complete().equalsIgnoreCase(permission)){
-                userPermission.delete();
-                b = true;
+            boolean b = false;
+            for (SQLUserPermission userPermission : fromUser(uuid).complete()) {
+                if (userPermission.getPermission().complete().equalsIgnoreCase(permission)) {
+                    userPermission.delete();
+                    b = true;
+                }
             }
-        }
-        return b;
+            return b;
         }));
     }
 
 
-    public DatabaseTask<SQLPlayer> getSQLPlayer(){
+    public DatabaseTask<SQLPlayer> getSQLPlayer() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        return new SQLPlayer(getUUID().complete());
+            return new SQLPlayer(getUUID().complete());
         }));
     }
 
 
-    public DatabaseTask<UUID> getUUID(){
+    public DatabaseTask<UUID> getUUID() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        UUID uuid = null;
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_userpermissions WHERE id = ?");
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()){
-               uuid = UUID.fromString(rs.getString("uuid"));
+            UUID uuid = null;
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_userpermissions WHERE id = ?");
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    uuid = UUID.fromString(rs.getString("uuid"));
+                }
+                rs.close();
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-            rs.close();
-            st.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return uuid;
+            return uuid;
         }));
     }
 
-    public DatabaseTask<String> getPermission(){
+    public DatabaseTask<String> getPermission() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        String s = null;
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_userpermissions WHERE id = ?");
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()){
-                s = rs.getString("permission");
+            String s = null;
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_userpermissions WHERE id = ?");
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    s = rs.getString("permission");
+                }
+                rs.close();
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-            rs.close();
-            st.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
-        return s;
+            return s;
         }));
     }
 
 
-    public DatabaseTask<Boolean> isNegative(){
+    public DatabaseTask<Boolean> isNegative() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        Boolean b = null;
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_userpermissions WHERE id = ?");
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()){
-                int i = rs.getInt("negative");
-                b = i == 1;
+            Boolean b = null;
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_userpermissions WHERE id = ?");
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    int i = rs.getInt("negative");
+                    b = i == 1;
+                }
+                rs.close();
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-            rs.close();
-            st.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
-        return b;
+            return b;
         }));
     }
 
-    public void delete(){
+    public void delete() {
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("DELETE FROM prime_perms_userpermissions WHERE id =?");

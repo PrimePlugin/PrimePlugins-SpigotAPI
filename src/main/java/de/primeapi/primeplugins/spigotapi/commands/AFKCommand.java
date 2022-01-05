@@ -17,12 +17,12 @@ import org.bukkit.entity.Player;
 public class AFKCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-        if(!(commandSender instanceof Player)) {
+        if (!(commandSender instanceof Player)) {
             return false;
         }
         PrimePlayer p = new PrimePlayer((Player) commandSender);
 
-        if(!BungeeAPI.getInstance().isOnline()){
+        if (!BungeeAPI.getInstance().isOnline()) {
             p.thePlayer().sendMessage("§cDiese Funktion ist nur mit dem BungeeSystem kompatibel!");
             return true;
         }

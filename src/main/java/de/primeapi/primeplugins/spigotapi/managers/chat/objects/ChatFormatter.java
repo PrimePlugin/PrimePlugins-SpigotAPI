@@ -1,7 +1,6 @@
 package de.primeapi.primeplugins.spigotapi.managers.chat.objects;
 
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
-import lombok.Getter;
 
 public interface ChatFormatter {
 

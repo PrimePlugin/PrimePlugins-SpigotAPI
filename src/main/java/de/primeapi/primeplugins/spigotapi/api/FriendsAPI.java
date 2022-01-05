@@ -65,6 +65,7 @@ public class FriendsAPI {
      * <br>
      * You have to call {@link FriendsAPI#endFriendship(SQLPlayer, SQLPlayer) FriendsAPI#endFriendship(player2, player1)} too in order to
      * remove this friendship completely.
+     *
      * @param player1 First Player
      * @param player2 Second Player
      */
@@ -79,10 +80,10 @@ public class FriendsAPI {
     /**
      * @param player1 The first {@link SQLPlayer}
      * @param player2 The friend player1 as {@link SQLPlayer}
-     * @param time The Time as Unix timestamp as the creation time of the friendship
+     * @param time    The Time as Unix timestamp as the creation time of the friendship
      * @return The created {@link SQLFriendEntry}
      */
-    public DatabaseTask<SQLFriendEntry> createFriendship(SQLPlayer player1, SQLPlayer player2, Long time){
+    public DatabaseTask<SQLFriendEntry> createFriendship(SQLPlayer player1, SQLPlayer player2, Long time) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             if (!online) return null;
             return SQLFriendEntry.create(player1, player2, time).complete();
@@ -94,7 +95,7 @@ public class FriendsAPI {
      * @param player {@link SQLPlayer}
      * @return A List of {@link SQLFriendRequest} of the player
      */
-    public DatabaseTask<List<SQLFriendRequest>> getRequestsFromPlayer(SQLPlayer player){
+    public DatabaseTask<List<SQLFriendRequest>> getRequestsFromPlayer(SQLPlayer player) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             if (!online) return null;
             return SQLFriendRequest.getRequestsFromPlayer(player).complete();
@@ -103,18 +104,18 @@ public class FriendsAPI {
 
     /**
      * Creates an Friendrequest
-     * @param target The {@link SQLPlayer} who is being requested
+     *
+     * @param target    The {@link SQLPlayer} who is being requested
      * @param requester The {@link SQLPlayer} whi requested the friendship
-     * @param time The Time as UNIX timestamp of the creation of the Request
+     * @param time      The Time as UNIX timestamp of the creation of the Request
      * @return The generated {@link SQLFriendRequest}
      */
-    public DatabaseTask<SQLFriendRequest> createRequest(SQLPlayer target, SQLPlayer requester, Long time){
+    public DatabaseTask<SQLFriendRequest> createRequest(SQLPlayer target, SQLPlayer requester, Long time) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             if (!online) return null;
             return SQLFriendRequest.create(target, requester, time).complete();
         }));
     }
-
 
 
 }

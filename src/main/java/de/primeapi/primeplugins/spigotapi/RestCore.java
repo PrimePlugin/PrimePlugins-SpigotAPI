@@ -1,7 +1,6 @@
 package de.primeapi.primeplugins.spigotapi;
 
 import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;

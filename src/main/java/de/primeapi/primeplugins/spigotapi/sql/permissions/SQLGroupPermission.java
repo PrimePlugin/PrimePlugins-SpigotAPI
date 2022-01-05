@@ -17,126 +17,127 @@ public class SQLGroupPermission {
 
     public final int id;
 
-    public static DatabaseTask<List<SQLGroupPermission>> fromGroup(SQLGroup group){
+    public static DatabaseTask<List<SQLGroupPermission>> fromGroup(SQLGroup group) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        List<SQLGroupPermission> list = new ArrayList<>();
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_grouppermission WHERE `group` = ?");
-            st.setInt(1, group.getId());
-            ResultSet rs = st.executeQuery();
-            while (rs.next()){
-                list.add(new SQLGroupPermission((rs.getInt("id"))));
+            List<SQLGroupPermission> list = new ArrayList<>();
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_grouppermission WHERE `group` = ?");
+                st.setInt(1, group.getId());
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    list.add(new SQLGroupPermission((rs.getInt("id"))));
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return list;
-        }));
-    }
-    public static DatabaseTask<SQLGroupPermission> create(SQLGroup group, String permission, boolean negativ){
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        SQLGroupPermission perm = null;
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("INSERT INTO prime_perms_grouppermission values (id, ?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            st.setInt(1, group.getId());
-            st.setString(2, permission.toLowerCase());
-            st.setBoolean(3, negativ);
-            st.executeUpdate();
-            ResultSet rs = st.getGeneratedKeys();
-            if(rs.next()){
-                perm = new SQLGroupPermission(rs.getInt(1));
-            }
-            rs.close();
-            st.close();;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
-        return perm;
+            return list;
         }));
     }
 
-    public static DatabaseTask<Boolean> deletePermission(SQLGroup group, String permission){
+    public static DatabaseTask<SQLGroupPermission> create(SQLGroup group, String permission, boolean negativ) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        boolean b = false;
-        for (SQLGroupPermission groupPermission : fromGroup(group).complete()){
-            if(groupPermission.getPermission().complete().equalsIgnoreCase(permission)){
-                groupPermission.delete();
-                b = true;
+            SQLGroupPermission perm = null;
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("INSERT INTO prime_perms_grouppermission values (id, ?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                st.setInt(1, group.getId());
+                st.setString(2, permission.toLowerCase());
+                st.setBoolean(3, negativ);
+                st.executeUpdate();
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    perm = new SQLGroupPermission(rs.getInt(1));
+                }
+                rs.close();
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                return null;
             }
-        }
-        return b;
+            return perm;
         }));
     }
 
-
-    public DatabaseTask<SQLGroup> getGroup(){
+    public static DatabaseTask<Boolean> deletePermission(SQLGroup group, String permission) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        SQLGroup group = null;
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_grouppermission WHERE id = ?");
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()){
-                int i = rs.getInt("group");
-                if(i != 0){
-                    group = new SQLGroup(i);
+            boolean b = false;
+            for (SQLGroupPermission groupPermission : fromGroup(group).complete()) {
+                if (groupPermission.getPermission().complete().equalsIgnoreCase(permission)) {
+                    groupPermission.delete();
+                    b = true;
                 }
             }
-            rs.close();
-            st.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return group;
+            return b;
         }));
     }
 
-    public DatabaseTask<String> getPermission(){
+
+    public DatabaseTask<SQLGroup> getGroup() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        String s = null;
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_grouppermission WHERE id = ?");
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()){
-                s = rs.getString("permission");
+            SQLGroup group = null;
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_grouppermission WHERE id = ?");
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    int i = rs.getInt("group");
+                    if (i != 0) {
+                        group = new SQLGroup(i);
+                    }
+                }
+                rs.close();
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-            rs.close();
-            st.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
-        return s;
+            return group;
         }));
     }
 
-
-    public DatabaseTask<Boolean> isNegative(){
+    public DatabaseTask<String> getPermission() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-        Boolean b = null;
-        try {
-            PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_grouppermission WHERE id = ?");
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()){
-                int i = rs.getInt("negative");
-                b = i == 1;
+            String s = null;
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_grouppermission WHERE id = ?");
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    s = rs.getString("permission");
+                }
+                rs.close();
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-            rs.close();
-            st.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
-        return b;
+            return s;
         }));
     }
 
 
-    public void delete(){
+    public DatabaseTask<Boolean> isNegative() {
+        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+            Boolean b = null;
+            try {
+                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_perms_grouppermission WHERE id = ?");
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    int i = rs.getInt("negative");
+                    b = i == 1;
+                }
+                rs.close();
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            return b;
+        }));
+    }
+
+
+    public void delete() {
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("DELETE FROM prime_perms_grouppermission WHERE id =?");

@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.HttpRequestWithBody;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.*;
-import de.primeapi.primeplugins.spigotapi.managers.config.ConfigManager;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.AccesDataConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@RequiredArgsConstructor @AllArgsConstructor @Getter
+@RequiredArgsConstructor
+@AllArgsConstructor
+@Getter
 public class DebugMessage {
 
     final String secret;
@@ -41,7 +41,7 @@ public class DebugMessage {
     String javaVersion;
 
 
-    public static DebugMessage send(String secret, Player sender){
+    public static DebugMessage send(String secret, Player sender) {
         List<PrimePluginInfo> primePlugins = PrimePluginInfo.getPlugins();
         List<DebugPluginInfo> plugins = DebugPluginInfo.getPluginInfos();
         boolean mysql = PrimeCore.getInstance().getConnection() != null;
@@ -93,9 +93,9 @@ public class DebugMessage {
             HttpResponse<String> fileResponse = Unirest.post("http://mc.primeapi.de:8083/debugs/" + secret + "/files")
                     .header("Authorization", sender.getUniqueId().toString()).field("files", files).asString();
 
-            if(s.getStatus() == 200 && fileResponse.getStatus() == 200){
+            if (s.getStatus() == 200 && fileResponse.getStatus() == 200) {
                 sender.sendMessage("§aErfolgreich!");
-            }else {
+            } else {
                 sender.sendMessage("§4Fehler§7: §c" + s.getBody() + "§7 | §c" + fileResponse.getBody());
             }
 

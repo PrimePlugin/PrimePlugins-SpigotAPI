@@ -33,10 +33,10 @@ public class ClanPlaceholder extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String params) {
-        if(ClanAPI.getInstance().isOnline()) {
+        if (ClanAPI.getInstance().isOnline()) {
             SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(new PrimePlayer(player)).complete();
-            if(clan == null){
-                if(params.toLowerCase().equalsIgnoreCase("tag_formatted")){
+            if (clan == null) {
+                if (params.equalsIgnoreCase("tag_formatted")) {
                     return CoreConfig.getInstance().getString("clanplaceholder.formattedTag.noClan");
                 }
                 return CoreMessage.CLANPLACEHOLDER_NOCLAN.getContent();
@@ -51,11 +51,11 @@ public class ClanPlaceholder extends PlaceholderExpansion {
                 case "tag_formatted": {
                     return CoreConfig.getInstance().getString("clanplaceholder.formattedTag.format").replaceAll("%tag%", clan.getTag().complete());
                 }
-                case "count":{
+                case "count": {
                     return String.valueOf(clan.getMembers().complete().size());
                 }
             }
         }
-       return null;
+        return null;
     }
 }

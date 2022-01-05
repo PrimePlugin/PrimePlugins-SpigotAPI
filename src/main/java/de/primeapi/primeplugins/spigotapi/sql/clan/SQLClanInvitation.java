@@ -12,11 +12,12 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor @Getter
+@RequiredArgsConstructor
+@Getter
 public class SQLClanInvitation {
     final int id;
 
-    public static DatabaseTask<SQLClanInvitation> create(SQLPlayer player, SQLClan clan){
+    public static DatabaseTask<SQLClanInvitation> create(SQLPlayer player, SQLClan clan) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             Integer id = PrimeCore.getInstance().getDb().update("INSERT INTO prime_clan_requests value (id,?,?)")
                     .parameters(player.retrieveUniqueId().complete().toString(), clan.getId())
@@ -30,44 +31,44 @@ public class SQLClanInvitation {
         }));
     }
 
-    public static DatabaseTask<SQLClanInvitation> fromPlayer(SQLPlayer player, SQLClan clan){
+    public static DatabaseTask<SQLClanInvitation> fromPlayer(SQLPlayer player, SQLClan clan) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             Integer id = PrimeCore.getInstance().getDb().select(
-                    "SELECT id FROM prime_clan_requests WHERE uuid = ? AND clan = ?"
-            ).parameters(player.retrieveUniqueId().complete().toString(), clan.getId())
+                            "SELECT id FROM prime_clan_requests WHERE uuid = ? AND clan = ?"
+                    ).parameters(player.retrieveUniqueId().complete().toString(), clan.getId())
                     .getAs(Integer.class)
                     .toBlocking().firstOrDefault(null);
-            if(id != null){
+            if (id != null) {
                 return new SQLClanInvitation(id);
             }
             return null;
         }));
     }
 
-    public static DatabaseTask<List<SQLClanInvitation>> fromPlayer(SQLPlayer player){
+    public static DatabaseTask<List<SQLClanInvitation>> fromPlayer(SQLPlayer player) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             List<Integer> idList = PrimeCore.getInstance().getDb().select(
-                    "SELECT id FROM prime_clan_requests WHERE uuid=?"
-            ).parameters(player.retrieveUniqueId().complete().toString())
+                            "SELECT id FROM prime_clan_requests WHERE uuid=?"
+                    ).parameters(player.retrieveUniqueId().complete().toString())
                     .getAs(Integer.class)
                     .toList().toBlocking().singleOrDefault(new ArrayList<>());
             return idList.stream().map(SQLClanInvitation::new).collect(Collectors.toList());
         }));
     }
 
-    private <T> DatabaseTask<T> readDatabase(String column, Class<T> type){
+    private <T> DatabaseTask<T> readDatabase(String column, Class<T> type) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> PrimeCore.getInstance().getDb().select(
-                "SELECT " + column + " FROM prime_clan_requests WHERE id = ?"
-        )
+                        "SELECT " + column + " FROM prime_clan_requests WHERE id = ?"
+                )
                 .parameters(id).getAs(type).toBlocking().singleOrDefault(null)));
     }
 
 
-    public DatabaseTask<UUID> getUUID(){
+    public DatabaseTask<UUID> getUUID() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> UUID.fromString(readDatabase("uuid", String.class).complete())));
     }
 
-    public DatabaseTask<SQLClan> getClan(){
+    public DatabaseTask<SQLClan> getClan() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> new SQLClan(readDatabase("clan", Integer.class).complete())));
     }
 

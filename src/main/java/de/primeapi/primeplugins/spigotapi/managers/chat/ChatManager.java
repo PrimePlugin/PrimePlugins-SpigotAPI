@@ -11,13 +11,12 @@ public class ChatManager {
     public ChatFormatter chatFormatter;
 
 
-
-    public ChatManager(){
+    public ChatManager() {
         chatFormatter = new DefaultChatFormatter();
 
     }
 
-    public String format(PrimePlayer p, String message){
+    public String format(PrimePlayer p, String message) {
         return chatFormatter.formatString(p, message);
     }
 

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class ConfigManager {
 
 
-    private List<Config> registeredConfigs;
+    private final List<Config> registeredConfigs;
 
     public ConfigManager() {
         registeredConfigs = new ArrayList<>();
@@ -20,26 +20,26 @@ public class ConfigManager {
 
         {
             File ord = new File("plugins/primeplugins");
-            if(!ord.exists()) ord.mkdir();
+            if (!ord.exists()) ord.mkdir();
         }
     }
 
-    public void registerConfig(Config config){
+    public void registerConfig(Config config) {
         registeredConfigs.add(config);
         PrimeCore.getInstance().getLogger().info("Config '" + config.getName() + "' loaded");
     }
 
-    public List<File> getAllFiles(){
-       return registeredConfigs.stream().map(Config::getFile).collect(Collectors.toList());
+    public List<File> getAllFiles() {
+        return registeredConfigs.stream().map(Config::getFile).collect(Collectors.toList());
     }
 
-    public void generateDirs(String path){
+    public void generateDirs(String path) {
         String[] dirs = path.split("/");
         String curpath = dirs[0];
         for (int i = 1; i < dirs.length - 1; i++) {
             File ord = new File(curpath);
-            if(!ord.exists()) ord.mkdir();
-            curpath+= "/" + dirs[i];
+            if (!ord.exists()) ord.mkdir();
+            curpath += "/" + dirs[i];
         }
     }
 
