@@ -11,8 +11,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class NickUtils {
 
@@ -51,7 +49,7 @@ public class NickUtils {
             Class<?> PACKET_PLAYOUT_ENTITY_DESTROY = PrimeCore.getInstance().getVersionManager().getNMSClass("PacketPlayOutEntityDestroy");
 
             Constructor<?> PACKET_PLAYOUT_ENTITY_DESTROY_CONST = PACKET_PLAYOUT_ENTITY_DESTROY.getConstructor(Class.forName("[I"));
-            
+
             Class<?> PACKET_PLAYOUT_ENTITY_SPAWN = PrimeCore.getInstance().getVersionManager().getNMSClass("PacketPlayOutNamedEntitySpawn");
             Constructor<?> PACKET_PLAYOUT_ENTITY_SPAWN_CONST = PACKET_PLAYOUT_ENTITY_SPAWN.getConstructor(HUMAN_PLAYER);
             Object type = PACKET_PLAYOUT_PLAYER_INFO_ENUM_BYSTRING.invoke(null, "REMOVE_PLAYER");
@@ -104,7 +102,6 @@ public class NickUtils {
                 NMS.sendPacket(PACKET_PLAYOUT_ENTITY_SPAWN_CONST.newInstance(handle), all);
 
 
-
             }
             Location location = player.getLocation().clone();
             World world = Bukkit.getWorld(NickAPI.getInstance().getNickworldName());
@@ -136,9 +133,9 @@ public class NickUtils {
         }
     }
 
-    private static Class<?> getSubClass(Class<?> c, String name){
+    private static Class<?> getSubClass(Class<?> c, String name) {
         for (Class<?> aClass : c.getClasses()) {
-            if(aClass.getName().endsWith(name)) return aClass;
+            if (aClass.getName().endsWith(name)) return aClass;
         }
         return null;
     }

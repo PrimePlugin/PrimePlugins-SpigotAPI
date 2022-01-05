@@ -2,7 +2,6 @@ package de.primeapi.primeplugins.spigotapi.managers.vault;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.PermsAPI;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,7 +14,7 @@ import org.bukkit.plugin.ServicePriority;
  */
 public class VaultPermission extends Permission {
 
-    public VaultPermission(){
+    public VaultPermission() {
         Bukkit.getServicesManager().register(Permission.class, this, PrimeCore.getInstance(), ServicePriority.High);
     }
 

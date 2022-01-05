@@ -26,7 +26,7 @@ public class DebugPluginInfo {
                                 plugin.getDescription().getVersion(),
                                 plugin.getDescription().getAuthors().get(0)
                         );
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         return null;
                     }
                 })

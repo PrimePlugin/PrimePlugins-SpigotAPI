@@ -14,12 +14,12 @@ public class GroupChanceEvent extends Event {
     final SQLPlayer player;
     final String groupName;
 
-    @Override
-    public HandlerList getHandlers() {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList(){
+    @Override
+    public HandlerList getHandlers() {
         return handlers;
     }
 }

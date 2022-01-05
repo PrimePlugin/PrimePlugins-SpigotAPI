@@ -16,13 +16,9 @@ import java.util.logging.Level;
 public class BungeeAPI {
 
     private static BungeeAPI instance;
-
-    public static BungeeAPI getInstance() {
-        return instance;
-    }
-
     boolean online;
-    public BungeeAPI(){
+
+    public BungeeAPI() {
         instance = this;
         online = false;
         try {
@@ -33,11 +29,15 @@ public class BungeeAPI {
         } catch (Exception throwables) {
             throwables.printStackTrace();
         }
-        if(online){
+        if (online) {
             PrimeCore.getInstance().getLogger().log(Level.INFO, " BungeeSystemAPI wurde geladen");
-        }else {
+        } else {
             PrimeCore.getInstance().getLogger().log(Level.INFO, " BungeeSystemAPI wurde NICHT geladen");
         }
+    }
+
+    public static BungeeAPI getInstance() {
+        return instance;
     }
 
 }

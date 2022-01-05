@@ -5,16 +5,16 @@ import de.primeapi.primeplugins.spigotapi.api.*;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
 import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
+import de.primeapi.primeplugins.spigotapi.managers.api.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.managers.chat.ChatManager;
 import de.primeapi.primeplugins.spigotapi.managers.cloud.CloudManager;
 import de.primeapi.primeplugins.spigotapi.managers.commands.CommandsManager;
 import de.primeapi.primeplugins.spigotapi.managers.config.ConfigManager;
-import de.primeapi.primeplugins.spigotapi.managers.api.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.AccesDataConfig;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
+import de.primeapi.primeplugins.spigotapi.managers.messages.MessageManager;
 import de.primeapi.primeplugins.spigotapi.managers.rest.RestManager;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.ScoreboardManager;
-import de.primeapi.primeplugins.spigotapi.managers.messages.MessageManager;
 import de.primeapi.primeplugins.spigotapi.managers.vault.VaultManager;
 import de.primeapi.primeplugins.spigotapi.managers.versions.VersionManager;
 import lombok.Getter;
@@ -34,9 +34,6 @@ import java.util.logging.Level;
 public class PrimeCore extends JavaPlugin {
 
     private static PrimeCore instance;
-    public static PrimeCore getInstance() {
-        return instance;
-    }
     private MessageManager messageManager;
     private ConfigManager configManager;
     private Connection connection;
@@ -58,6 +55,10 @@ public class PrimeCore extends JavaPlugin {
     private CloudManager cloudManager;
     private VersionManager versionManager;
     private boolean mysql;
+
+    public static PrimeCore getInstance() {
+        return instance;
+    }
 
     @Override
     public void onEnable() {
@@ -81,7 +82,7 @@ public class PrimeCore extends JavaPlugin {
         initSql();
         restManager = new RestManager();
         restManager.registerPlugin(new RestCore(this));
-        if(!mysql){
+        if (!mysql) {
             Bukkit.getPluginManager().registerEvents(new InvalidListener("§4§lFehler: §cDie MySQL Verbindung ist Fehlerhaft!"), this);
             return;
         }
@@ -100,7 +101,7 @@ public class PrimeCore extends JavaPlugin {
         nickAPI = new NickAPI();
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getServer().getMessenger().registerOutgoingPluginChannel( this, "prime:primemessaging");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "prime:primemessaging");
 
         vaultManager = new VaultManager();
         cloudManager = new CloudManager();
@@ -120,12 +121,12 @@ public class PrimeCore extends JavaPlugin {
         }
     }
 
-    private void registerConfigs(){
+    private void registerConfigs() {
         configManager.registerConfig(new AccesDataConfig());
         configManager.registerConfig(new CoreConfig());
     }
 
-    private void registerEvents(){
+    private void registerEvents() {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new PlayerJoinListener(), this);
         pm.registerEvents(new CoinsChanceListener(), this);
@@ -136,7 +137,7 @@ public class PrimeCore extends JavaPlugin {
     }
 
 
-    private void initSql(){
+    private void initSql() {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + AccesDataConfig.getInstance().getString("mysql.host") + "/" + AccesDataConfig.getInstance().getString("mysql.database") + "?autoReconnect=true", AccesDataConfig.getInstance().getString("mysql.username"), AccesDataConfig.getInstance().getString("mysql.password"));
             getLogger().info("MySQL-Connection established");

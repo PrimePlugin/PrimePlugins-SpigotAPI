@@ -43,8 +43,8 @@ public class SQLPlayerAllocation {
 
     private <T> DatabaseTask<T> readDatabase(String column, Class<T> type) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> PrimeCore.getInstance().getDb().select(
-                "SELECT " + column + " FROM prime_clan_players WHERE id = ?"
-        )
+                        "SELECT " + column + " FROM prime_clan_players WHERE id = ?"
+                )
                 .parameters(id).getAs(type).toBlocking().singleOrDefault(null)));
     }
 
@@ -57,7 +57,7 @@ public class SQLPlayerAllocation {
     }
 
     public DatabaseTask<Integer> getRank() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() ->(readDatabase("rank", Integer.class).complete())));
+        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> (readDatabase("rank", Integer.class).complete())));
     }
 
     public void delete() {

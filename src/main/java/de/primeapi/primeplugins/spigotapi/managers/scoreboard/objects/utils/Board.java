@@ -12,14 +12,27 @@ public class Board {
 
     private final Map<Player, BPlayerBoard> boards = new HashMap<>();
 
-    private Board() {}
+    private Board() {
+    }
+
+    /**
+     * Returns the instance of the Netherboard class.
+     *
+     * @return the instance
+     */
+    public static Board instance() {
+        if (instance == null)
+            instance = new Board();
+
+        return instance;
+    }
 
     /**
      * Creates a board to a player.
      *
-     * @param player    the player
-     * @param name      the name of the board
-     * @return          the newly created board
+     * @param player the player
+     * @param name   the name of the board
+     * @return the newly created board
      */
     public BPlayerBoard createBoard(Player player, String name) {
         return createBoard(player, null, name);
@@ -28,10 +41,10 @@ public class Board {
     /**
      * Creates a board to a player, using a predefined scoreboard.
      *
-     * @param player        the player
-     * @param scoreboard    the scoreboard to use
-     * @param name          the name of the board
-     * @return              the newly created board
+     * @param player     the player
+     * @param scoreboard the scoreboard to use
+     * @param name       the name of the board
+     * @return the newly created board
      */
     public BPlayerBoard createBoard(Player player, Scoreboard scoreboard, String name) {
         deleteBoard(player);
@@ -48,7 +61,7 @@ public class Board {
      * @param player the player
      */
     public void deleteBoard(Player player) {
-        if(boards.containsKey(player))
+        if (boards.containsKey(player))
             boards.get(player).delete();
     }
 
@@ -66,7 +79,7 @@ public class Board {
      * Checks if the player has a board.
      *
      * @param player the player
-     * @return       <code>true</code> if the player has a board, otherwise <code>false</code>
+     * @return <code>true</code> if the player has a board, otherwise <code>false</code>
      */
     public boolean hasBoard(Player player) {
         return boards.containsKey(player);
@@ -75,8 +88,8 @@ public class Board {
     /**
      * Gets the board of a player.
      *
-     * @param player    the player
-     * @return          the player board, or null if the player has no board
+     * @param player the player
+     * @return the player board, or null if the player has no board
      */
     public BPlayerBoard getBoard(Player player) {
         return boards.get(player);
@@ -91,18 +104,6 @@ public class Board {
      */
     public Map<Player, BPlayerBoard> getBoards() {
         return new HashMap<>(boards);
-    }
-
-    /**
-     * Returns the instance of the Netherboard class.
-     *
-     * @return the instance
-     */
-    public static Board instance() {
-        if(instance == null)
-            instance = new Board();
-
-        return instance;
     }
 
 

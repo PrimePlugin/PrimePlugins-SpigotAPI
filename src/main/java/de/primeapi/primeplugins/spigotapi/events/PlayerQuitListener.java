@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class PlayerQuitListener implements Listener {
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e){
+    public void onPlayerQuit(PlayerQuitEvent e) {
         PrimePlayer p = new PrimePlayer(e.getPlayer());
         PrimeCore.getInstance().getScoreboardManager().customScoreboard.remove(p.getUniqueId());
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {

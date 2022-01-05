@@ -6,8 +6,6 @@ import de.primeapi.primeplugins.spigotapi.utils.PrimeUtils;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
-import java.util.Locale;
-
 public class CorePlaceholders extends PlaceholderExpansion {
     @Override
     public String getIdentifier() {
@@ -28,7 +26,7 @@ public class CorePlaceholders extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, String params) {
         PrimePlayer p = new PrimePlayer(player);
-        switch (params.toLowerCase()){
+        switch (params.toLowerCase()) {
             case "coins":
                 return PrimeUtils.formatInteger(p.retrieveCoins().complete());
             case "onmins":

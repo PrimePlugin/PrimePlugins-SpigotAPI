@@ -25,23 +25,24 @@ public class SQLClan {
         }));
     }
 
-    public static DatabaseTask<SQLClan> fromName(String name){
+    public static DatabaseTask<SQLClan> fromName(String name) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             Integer id = PrimeCore.getInstance().getDb().select("SELECT id FROM prime_clan_clans WHERE name = ?")
                     .parameters(name.toLowerCase())
                     .getAs(Integer.class).toBlocking().singleOrDefault(null);
-            if(id != null){
+            if (id != null) {
                 return new SQLClan(id);
             }
             return null;
         }));
     }
-    public static DatabaseTask<SQLClan> fromTag(String tag){
+
+    public static DatabaseTask<SQLClan> fromTag(String tag) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             Integer id = PrimeCore.getInstance().getDb().select("SELECT id FROM prime_clan_clans WHERE UPPER(tag) = UPPER(?)")
                     .parameters(tag.toUpperCase())
                     .getAs(Integer.class).toBlocking().singleOrDefault(null);
-            if(id != null){
+            if (id != null) {
                 return new SQLClan(id);
             }
             return null;
@@ -50,8 +51,8 @@ public class SQLClan {
 
     public DatabaseTask<String> getName() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> PrimeCore.getInstance().getDb().select(
-                "SELECT name FROM prime_clan_clans WHERE id = ?"
-        )
+                        "SELECT name FROM prime_clan_clans WHERE id = ?"
+                )
                 .parameters(id)
                 .getAs(String.class).toBlocking().singleOrDefault(null)));
     }
@@ -65,11 +66,11 @@ public class SQLClan {
         );
     }
 
-    public DatabaseTask<String> getTag(){
+    public DatabaseTask<String> getTag() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() ->
                 PrimeCore.getInstance().getDb().select("SELECT tag FROM prime_clan_clans WHERE id=?")
-                    .parameters(id)
-                    .getAs(String.class).toBlocking().singleOrDefault(null)
+                        .parameters(id)
+                        .getAs(String.class).toBlocking().singleOrDefault(null)
         ));
     }
 
@@ -105,20 +106,19 @@ public class SQLClan {
                 .parameters(tag, id).execute();
     }
 
-    public void updateCoins(Integer coins){
+    public void updateCoins(Integer coins) {
         PrimeCore.getInstance().getDb().update("UPDATE prime_clan_clans SET coins = ? WHERE id = ?")
                 .parameters(coins, id).execute();
     }
 
-    public void addCoins(Integer coins){
+    public void addCoins(Integer coins) {
         getCoins().submit(integer -> updateCoins(coins + integer));
     }
 
-    public void delete(){
+    public void delete() {
         PrimeCore.getInstance().getDb().update("DELETE FROM prime_clan_clans WHERE id = ?")
                 .parameters(id).execute();
     }
-
 
 
 }

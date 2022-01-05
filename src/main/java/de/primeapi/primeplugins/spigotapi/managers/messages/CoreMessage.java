@@ -37,21 +37,21 @@ public enum CoreMessage {
     String content;
     Boolean prefix;
 
-    CoreMessage(String content, Boolean prefix){
+    CoreMessage(String content, Boolean prefix) {
         this.content = content;
         this.prefix = prefix;
         this.path = this.toString().replaceAll("_", ".").toLowerCase();
     }
 
-    CoreMessage(String path, String content, Boolean prefix){
+    CoreMessage(String path, String content, Boolean prefix) {
         this.content = content;
         this.prefix = prefix;
         this.path = path;
     }
 
 
-    public CoreMessage replace(String key, String value){
-        if(!key.startsWith("%")){
+    public CoreMessage replace(String key, String value) {
+        if (!key.startsWith("%")) {
             key = "%" + key + "%";
         }
         String s = getContent().replaceAll(key, value);
@@ -59,7 +59,7 @@ public enum CoreMessage {
         return PLACEHOLDER;
     }
 
-    public CoreMessage replace(String key, Object value){
+    public CoreMessage replace(String key, Object value) {
         return replace(key, String.valueOf(value));
     }
 }

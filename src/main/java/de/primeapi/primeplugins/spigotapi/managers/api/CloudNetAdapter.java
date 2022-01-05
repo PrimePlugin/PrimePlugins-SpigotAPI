@@ -16,21 +16,21 @@ public class CloudNetAdapter {
 
     String cloud;
 
-    public CloudNetAdapter(){
+    public CloudNetAdapter() {
         if (Bukkit.getPluginManager().getPlugin("CloudNetAPI") != null) {
             PrimeCore.getInstance().getLogger().log(Level.INFO, "CloudNetv2 wurde gefunden!");
             cloud = "cn2";
-        }else if (Bukkit.getPluginManager().getPlugin("CloudNet-Bridge") != null){
+        } else if (Bukkit.getPluginManager().getPlugin("CloudNet-Bridge") != null) {
             PrimeCore.getInstance().getLogger().log(Level.INFO, "CloudNetv3 wurde gefunden!");
             cloud = "cn3";
-        }else{
+        } else {
             PrimeCore.getInstance().getLogger().log(Level.INFO, "Es wurde keine Coud gefunden!");
             cloud = "none";
         }
     }
 
-    public List<String> getServersInGroup(String s){
-        if(cloud.equalsIgnoreCase("cn2")){
+    public List<String> getServersInGroup(String s) {
+        if (cloud.equalsIgnoreCase("cn2")) {
             List<String> list = new ArrayList<>();
             for (ServerInfo serverInfo : CloudAPI.getInstance().getServers()) {
                 if (serverInfo.getServerConfig().getProperties().getName().startsWith(s))
@@ -38,7 +38,7 @@ public class CloudNetAdapter {
             }
             return list;
         }
-        if(cloud.equalsIgnoreCase("cn3")){
+        if (cloud.equalsIgnoreCase("cn3")) {
             List<String> list = new ArrayList<>();
             CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServices(s).forEach(serviceInfoSnapshot -> {
                 list.add(serviceInfoSnapshot.getName());

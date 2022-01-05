@@ -17,28 +17,28 @@ public enum SQLSetting {
     ;
     String standardValue;
 
-    public DatabaseTask<String> getValue(){
+    public DatabaseTask<String> getValue() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             String s = PrimeCore.getInstance().getDb().select(
-                    "SELECT value FROM prime_bungee_settings WHERE identifier = ?"
-            ).parameters(this.toString()).getAs(String.class)
+                            "SELECT value FROM prime_bungee_settings WHERE identifier = ?"
+                    ).parameters(this.toString()).getAs(String.class)
                     .toBlocking().singleOrDefault(null);
-            if(s == null) return standardValue;
+            if (s == null) return standardValue;
             else return s;
         }));
     }
 
-    public void setValue(String value){
+    public void setValue(String value) {
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
             String s = PrimeCore.getInstance().getDb().select(
-                    "SELECT value FROM prime_bungee_settings WHERE identifier = ?"
-            ).parameters(this.toString()).getAs(String.class)
+                            "SELECT value FROM prime_bungee_settings WHERE identifier = ?"
+                    ).parameters(this.toString()).getAs(String.class)
                     .toBlocking().singleOrDefault(null);
-            if(s == null){
+            if (s == null) {
                 PrimeCore.getInstance().getDb().update(
                         "INSERT INTO prime_bungee_settings VALUES (id,?,?)"
                 ).parameters(this.toString(), value).execute();
-            }else {
+            } else {
                 PrimeCore.getInstance().getDb().update(
                         "UPDATE prime_bungee_settings SET value = ? WHERE identifier = ?"
                 ).parameters(value, this.toString()).execute();
@@ -46,13 +46,14 @@ public enum SQLSetting {
         });
     }
 
-    public DatabaseTask<Boolean> getAsBoolean(){
+    public DatabaseTask<Boolean> getAsBoolean() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             String value = getValue().complete();
             return Boolean.valueOf(value);
         }));
     }
-    public DatabaseTask<Integer> getAsInteger(){
+
+    public DatabaseTask<Integer> getAsInteger() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             String value = getValue().complete();
             return Integer.parseInt(value);

@@ -1,6 +1,5 @@
 package de.primeapi.primeplugins.spigotapi.managers.config;
 
-import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -12,20 +11,18 @@ import java.util.List;
 public abstract class Config {
 
     @Getter
-    private YamlConfiguration configuration;
-
-    @Getter
-    private File file;
-
-    @Getter
     private final String name;
+    @Getter
+    private YamlConfiguration configuration;
+    @Getter
+    private final File file;
 
 
-    public Config(String name, String pathname){
+    public Config(String name, String pathname) {
         this.name = name;
         file = new File(pathname);
         file.getParentFile().mkdirs();
-        if(!file.exists()) {
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException exception) {
@@ -33,39 +30,40 @@ public abstract class Config {
             }
         }
         configuration = YamlConfiguration.loadConfiguration(file);
-            loadContent();
-            try {
-                save();
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+        loadContent();
+        try {
+            save();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
         reload();
     }
 
     public abstract void loadContent();
 
-    public void reload(){
+    public void reload() {
         configuration = YamlConfiguration.loadConfiguration(file);
     }
 
 
-    public void saveAddEntry(String path, Object object){
-        if(!configuration.isSet(path)) {
-            if(object instanceof String){
+    public void saveAddEntry(String path, Object object) {
+        if (!configuration.isSet(path)) {
+            if (object instanceof String) {
                 String s = (String) object;
                 s.replaceAll("§", "&");
                 configuration.set(path, s);
-            }else {
+            } else {
                 configuration.set(path, object);
             }
         }
     }
-    public void saveAddEntry(String path, List<String> object){
-        if(!configuration.isSet(path)) {
+
+    public void saveAddEntry(String path, List<String> object) {
+        if (!configuration.isSet(path)) {
             List<String> list = new ArrayList<>();
             for (String s :
                     object) {
-                list.add(s.replaceAll("§","&"));
+                list.add(s.replaceAll("§", "&"));
             }
             configuration.set(path, list);
         }
@@ -76,19 +74,23 @@ public abstract class Config {
     }
 
 
-    public String getString(String path){
+    public String getString(String path) {
         return configuration.getString(path);
     }
-    public Boolean getBoolean(String path){
+
+    public Boolean getBoolean(String path) {
         return configuration.getBoolean(path);
     }
-    public Integer getInt(String path){
+
+    public Integer getInt(String path) {
         return configuration.getInt(path);
     }
-    public List<String> getStringList(String path){
+
+    public List<String> getStringList(String path) {
         return configuration.getStringList(path);
     }
-    public List<Integer> getIntegerList(String path){
+
+    public List<Integer> getIntegerList(String path) {
         return configuration.getIntegerList(path);
     }
 }

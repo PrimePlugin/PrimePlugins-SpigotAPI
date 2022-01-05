@@ -45,7 +45,7 @@ public enum ColorCodes {
 
     public static ColorCodes fromCode(String s) {
         String replace = s.replace("&", "").replace("§", "");
-        if(replace.length() >= 1){
+        if (replace.length() >= 1) {
             return fromCode(replace.charAt(0));
         }
         return RESET;

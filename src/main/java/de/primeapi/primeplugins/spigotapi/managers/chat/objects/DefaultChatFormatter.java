@@ -4,7 +4,7 @@ import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import org.bukkit.ChatColor;
 
-public class DefaultChatFormatter implements ChatFormatter{
+public class DefaultChatFormatter implements ChatFormatter {
     @Override
     public String formatString(PrimePlayer player, String message) {
         return CoreConfig.getInstance().getString("chatformat.default")

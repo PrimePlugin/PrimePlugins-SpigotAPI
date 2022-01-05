@@ -4,14 +4,15 @@ import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import gui.GUIBuilder;
 import gui.itembuilder.ItemBuilder;
-import gui.itembuilder.SkullTexture;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-@AllArgsConstructor @Getter @Setter
+@AllArgsConstructor
+@Getter
+@Setter
 public class AcceptGUI {
 
     String inventoryTitle;
@@ -19,10 +20,10 @@ public class AcceptGUI {
     CallBack<Player> accepted;
     CallBack<Player> declined;
 
-    public void open(Player p){
+    public void open(Player p) {
         p.openInventory(
                 new GUIBuilder(
-                        3*9,
+                        3 * 9,
                         inventoryTitle
                 )
                         .addItem(
@@ -56,8 +57,7 @@ public class AcceptGUI {
     }
 
 
-
-    public interface CallBack<T>{
+    public interface CallBack<T> {
         void run(T value);
     }
 

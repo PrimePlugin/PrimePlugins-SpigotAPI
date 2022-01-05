@@ -1,17 +1,14 @@
 package de.primeapi.primeplugins.spigotapi.api;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.events.InvalidListener;
 import de.primeapi.primeplugins.spigotapi.utils.FlatWorldGenerator;
 import de.primeapi.primeplugins.spigotapi.utils.nick.NickUtils;
 import de.primeapi.primeplugins.spigotapi.utils.nick.Skin;
 import lombok.Getter;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,15 +21,11 @@ public class NickAPI {
 
 
     private static NickAPI instance;
+    private final String nickworldName = "NickWorld";
     boolean online;
+    private final Cache<UUID, Boolean> isNicked = new Cache<>();
 
-    private  final String nickworldName = "NickWorld";
-
-
-
-    private Cache<UUID, Boolean> isNicked = new Cache<>();
-
-    private HashMap<UUID, String> nickedGroup = new HashMap<>();
+    private final HashMap<UUID, String> nickedGroup = new HashMap<>();
 
     public NickAPI() {
         instance = this;
@@ -62,7 +55,7 @@ public class NickAPI {
                     () -> {
                         Bukkit.createWorld(WorldCreator.name(NickAPI.getInstance().getNickworldName()).generator(new FlatWorldGenerator()));
                     },
-                    10*20L
+                    10 * 20L
             );
 
         } else {
@@ -74,11 +67,14 @@ public class NickAPI {
         return instance;
     }
 
+    private static String getUUIDOffline(String name) {
+        return Bukkit.getOfflinePlayer(name).getUniqueId().toString().replace("-", "");
+    }
 
     public boolean isNicked(Player player) {
-        if(!online) return false;
+        if (!online) return false;
         Boolean cachedValue = isNicked.getCachedValue(player.getUniqueId());
-        if(cachedValue != null){
+        if (cachedValue != null) {
             return cachedValue;
         }
         boolean b = false;
@@ -96,13 +92,12 @@ public class NickAPI {
         return b;
     }
 
-
     public void unnickPlayer(Player player) {
-        if(!online) throw new IllegalStateException("NickAPI not online!");
+        if (!online) throw new IllegalStateException("NickAPI not online!");
         String realname = getRealname(player);
         isNicked.remove(player.getUniqueId());
         nickedGroup.remove(player.getUniqueId());
-        if(realname != null){
+        if (realname != null) {
             changeNick(player, realname);
             Skin skin = new Skin(getUUIDOffline(realname));
             if (skin.getSkinName() != null) {
@@ -126,7 +121,7 @@ public class NickAPI {
     }
 
     public String getRealname(Player player) {
-        if(!online) throw new IllegalStateException("NickAPI not online!");
+        if (!online) throw new IllegalStateException("NickAPI not online!");
         String s = null;
         try {
             PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT * FROM prime_nick_current WHERE uuid = ?");
@@ -143,16 +138,17 @@ public class NickAPI {
         return s;
     }
 
-    public String getNickGroup(Player player){
+    public String getNickGroup(Player player) {
         return nickedGroup.getOrDefault(player.getUniqueId(), null);
     }
-
 
     public void nickPlayer(Player player, String nickname, String group) {
         nickedGroup.put(player.getUniqueId(), group);
         nickPlayer(player, nickname);
     }
 
+
+    //Privates Methods
 
     /**
      * Nicks the Player & sets the Skin
@@ -161,8 +157,8 @@ public class NickAPI {
      * @param nickname The nicked name
      */
     public void nickPlayer(Player player, String nickname) {
-        if(!online) throw new IllegalStateException("NickAPI not online!");
-        if(isNicked(player)){
+        if (!online) throw new IllegalStateException("NickAPI not online!");
+        if (isNicked(player)) {
             throw new IllegalStateException("Player already nicked!");
         }
         try {
@@ -185,11 +181,8 @@ public class NickAPI {
         PrimeCore.getInstance().getScoreboardManager().sendTeams();
     }
 
-
-    //Privates Methods
-
     private void addToDatabase(Player player, String realname, String nickname) throws SQLException {
-        if(!online) throw new IllegalStateException("NickAPI not online!");
+        if (!online) throw new IllegalStateException("NickAPI not online!");
         PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
                 "INSERT INTO prime_nick_current values (id,?,?,?)"
         );
@@ -198,8 +191,9 @@ public class NickAPI {
         st.setString(3, nickname);
         st.execute();
     }
+
     public void removeFromDatabase(Player player) throws SQLException {
-        if(!online) throw new IllegalStateException("NickAPI not online!");
+        if (!online) throw new IllegalStateException("NickAPI not online!");
         PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
                 "DELETE FROM prime_nick_current WHERE uuid = ?"
         );
@@ -207,11 +201,7 @@ public class NickAPI {
         st.execute();
     }
 
-    private static String getUUIDOffline(String name) {
-        return Bukkit.getOfflinePlayer(name).getUniqueId().toString().replace("-", "");
-    }
-
-    private void setSkin(Player player, Skin skin){
+    private void setSkin(Player player, Skin skin) {
         setSkin(player, skin.getSkinValue(), skin.getSkinSignatur());
     }
 

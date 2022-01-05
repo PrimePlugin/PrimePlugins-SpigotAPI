@@ -1,14 +1,11 @@
 package de.primeapi.primeplugins.spigotapi.sql;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.api.events.CoinsChanceEvent;
 import de.primeapi.primeplugins.spigotapi.enums.PlayerSetting;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
 
-import javax.xml.transform.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +18,15 @@ public class SQLPlayer {
     public Integer id;
     public UUID uuid;
 
-    public static DatabaseTask<SQLPlayer> create(UUID uuid, String name){
+    public SQLPlayer(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    private SQLPlayer(Integer id) {
+        this.id = id;
+    }
+
+    public static DatabaseTask<SQLPlayer> create(UUID uuid, String name) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             Integer id = null;
             try {
@@ -30,10 +35,10 @@ public class SQLPlayer {
                 st.setString(2, name.toLowerCase());
                 st.setString(3, name);
                 st.setInt(4, CoreConfig.getInstance().getInt("settings.coins.startAmount"));
-                st.setInt(5,0);
+                st.setInt(5, 0);
                 st.executeUpdate();
                 ResultSet rs = st.getGeneratedKeys();
-                if(rs.next()){
+                if (rs.next()) {
                     id = rs.getInt(1);
                 }
                 rs.close();
@@ -46,14 +51,14 @@ public class SQLPlayer {
         }));
     }
 
-    public static DatabaseTask<SQLPlayer> loadPlayerByName(String name){
+    public static DatabaseTask<SQLPlayer> loadPlayerByName(String name) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             Integer id = null;
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT id FROM core_players WHERE name = ?;");
                 st.setString(1, name.toLowerCase());
                 ResultSet rs = st.executeQuery();
-                if(rs.next()){
+                if (rs.next()) {
                     id = rs.getInt("id");
                 }
                 rs.close();
@@ -62,33 +67,24 @@ public class SQLPlayer {
                 throwables.printStackTrace();
             }
 
-            if(id == null){
+            if (id == null) {
                 return null;
             }
             return new SQLPlayer(id);
         }));
     }
 
-
-    public SQLPlayer(UUID uuid){
-        this.uuid = uuid;
-    }
-
-    private SQLPlayer(Integer id){
-        this.id = id;
-    }
-
     public void load() {
-        if(Objects.isNull(id)){
+        if (Objects.isNull(id)) {
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT id FROM core_players WHERE uuid=?");
                 st.setString(1, uuid.toString());
                 ResultSet rs = st.executeQuery();
-                if(rs.next()){
+                if (rs.next()) {
                     id = rs.getInt("id");
                     rs.close();
                     st.close();
-                }else {
+                } else {
                     rs.close();
                     st.close();
                     throw new IllegalArgumentException("Player with UUID '" + uuid.toString() + "' not found");
@@ -99,7 +95,7 @@ public class SQLPlayer {
         }
     }
 
-    public DatabaseTask<String> retrieveName(){
+    public DatabaseTask<String> retrieveName() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             load();
             String s = null;
@@ -118,11 +114,12 @@ public class SQLPlayer {
             return s;
         }));
     }
-    public DatabaseTask<UUID> retrieveUniqueId(){
+
+    public DatabaseTask<UUID> retrieveUniqueId() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if(uuid != null){
+            if (uuid != null) {
                 return uuid;
-            }else {
+            } else {
                 load();
                 String s = null;
                 try {
@@ -142,7 +139,8 @@ public class SQLPlayer {
             }
         }));
     }
-    public DatabaseTask<String> retrieveRealName(){
+
+    public DatabaseTask<String> retrieveRealName() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             load();
             String s = null;
@@ -150,7 +148,7 @@ public class SQLPlayer {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT realname FROM core_players WHERE id = ?");
                 st.setInt(1, id);
                 ResultSet rs = st.executeQuery();
-                if(rs.next()){
+                if (rs.next()) {
                     s = rs.getString("realname");
                 }
                 rs.close();
@@ -161,15 +159,16 @@ public class SQLPlayer {
             return s;
         }));
     }
-    public DatabaseTask<Integer> retrieveCoins(){
+
+    public DatabaseTask<Integer> retrieveCoins() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             load();
-            int i  = 0;
+            int i = 0;
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT coins FROM core_players WHERE id = ?");
                 st.setInt(1, id);
                 ResultSet rs = st.executeQuery();
-                if(rs.next()){
+                if (rs.next()) {
                     i = rs.getInt("coins");
                 }
                 rs.close();
@@ -181,7 +180,7 @@ public class SQLPlayer {
         }));
     }
 
-    public void setCoins(int i){
+    public void setCoins(int i) {
         load();
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
             try {
@@ -194,7 +193,8 @@ public class SQLPlayer {
             }
         });
     }
-    public void updateName(String name){
+
+    public void updateName(String name) {
         load();
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
             try {
@@ -209,15 +209,15 @@ public class SQLPlayer {
         });
     }
 
-    public DatabaseTask<Integer> retrieveOnMins(){
+    public DatabaseTask<Integer> retrieveOnMins() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             load();
-            int i  = 0;
+            int i = 0;
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement("SELECT playtime FROM core_players WHERE id = ?");
                 st.setInt(1, id);
                 ResultSet rs = st.executeQuery();
-                if(rs.next()){
+                if (rs.next()) {
                     i = rs.getInt("playtime");
                 }
                 rs.close();
@@ -229,7 +229,7 @@ public class SQLPlayer {
         }));
     }
 
-    public void setOnMins(int i){
+    public void setOnMins(int i) {
         load();
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
             try {
@@ -243,19 +243,19 @@ public class SQLPlayer {
         });
     }
 
-    public void addOnMins(int i){
+    public void addOnMins(int i) {
         retrieveOnMins().submit(integer -> {
             setOnMins(integer + i);
         });
     }
 
-    public void addCoins(int i){
+    public void addCoins(int i) {
         retrieveCoins().submit(integer -> {
             setCoins(integer + i);
         });
     }
 
-    public DatabaseTask<Integer> retrieveSetting(PlayerSetting setting){
+    public DatabaseTask<Integer> retrieveSetting(PlayerSetting setting) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             load();
             Integer i = null;
@@ -266,7 +266,7 @@ public class SQLPlayer {
                 st.setString(1, retrieveUniqueId().complete().toString());
                 st.setString(2, setting.toString());
                 ResultSet rs = st.executeQuery();
-                if(rs.next()){
+                if (rs.next()) {
                     i = rs.getInt("value");
                 }
                 rs.close();
@@ -278,7 +278,7 @@ public class SQLPlayer {
         }));
     }
 
-    public DatabaseTask<Integer> retrieveSettingSave(PlayerSetting setting){
+    public DatabaseTask<Integer> retrieveSettingSave(PlayerSetting setting) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             Integer i = retrieveSetting(setting).complete();
             if (Objects.isNull(i)) {
@@ -289,15 +289,15 @@ public class SQLPlayer {
         }));
     }
 
-    public DatabaseTask<Boolean> isOnline(){
+    public DatabaseTask<Boolean> isOnline() {
         return OnlineStats.getServer(retrieveUniqueId().complete()).map(Objects::nonNull);
     }
 
-    public void setSetting(PlayerSetting setting, int value){
+    public void setSetting(PlayerSetting setting, int value) {
         load();
 
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
-            if(Objects.isNull(retrieveSetting(setting).complete())){
+            if (Objects.isNull(retrieveSetting(setting).complete())) {
                 try {
                     PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
                             "INSERT INTO core_settings value (id, ?,?,?)"
@@ -306,10 +306,10 @@ public class SQLPlayer {
                     st.setString(2, setting.toString());
                     st.setInt(3, value);
                     st.execute();
-                }catch (SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 try {
                     PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
                             "UPDATE core_settings SET value = ? WHERE uuid = ? AND setting = ?"

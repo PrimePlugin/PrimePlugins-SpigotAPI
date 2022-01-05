@@ -2,7 +2,6 @@ package de.primeapi.primeplugins.spigotapi.managers.vault;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
-import net.milkbowl.vault.economy.AbstractEconomy;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
@@ -18,7 +17,7 @@ import java.util.List;
  */
 public class VaultEconomy implements Economy {
 
-    public VaultEconomy(){
+    public VaultEconomy() {
         Bukkit.getServicesManager().register(Economy.class, this, PrimeCore.getInstance(), ServicePriority.High);
     }
 
@@ -80,7 +79,7 @@ public class VaultEconomy implements Economy {
     @Override
     public double getBalance(String s) {
         SQLPlayer p = SQLPlayer.loadPlayerByName(s).complete();
-        if(p != null){
+        if (p != null) {
             return p.retrieveCoins().complete();
         }
         return 0;
@@ -89,7 +88,7 @@ public class VaultEconomy implements Economy {
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
         SQLPlayer p = new SQLPlayer(offlinePlayer.getUniqueId());
-        if(p != null){
+        if (p != null) {
             return p.retrieveCoins().complete();
         }
         return 0;
@@ -98,7 +97,7 @@ public class VaultEconomy implements Economy {
     @Override
     public double getBalance(String s, String s1) {
         SQLPlayer p = SQLPlayer.loadPlayerByName(s).complete();
-        if(p != null){
+        if (p != null) {
             return p.retrieveCoins().complete();
         }
         return 0;
@@ -107,7 +106,7 @@ public class VaultEconomy implements Economy {
     @Override
     public double getBalance(OfflinePlayer offlinePlayer, String s) {
         SQLPlayer p = new SQLPlayer(offlinePlayer.getUniqueId());
-        if(p != null){
+        if (p != null) {
             return p.retrieveCoins().complete();
         }
         return 0;
@@ -136,8 +135,8 @@ public class VaultEconomy implements Economy {
     @Override
     public EconomyResponse withdrawPlayer(String s, double v) {
         SQLPlayer p = SQLPlayer.loadPlayerByName(s).complete();
-        if(p != null){
-            p.addCoins(-(int)v);
+        if (p != null) {
+            p.addCoins(-(int) v);
         }
         return null;
     }
@@ -145,8 +144,8 @@ public class VaultEconomy implements Economy {
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double v) {
         SQLPlayer p = new SQLPlayer(offlinePlayer.getUniqueId());
-        if(p != null){
-            p.addCoins(-(int)v);
+        if (p != null) {
+            p.addCoins(-(int) v);
         }
         return null;
     }
@@ -154,8 +153,8 @@ public class VaultEconomy implements Economy {
     @Override
     public EconomyResponse withdrawPlayer(String s, String s1, double v) {
         SQLPlayer p = SQLPlayer.loadPlayerByName(s).complete();
-        if(p != null){
-            p.addCoins(-(int)v);
+        if (p != null) {
+            p.addCoins(-(int) v);
         }
         return null;
     }
@@ -163,8 +162,8 @@ public class VaultEconomy implements Economy {
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String s, double v) {
         SQLPlayer p = new SQLPlayer(offlinePlayer.getUniqueId());
-        if(p != null){
-            p.addCoins(-(int)v);
+        if (p != null) {
+            p.addCoins(-(int) v);
         }
         return null;
     }
@@ -172,8 +171,8 @@ public class VaultEconomy implements Economy {
     @Override
     public EconomyResponse depositPlayer(String s, double v) {
         SQLPlayer p = SQLPlayer.loadPlayerByName(s).complete();
-        if(p != null){
-            p.addCoins((int)v);
+        if (p != null) {
+            p.addCoins((int) v);
         }
         return null;
     }
@@ -181,8 +180,8 @@ public class VaultEconomy implements Economy {
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double v) {
         SQLPlayer p = new SQLPlayer(offlinePlayer.getUniqueId());
-        if(p != null){
-            p.addCoins((int)v);
+        if (p != null) {
+            p.addCoins((int) v);
         }
         return null;
     }
@@ -190,8 +189,8 @@ public class VaultEconomy implements Economy {
     @Override
     public EconomyResponse depositPlayer(String s, String s1, double v) {
         SQLPlayer p = SQLPlayer.loadPlayerByName(s).complete();
-        if(p != null){
-            p.addCoins((int)v);
+        if (p != null) {
+            p.addCoins((int) v);
         }
         return null;
     }
@@ -199,8 +198,8 @@ public class VaultEconomy implements Economy {
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String s, double v) {
         SQLPlayer p = new SQLPlayer(offlinePlayer.getUniqueId());
-        if(p != null){
-            p.addCoins((int)v);
+        if (p != null) {
+            p.addCoins((int) v);
         }
         return null;
     }

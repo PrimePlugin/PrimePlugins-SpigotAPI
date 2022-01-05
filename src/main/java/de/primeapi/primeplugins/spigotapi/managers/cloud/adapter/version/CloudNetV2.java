@@ -37,7 +37,7 @@ public class CloudNetV2 implements CloudAdapter {
     @Override
     public int getPlayersOnServer(String name) {
         ServerInfo info = CloudAPI.getInstance().getServerInfo(name);
-        if(info == null) return -1;
+        if (info == null) return -1;
         return info.getOnlineCount();
     }
 

@@ -14,8 +14,8 @@ public class RemoveSubCommand extends SubCommand {
     @Override
     public boolean execute(PrimePlayer p, String[] args) {
         if (!checkPermission(p)) {
-        return true;
-    }
+            return true;
+        }
         if (args.length != 3) {
             p.sendMessage(CoreMessage.COINS_REMOVE_USAGE);
             return true;

@@ -11,18 +11,18 @@ import java.io.IOException;
 public class MessageManager {
 
     private YamlConfiguration cfg;
-    private File file;
+    private final File file;
 
     @SneakyThrows
-    public MessageManager(){
+    public MessageManager() {
         file = new File("plugins/primeplugins/core/messages.yml");
         file.getParentFile().mkdirs();
-        if(!file.exists()) file.createNewFile();
+        if (!file.exists()) file.createNewFile();
         reload();
     }
 
 
-    public void reload(){
+    public void reload() {
         cfg = YamlConfiguration.loadConfiguration(file);
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
             int i = 0;

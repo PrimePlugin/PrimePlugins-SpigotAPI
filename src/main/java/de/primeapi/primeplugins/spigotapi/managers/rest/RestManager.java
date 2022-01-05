@@ -34,23 +34,23 @@ public class RestManager {
 
     private final static String SERVER = "https://cp.primeapi.de/api.php";
 
-    private Set<RestPlugin> plugins = new HashSet<>();
+    private final Set<RestPlugin> plugins = new HashSet<>();
     @Setter
     private boolean checked = false;
 
-    public void registerPlugin(RestPlugin plugin){
+    public void registerPlugin(RestPlugin plugin) {
         plugins.add(plugin);
         checked = false;
         PrimeCore.getInstance().getLogger().log(Level.INFO, "Das Plugin " + plugin.getName() + " wurde registriert!");
     }
 
-    public PluginInfo getPlugininfo(String plugin){
+    public PluginInfo getPlugininfo(String plugin) {
         try {
             String url = SERVER + "?action=plinfo&name=" + plugin;
             InputStream in = new URL(url).openStream();
             String jsonString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
             return new Gson().fromJson(jsonString, PluginInfo.class);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("Info-Anfrage für " + plugin + " fehlgeschlagen: " + ex.getMessage());
             return null;
         }
@@ -77,13 +77,13 @@ public class RestManager {
                 System.out.println("Lizenzüberprüfung fehlgeschlagen: " + element.getAsJsonObject().get("message").getAsString());
                 return false;
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("Lizenzabfrage für " + plugin + " fehlgeschlagen: " + ex.getMessage());
             return true;
         }
     }
 
-    public boolean downloadPlugin(String plugin, String license, String path){
+    public boolean downloadPlugin(String plugin, String license, String path) {
         try {
             String url = SERVER + "?action=download&plugin=" + plugin + "&license=" + license;
             InputStream in = new URL(url).openStream();
@@ -92,7 +92,7 @@ public class RestManager {
             PrimeCore.getInstance().getLogger().log(Level.INFO, element.toString());
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JsonParseException e){
+        } catch (JsonParseException e) {
             try {
                 String url = SERVER + "?action=download&plugin=" + plugin + "&license=" + license;
                 InputStream in = new URL(url).openStream();
@@ -106,7 +106,7 @@ public class RestManager {
         return false;
     }
 
-    public boolean downloadPlugin(String plugin, String license, Class mainClass){
+    public boolean downloadPlugin(String plugin, String license, Class mainClass) {
         try {
             return downloadPlugin(plugin, license, new File(mainClass.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath());
         } catch (URISyntaxException e) {
