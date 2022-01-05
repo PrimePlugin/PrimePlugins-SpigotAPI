@@ -43,11 +43,15 @@ public class ScoreboardManager {
 
     public void sendScoreboard(@Nonnull Player p){
         if(!CoreConfig.getInstance().getBoolean("scoreboard.use")) return;
-        if(CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")){
-            if(CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName())){
-                return;
+        try {
+            if (CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")) {
+                if(!PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_17)) {
+                    if (CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName())) {
+                        return;
+                    }
+                }
             }
-        }
+        }catch (Exception ignored){}
         ScoreboardSettings settings;
         if(!customScoreboard.containsKey(p.getUniqueId())){
             settings = defaultSettings;
