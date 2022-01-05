@@ -14,6 +14,8 @@ public enum MinecraftVersion {
     V1_14("1.14", 6),
     V1_15("1.15", 7),
     V1_16("1.16", 8),
+    V1_17("1.17", 9),
+    V1_18("1.18", 10),
     V_OTHER("Undefined", 100)
     ;
 
