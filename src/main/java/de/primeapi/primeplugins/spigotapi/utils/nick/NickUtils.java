@@ -53,13 +53,7 @@ public class NickUtils {
             Class<?> PACKET_PLAYOUT_ENTITY_SPAWN = PrimeCore.getInstance().getVersionManager().getNMSClass("PacketPlayOutNamedEntitySpawn");
             Constructor<?> PACKET_PLAYOUT_ENTITY_SPAWN_CONST = PACKET_PLAYOUT_ENTITY_SPAWN.getConstructor(HUMAN_PLAYER);
             Object type = PACKET_PLAYOUT_PLAYER_INFO_ENUM_BYSTRING.invoke(null, "REMOVE_PLAYER");
-            System.out.println("---- START CONST PARTS -----");
-            for (Class<?> parameterType : PACKET_PLAYOUT_PLAYER_INFO_CONST.getParameterTypes()) {
-                System.out.println("parameterType.getName() = " + parameterType.getName());
-            }
             Object packetType = PACKET_PLAYOUT_PLAYER_INFO_ENUM_BYSTRING.invoke(null, "REMOVE_PLAYER");
-            System.out.println("packetType = " + packetType.getClass().getName());
-            System.out.println("handle = " + handleArray.getClass().getName());
             Object removePlayerPacket = PACKET_PLAYOUT_PLAYER_INFO_CONST.newInstance(
                     packetType,
                     handleArray
