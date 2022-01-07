@@ -45,7 +45,7 @@ public class ScoreboardManager {
         if (PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_17)) return;
         try {
             if (CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")) {
-                if (CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName())) {
+                if (!Objects.equals(CoreConfig.getInstance().getString("scoreboard.onlyOnState.state"), PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName()))) {
                     return;
                 }
             }
