@@ -39,7 +39,7 @@ public class CoreConfig extends Config {
             saveAddEntry("scoreboard.default.content", scoreboard);
             saveAddEntry("scoreboard.default.applyOnJoin", true);
             saveAddEntry("scoreboard.update.seconds", 5);
-            saveAddEntry("scoreboard.onlyOnState.use", true);
+            saveAddEntry("scoreboard.onlyOnState.use", false);
             saveAddEntry("scoreboard.onlyOnState.state", "LOBBY");
 
             saveAddEntry("prefix.use", true);
