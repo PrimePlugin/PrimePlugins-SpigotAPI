@@ -25,21 +25,6 @@ public class RestPlugin {
         PrimeCore.getInstance().getRestManager().registerPlugin(this);
     }
 
-    /**
-     * @param license The License to be checked
-     * @return Weather or not the license is valid
-     * @deprecated This function will no longer be supported, as there are massive security lacks.
-     * Call a custom http request instead.
-     */
-    public boolean checkLicense(String license) {
-        setLicense(license);
-        try {
-            return PrimeCore.getInstance().getRestManager().validateLicense(license, name);
-        } catch (Exception ex) {
-            return false;
-        }
-    }
-
     public boolean isNewUpdateAvailable() {
         try {
             return PrimeCore.getInstance().getRestManager().getPlugininfo(name).isNeverVersion(plugin.getDescription().getVersion());
@@ -49,8 +34,8 @@ public class RestPlugin {
         return false;
     }
 
-    public void downloadLatestVersion(String path) {
-        PrimeCore.getInstance().getRestManager().downloadPlugin(name, license, path);
+    public boolean downloadLatestVersion(String path) {
+        return PrimeCore.getInstance().getRestManager().downloadPlugin(getPluginInfo(), license, path);
     }
 
     public PluginInfo getPluginInfo() {

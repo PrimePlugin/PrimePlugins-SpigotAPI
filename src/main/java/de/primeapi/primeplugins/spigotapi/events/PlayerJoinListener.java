@@ -56,6 +56,7 @@ public class PlayerJoinListener implements Listener {
                     msg += "§b" + s + "§e, ";
                 }
                 msg += "\n" + "§8[§c§lCoreAPI§8] §7Verwende: /spigotapi update <all|[pluginName]>";
+                e.getPlayer().sendMessage(msg);
             }
             PrimeCore.getInstance().getRestManager().setChecked(true);
         }

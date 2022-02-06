@@ -23,14 +23,4 @@ public class RestCore extends RestPlugin {
     }
 
 
-    @Override
-    public void downloadLatestVersion(String path) {
-        try {
-            String url = "https://cp.primeapi.de/api.php?action=downloadCore&type=spigot";
-            InputStream in = new URL(url).openStream();
-            Files.copy(in, Paths.get(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getPath()), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
 }
