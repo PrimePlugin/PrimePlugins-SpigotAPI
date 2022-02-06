@@ -48,7 +48,7 @@ public class CoreConfig extends Config {
             saveAddEntry("prefix.defaultSuffix", "");
             saveAddEntry("prefix.overrideSuffixClanTags", true);
             saveAddEntry("prefix.clanTagFormat", " §7[§e%tag%§7]");
-            saveAddEntry("prefix.onlyOnState.use", true);
+            saveAddEntry("prefix.onlyOnState.use", false);
             saveAddEntry("prefix.onlyOnState.state", "LOBBY");
 
             saveAddEntry("chatformat.use", true);
