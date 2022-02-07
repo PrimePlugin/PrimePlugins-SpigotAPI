@@ -51,12 +51,12 @@ public class PlayerJoinListener implements Listener {
             }
 
             if (updates.size() >= 1) {
+                update = true;
                 msg = "§8[§c§lCoreAPI§8] §eFür folgende Plugins ist ein update verfügbar: ";
                 for (String s : updates) {
                     msg += "§b" + s + "§e, ";
                 }
                 msg += "\n" + "§8[§c§lCoreAPI§8] §7Verwende: /spigotapi update <all|[pluginName]>";
-                e.getPlayer().sendMessage(msg);
             }
             PrimeCore.getInstance().getRestManager().setChecked(true);
         }
