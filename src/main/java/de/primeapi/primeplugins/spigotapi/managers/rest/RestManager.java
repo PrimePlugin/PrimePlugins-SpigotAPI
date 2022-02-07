@@ -36,7 +36,7 @@ public class RestManager {
 
 //    private final static String SERVER = "https://cp.primeapi.de/api.php";
 
-	private final static String HOST = "https://api.primeapi.de:8084";
+	private final static String HOST = "https://api.primeapi.de";
 
 	private final Set<RestPlugin> plugins = new HashSet<>();
 	@Setter
