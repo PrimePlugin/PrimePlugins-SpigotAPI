@@ -11,13 +11,10 @@ import java.util.stream.Collectors;
 @Getter
 public class ConfigManager {
 
-
     private final List<Config> registeredConfigs;
 
     public ConfigManager() {
         registeredConfigs = new ArrayList<>();
-
-
         {
             File ord = new File("plugins/primeplugins");
             if (!ord.exists()) ord.mkdir();

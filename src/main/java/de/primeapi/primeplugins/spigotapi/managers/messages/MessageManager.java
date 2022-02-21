@@ -21,7 +21,6 @@ public class MessageManager {
         reload();
     }
 
-
     public void reload() {
         cfg = YamlConfiguration.loadConfiguration(file);
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
