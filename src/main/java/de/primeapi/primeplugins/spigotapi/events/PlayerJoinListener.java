@@ -67,10 +67,6 @@ public class PlayerJoinListener implements Listener {
             e.getPlayer().sendMessage(msg);
         }
         MoveListener.lastMove.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
-        if(PrimeCore.getInstance().isDebug()) {
-            Bukkit.broadcastMessage("§8[§cIMPORTANT§8] " +
-                    "Running on TestVersion - " + PrimeCore.getInstance().getDescription().getVersion() + "! Mistake? Contact - dc.primeapi.de");
-        }
     }
 
 }

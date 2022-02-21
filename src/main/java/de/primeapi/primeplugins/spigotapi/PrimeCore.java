@@ -5,7 +5,6 @@ import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.cloudnet.CloudNetAdapter;
 import de.primeapi.primeplugins.spigotapi.api.plugins.coins.CoinsAPI;
-import de.primeapi.primeplugins.spigotapi.api.debug.DEBUG;
 import de.primeapi.primeplugins.spigotapi.api.plugins.friends.FriendsAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.nick.NickAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.perms.PermsAPI;
@@ -67,8 +66,6 @@ public class PrimeCore extends JavaPlugin {
     private CloudManager cloudManager;
     private VersionManager versionManager;
     private boolean mysql;
-    @DEBUG(debug = "IMPORTANT BEFORE RELEASE == false")
-    private boolean debug = true;
 
     @Override
     public void onEnable() {
