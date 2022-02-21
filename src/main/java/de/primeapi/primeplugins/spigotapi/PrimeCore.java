@@ -82,8 +82,7 @@ public class PrimeCore extends JavaPlugin {
         messageManager = new MessageManager();
         configManager = new ConfigManager();
         registerConfigs();
-        getCommand("primecore").setExecutor(new PrimeCoreCommand());
-        getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
+        registerCommands();
         initSql();
         restManager = new RestManager();
         restManager.registerPlugin(new RestCore(this));
@@ -92,24 +91,12 @@ public class PrimeCore extends JavaPlugin {
             return;
         }
         commandsManager = new CommandsManager();
-        clanAPI = new ClanAPI();
-        placeholderAPIManager = new PlaceholderAPIManager();
         scoreboardManager = new ScoreboardManager();
         chatManager = new ChatManager();
-
-
-        coinsAPI = new CoinsAPI();
-        friendsAPI = new FriendsAPI();
-        bungeeAPI = new BungeeAPI();
-        permsAPI = new PermsAPI();
-        nickAPI = new NickAPI();
-
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "prime:primemessaging");
-
+        registerApis();
+        registerChannels();
         vaultManager = new VaultManager();
         cloudManager = new CloudManager();
-
         registerEvents();
     }
 
@@ -126,19 +113,39 @@ public class PrimeCore extends JavaPlugin {
         }
     }
 
+    private void registerChannels() {
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "prime:primemessaging");
+    }
+
+    private void registerApis() {
+        clanAPI = new ClanAPI();
+        placeholderAPIManager = new PlaceholderAPIManager();
+        coinsAPI = new CoinsAPI();
+        friendsAPI = new FriendsAPI();
+        bungeeAPI = new BungeeAPI();
+        permsAPI = new PermsAPI();
+        nickAPI = new NickAPI();
+    }
+
+    private void registerCommands() {
+        getCommand("primecore").setExecutor(new PrimeCoreCommand());
+        getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
+    }
+
     private void registerConfigs() {
         configManager.registerConfig(new AccesDataConfig());
         configManager.registerConfig(new CoreConfig());
     }
 
     private void registerEvents() {
-        PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new PlayerJoinListener(), this);
-        pm.registerEvents(new CoinsChanceListener(), this);
-        pm.registerEvents(new GroupChanceListener(), this);
-        pm.registerEvents(new PlayerQuitListener(), this);
-        pm.registerEvents(new PlayerChatListener(), this);
-        pm.registerEvents(new PlayerMoveEventListener(), this);
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new CoinsChanceListener(), this);
+        pluginManager.registerEvents(new GroupChanceListener(), this);
+        pluginManager.registerEvents(new PlayerQuitListener(), this);
+        pluginManager.registerEvents(new PlayerChatListener(), this);
+        pluginManager.registerEvents(new PlayerMoveEventListener(), this);
     }
 
 
