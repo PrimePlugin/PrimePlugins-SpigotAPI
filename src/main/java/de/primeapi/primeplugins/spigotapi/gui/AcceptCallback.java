@@ -1,4 +1,4 @@
-package de.primeapi.primeplugins.spigotapi.utils;
+package de.primeapi.primeplugins.spigotapi.gui;
 
 import org.bukkit.entity.Player;
 
