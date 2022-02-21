@@ -1,9 +1,9 @@
 package de.primeapi.primeplugins.spigotapi.api.placeholders;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.placeholders.cloud.CloudGroupOnlinePlaceholder;
 import de.primeapi.primeplugins.spigotapi.api.placeholders.cloud.CloudServerOnlinePlaceholder;
+import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

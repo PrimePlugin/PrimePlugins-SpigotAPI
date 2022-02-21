@@ -1,7 +1,6 @@
 package de.primeapi.primeplugins.spigotapi.api.info;
 
-public @interface Info
-{
+public @interface Info {
 
     String info();
 }

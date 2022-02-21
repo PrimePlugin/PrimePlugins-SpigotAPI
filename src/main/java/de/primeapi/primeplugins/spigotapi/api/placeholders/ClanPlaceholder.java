@@ -1,8 +1,8 @@
 package de.primeapi.primeplugins.spigotapi.api.placeholders;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
+import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClan;

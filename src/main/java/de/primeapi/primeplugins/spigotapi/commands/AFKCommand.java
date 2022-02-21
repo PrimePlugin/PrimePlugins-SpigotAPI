@@ -1,7 +1,7 @@
 package de.primeapi.primeplugins.spigotapi.commands;
 
-import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
+import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import org.bukkit.command.Command;

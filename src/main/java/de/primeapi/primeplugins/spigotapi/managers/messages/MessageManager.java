@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class MessageManager {
 
-    private YamlConfiguration cfg;
     private final File file;
+    private YamlConfiguration cfg;
 
     @SneakyThrows
     public MessageManager() {

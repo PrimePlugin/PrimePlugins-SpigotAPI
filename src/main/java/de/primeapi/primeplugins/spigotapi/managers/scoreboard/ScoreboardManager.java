@@ -1,9 +1,9 @@
 package de.primeapi.primeplugins.spigotapi.managers.scoreboard;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
+import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.nick.NickAPI;
-import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.*;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.BPlayerBoard;
@@ -32,7 +32,7 @@ public class ScoreboardManager {
 
     public HashMap<UUID, ScoreboardSettings> customScoreboard;
 
-    public ScoreboardManager(){
+    public ScoreboardManager() {
         defaultSettings = new DefaultScoreboard();
         defaultPrefix = new DefaultPrefixScoreboard();
         customScoreboard = new HashMap<>();
@@ -40,17 +40,17 @@ public class ScoreboardManager {
         startUpdateTick();
     }
 
-    public void sendScoreboard(@Nonnull Player p){
-        if(!CoreConfig.getInstance().getBoolean("scoreboard.use")) return;
-        if(CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")){
-            if(CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName())){
+    public void sendScoreboard(@Nonnull Player p) {
+        if (!CoreConfig.getInstance().getBoolean("scoreboard.use")) return;
+        if (CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")) {
+            if (CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName())) {
                 return;
             }
         }
         ScoreboardSettings settings;
-        if(!customScoreboard.containsKey(p.getUniqueId())){
+        if (!customScoreboard.containsKey(p.getUniqueId())) {
             settings = defaultSettings;
-        }else{
+        } else {
             settings = customScoreboard.get(p.getUniqueId());
         }
 
@@ -61,7 +61,7 @@ public class ScoreboardManager {
 
         List<String> list = settings.apply(p);
 
-        if(bPlayerBoard.getLines().size() != list.size()) {
+        if (bPlayerBoard.getLines().size() != list.size()) {
             bPlayerBoard.clear();
         }
 
@@ -75,10 +75,10 @@ public class ScoreboardManager {
 
     public void sendTeams(@Nonnull Player p) {
         if (!CoreConfig.getInstance().getBoolean("prefix.use")) return;
-        if(CoreConfig.getInstance().getBoolean("prefix.onlyOnState.use")){
+        if (CoreConfig.getInstance().getBoolean("prefix.onlyOnState.use")) {
             String state = PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName());
             String isState = CoreConfig.getInstance().getString("prefix.onlyOnState.state");
-            if(!Objects.equals(state, isState)){
+            if (!Objects.equals(state, isState)) {
                 return;
             }
         }
@@ -99,7 +99,7 @@ public class ScoreboardManager {
         for (ScoreboradTeam team :
                 teams) {
             Team scoreTeam = sb.registerNewTeam(String.format("%03d", i));
-            if(PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_16)){
+            if (PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_16)) {
                 ChatColor chatColor = ChatColor.getByChar(team.getColor().replace("&", "").replace("§", ""));
                 scoreTeam.setPrefix(team.getPrefix());
                 try {
@@ -109,13 +109,13 @@ public class ScoreboardManager {
                 } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                     e.printStackTrace();
                 }
-            }else {
+            } else {
                 scoreTeam.setPrefix(team.getPrefix() + team.getColor());
             }
-            if(CoreConfig.getInstance().getBoolean("prefix.overrideSuffixClanTags") && ClanAPI.getInstance().isOnline()){
-                if(NickAPI.getInstance().isNicked(team.getPlayer())){
+            if (CoreConfig.getInstance().getBoolean("prefix.overrideSuffixClanTags") && ClanAPI.getInstance().isOnline()) {
+                if (NickAPI.getInstance().isNicked(team.getPlayer())) {
                     scoreTeam.setSuffix(team.getSuffix());
-                }else {
+                } else {
                     PrimePlayer primePlayer = new PrimePlayer(team.getPlayer());
                     SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(primePlayer).complete();
                     if (clan != null) {
@@ -124,7 +124,7 @@ public class ScoreboardManager {
                         scoreTeam.setSuffix(team.getSuffix());
                     }
                 }
-            }else {
+            } else {
                 scoreTeam.setSuffix(team.getSuffix());
             }
             scoreTeam.addPlayer(team.getPlayer());
@@ -133,7 +133,7 @@ public class ScoreboardManager {
         p.setScoreboard(sb);
     }
 
-    public void sendTeams(){
+    public void sendTeams() {
         for (Player p :
                 Bukkit.getOnlinePlayers()) {
             sendTeams(p);
@@ -141,14 +141,14 @@ public class ScoreboardManager {
     }
 
 
-    public void sendScoreboard(){
+    public void sendScoreboard() {
         for (Player p :
                 Bukkit.getOnlinePlayers()) {
             sendScoreboard(p);
         }
     }
 
-    private void startUpdateTick(){
+    private void startUpdateTick() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(PrimeCore.getInstance(), () -> {
             try {
                 sendScoreboard();

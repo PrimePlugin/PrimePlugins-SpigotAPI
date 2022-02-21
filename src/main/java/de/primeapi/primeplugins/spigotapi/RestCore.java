@@ -12,6 +12,4 @@ public class RestCore extends RestPlugin {
     public RestCore(PrimeCore plugin) {
         super("SpigotAPI", plugin);
     }
-
-
 }

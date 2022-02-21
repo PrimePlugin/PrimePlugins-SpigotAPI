@@ -27,14 +27,16 @@ public class PluginInfo {
                 try {
                     int oldI = Integer.parseInt(curr[i]);
                     int newI = Integer.parseInt(neww[i]);
-                if (newI > oldI) {
-                    return true;
-                } else if (newI == oldI) {
+                    if (newI > oldI) {
+                        return true;
+                    } else if (newI == oldI) {
+                        continue;
+                    } else {
+                        return false;
+                    }
+                } catch (Exception EX) {
                     continue;
-                } else {
-                    return false;
                 }
-                }catch (Exception EX){continue;}
             }
         }
 

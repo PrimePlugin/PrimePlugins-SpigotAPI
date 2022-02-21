@@ -16,7 +16,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.lang.reflect.Field;
 import java.util.*;
 
-@Getter @AllArgsConstructor
+@Getter
+@AllArgsConstructor
 public class ItemBuilder {
 
 
@@ -46,6 +47,7 @@ public class ItemBuilder {
         this.material = material;
         this.subid = subid;
     }
+
     public ItemBuilder setUnbreakeble(boolean unbreakeble) {
         this.unbreakeble = unbreakeble;
 
@@ -66,9 +68,9 @@ public class ItemBuilder {
 
     public ItemBuilder addLore(String s) {
         List<String> lore;
-        if(this.lore == null){
+        if (this.lore == null) {
             lore = new ArrayList<>();
-        }else{
+        } else {
             lore = this.lore;
         }
 
@@ -78,8 +80,8 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder addEnchantment(Enchantment enchantment, Integer level){
-        enchantments.put(enchantment.getName(),level);
+    public ItemBuilder addEnchantment(Enchantment enchantment, Integer level) {
+        enchantments.put(enchantment.getName(), level);
         return this;
     }
 
@@ -105,6 +107,7 @@ public class ItemBuilder {
         this.skullTexture = skullTexture;
         return this;
     }
+
     public ItemBuilder setSkullTexture(SkullTexture skullTexture) {
         this.skull = true;
         this.skullTexture = skullTexture.getBase64();
@@ -120,14 +123,15 @@ public class ItemBuilder {
         this.amount = amount;
         return this;
     }
+
     public ItemStack build() {
-        if(this.amount == null) this.amount = 1;
-        if(this.damage == null) this.damage = 0;
-        if(this.subid == null) this.subid = 0;
-        if(this.lore == null) this.lore = new LinkedList<>();
+        if (this.amount == null) this.amount = 1;
+        if (this.damage == null) this.damage = 0;
+        if (this.subid == null) this.subid = 0;
+        if (this.lore == null) this.lore = new LinkedList<>();
         ItemStack itemStack = new ItemStack(this.material, this.amount, this.damage, this.subid);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        if(this.name != null) itemMeta.setDisplayName(this.name);
+        if (this.name != null) itemMeta.setDisplayName(this.name);
         itemMeta.setLore(this.lore);
         if (glowing) {
             itemMeta.addEnchant(new Glow(70), 1, true);
@@ -144,7 +148,7 @@ public class ItemBuilder {
         if (this.skull) {
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
             skullMeta.setOwner(this.skullOwner);
-            if(skullTexture != null){
+            if (skullTexture != null) {
                 GameProfile profile = new GameProfile(UUID.randomUUID(), "");
                 profile.getProperties().put("textures", new Property("textures", skullTexture));
                 Field profileField;
@@ -159,7 +163,7 @@ public class ItemBuilder {
             itemStack.setItemMeta(skullMeta);
             return itemStack;
         }
-        if(enchantments != null) {
+        if (enchantments != null) {
             enchantments.forEach((s, integer) -> {
                 itemStack.addUnsafeEnchantment(Enchantment.getByName(s), integer);
             });

@@ -14,10 +14,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public class RestPlugin {
 
+    private final String name;
     public JavaPlugin plugin;
     @Setter
     public String license = "";
-    private final String name;
 
     public RestPlugin(String name, JavaPlugin plugin) {
         this.name = name;

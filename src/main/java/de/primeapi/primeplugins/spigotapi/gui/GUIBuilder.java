@@ -70,6 +70,23 @@ public class GUIBuilder {
         this.inventoryHolder = inventoryHolder;
     }
 
+    //Factory
+    public static AnimationConfiguration createDefaultAnimationConfiguration() {
+        return new AnimationConfiguration(Animation.STAR, 50, Sound.CLICK, Sound.LEVEL_UP);
+    }
+
+    public static AnimationConfiguration createDefaultAnimationConfiguration(Animation animation) {
+        switch (animation) {
+            case LEFT:
+            case LEFT_FILLER:
+            case STAR:
+                return new AnimationConfiguration(animation, 50, Sound.CLICK, Sound.LEVEL_UP);
+            case CLOCKWISE:
+                return new AnimationConfiguration(animation, 10, Sound.CLICK, Sound.LEVEL_UP);
+            default:
+                return new AnimationConfiguration(Animation.STAR, 50, Sound.CLICK, Sound.LEVEL_UP);
+        }
+    }
 
     public GUIBuilder fillInventory(ItemStack itemStack) {
         this.filler = itemStack;
@@ -83,7 +100,8 @@ public class GUIBuilder {
     private GUIBuilder fillNow() {
         for (int i = 0; i < size; i++) {
             if (content[i] == null) {
-                addItem(i, filler, (p, itemStack) -> {});
+                addItem(i, filler, (p, itemStack) -> {
+                });
             }
         }
         return this;
@@ -338,28 +356,28 @@ public class GUIBuilder {
         register(plugin);
     }
 
-    private void register(Plugin plugin){
+    private void register(Plugin plugin) {
         this.listener = new Listener() {
             @EventHandler
-            public void onInventoryClick(InventoryClickEvent e){
-                if(!e.getInventory().equals(inventory)){
+            public void onInventoryClick(InventoryClickEvent e) {
+                if (!e.getInventory().equals(inventory)) {
                     return;
                 }
 
                 e.setCancelled(true);
 
-                if(Objects.isNull(e.getCurrentItem())) return;
-                if(items.containsKey(e.getCurrentItem())){
+                if (Objects.isNull(e.getCurrentItem())) return;
+                if (items.containsKey(e.getCurrentItem())) {
                     items.get(e.getCurrentItem()).onClick((Player) e.getWhoClicked(), e.getCurrentItem());
                     return;
                 }
-                if(Objects.isNull(e.getCurrentItem().getItemMeta())) return;
-                if(Objects.isNull(e.getCurrentItem().getItemMeta().getDisplayName())) return;
-                for (ItemStack itemStack : items.keySet()){
-                    if(Objects.isNull(itemStack)) continue;
-                    if(Objects.isNull(itemStack.getItemMeta())) continue;
-                    if(Objects.isNull(itemStack.getItemMeta().getDisplayName())) continue;
-                    if(itemStack.getItemMeta().getDisplayName().equals(e.getCurrentItem().getItemMeta().getDisplayName())){
+                if (Objects.isNull(e.getCurrentItem().getItemMeta())) return;
+                if (Objects.isNull(e.getCurrentItem().getItemMeta().getDisplayName())) return;
+                for (ItemStack itemStack : items.keySet()) {
+                    if (Objects.isNull(itemStack)) continue;
+                    if (Objects.isNull(itemStack.getItemMeta())) continue;
+                    if (Objects.isNull(itemStack.getItemMeta().getDisplayName())) continue;
+                    if (itemStack.getItemMeta().getDisplayName().equals(e.getCurrentItem().getItemMeta().getDisplayName())) {
                         items.get(itemStack).onClick((Player) e.getWhoClicked(), e.getCurrentItem());
                         return;
                     }
@@ -373,7 +391,8 @@ public class GUIBuilder {
                 if (inventory.equals(e.getInventory())) {
                     if (e.getPlayer() instanceof Player) {
                         if (Objects.nonNull(inventory)) {
-                            if(Objects.nonNull(closeAction)) closeAction.onClose((Player) e.getPlayer(), e.getInventory());
+                            if (Objects.nonNull(closeAction))
+                                closeAction.onClose((Player) e.getPlayer(), e.getInventory());
                             HandlerList.unregisterAll(listener);
                         }
                     }
@@ -383,8 +402,6 @@ public class GUIBuilder {
         };
 
         Bukkit.getPluginManager().registerEvents(listener, plugin);
-
-
 
 
     }
@@ -425,25 +442,6 @@ public class GUIBuilder {
                     return RIGHT;
             }
             return null;
-        }
-    }
-
-
-    //Factory
-    public static AnimationConfiguration createDefaultAnimationConfiguration(){
-        return new AnimationConfiguration(Animation.STAR, 50, Sound.CLICK, Sound.LEVEL_UP);
-    }
-
-    public static AnimationConfiguration createDefaultAnimationConfiguration(Animation animation){
-        switch (animation){
-            case LEFT:
-            case LEFT_FILLER:
-            case STAR:
-                return new AnimationConfiguration(animation, 50, Sound.CLICK, Sound.LEVEL_UP);
-            case CLOCKWISE:
-                return new AnimationConfiguration(animation, 10, Sound.CLICK, Sound.LEVEL_UP);
-            default:
-                return new AnimationConfiguration(Animation.STAR, 50, Sound.CLICK, Sound.LEVEL_UP);
         }
     }
 

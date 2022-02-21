@@ -51,8 +51,8 @@ public class SQLClan {
 
     public DatabaseTask<String> getName() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> PrimeCore.getInstance().getDb().select(
-                        "SELECT name FROM prime_clan_clans WHERE id = ?"
-                )
+                "SELECT name FROM prime_clan_clans WHERE id = ?"
+        )
                 .parameters(id)
                 .getAs(String.class).toBlocking().singleOrDefault(null)));
     }

@@ -1,13 +1,13 @@
 package de.primeapi.primeplugins.spigotapi;
 
 import com.github.davidmoten.rx.jdbc.Database;
+import de.primeapi.primeplugins.spigotapi.api.placeholders.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.coins.CoinsAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.friends.FriendsAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.nick.NickAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.perms.PermsAPI;
-import de.primeapi.primeplugins.spigotapi.api.placeholders.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
 import de.primeapi.primeplugins.spigotapi.managers.chat.ChatManager;
@@ -39,11 +39,6 @@ import java.util.logging.Level;
 public class PrimeCore extends JavaPlugin {
 
     private static PrimeCore instance;
-
-    public static PrimeCore getInstance() {
-        return instance;
-    }
-
     private MessageManager messageManager;
     private ConfigManager configManager;
     private Connection connection;
@@ -64,6 +59,10 @@ public class PrimeCore extends JavaPlugin {
     private CloudManager cloudManager;
     private VersionManager versionManager;
     private boolean mysql;
+
+    public static PrimeCore getInstance() {
+        return instance;
+    }
 
     @Override
     public void onEnable() {

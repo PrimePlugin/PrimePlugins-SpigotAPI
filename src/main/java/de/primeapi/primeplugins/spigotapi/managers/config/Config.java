@@ -13,9 +13,9 @@ public abstract class Config {
     @Getter
     private final String name;
     @Getter
-    private YamlConfiguration configuration;
-    @Getter
     private final File file;
+    @Getter
+    private YamlConfiguration configuration;
 
 
     public Config(String name, String pathname) {

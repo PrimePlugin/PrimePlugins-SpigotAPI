@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.plugins.Skin;
-import de.primeapi.primeplugins.spigotapi.api.plugins.nick.NickAPI;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.NMS;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

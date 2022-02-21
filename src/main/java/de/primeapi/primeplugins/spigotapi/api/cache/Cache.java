@@ -11,8 +11,8 @@ import java.util.HashMap;
  */
 public class Cache<K, V> {
 
-    public long timeout;
     private final HashMap<K, CashedItem<V>> map = new HashMap<>();
+    public long timeout;
 
     /**
      * @param timeout Specifies a timeout in milliseconds after which the value will not be stored anymore. Use -1 for infinite

@@ -22,10 +22,9 @@ public class NickAPI {
 
     private static NickAPI instance;
     private final String nickworldName = "NickWorld";
-    boolean online;
     private final Cache<UUID, Boolean> isNicked = new Cache<>();
-
     private final HashMap<UUID, String> nickedGroup = new HashMap<>();
+    boolean online;
 
     public NickAPI() {
         instance = this;

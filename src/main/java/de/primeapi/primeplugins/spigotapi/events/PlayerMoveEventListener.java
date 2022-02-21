@@ -24,10 +24,10 @@ import java.util.UUID;
 public class PlayerMoveEventListener implements Listener {
 
     public static HashMap<UUID, Long> lastMove = new HashMap<>();
+    private final Set<UUID> blocked = new HashSet<>();
     boolean active = false;
     int sec;
     int delay;
-    private final Set<UUID> blocked = new HashSet<>();
 
     public PlayerMoveEventListener() {
         active = (BungeeAPI.getInstance().isOnline() && CoreConfig.getInstance().getBoolean("autoafk.use"));
