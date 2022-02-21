@@ -1,4 +1,4 @@
-package de.primeapi.primeplugins.spigotapi.api;
+package de.primeapi.primeplugins.spigotapi.api.plugins.bungee;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import lombok.Getter;
@@ -30,9 +30,9 @@ public class BungeeAPI {
             throwables.printStackTrace();
         }
         if (online) {
-            PrimeCore.getInstance().getLogger().log(Level.INFO, " BungeeSystemAPI wurde geladen");
+            PrimeCore.getInstance().getLogger().log(Level.INFO, "BungeeSystemAPI wurde geladen");
         } else {
-            PrimeCore.getInstance().getLogger().log(Level.INFO, " BungeeSystemAPI wurde NICHT geladen");
+            PrimeCore.getInstance().getLogger().log(Level.INFO, "BungeeSystemAPI wurde NICHT geladen");
         }
     }
 
