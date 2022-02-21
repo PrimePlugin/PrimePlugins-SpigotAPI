@@ -1,11 +1,17 @@
 package de.primeapi.primeplugins.spigotapi;
 
 import com.github.davidmoten.rx.jdbc.Database;
-import de.primeapi.primeplugins.spigotapi.api.*;
+import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
+import de.primeapi.primeplugins.spigotapi.api.cloudnet.CloudNetAdapter;
+import de.primeapi.primeplugins.spigotapi.api.plugins.coins.CoinsAPI;
+import de.primeapi.primeplugins.spigotapi.api.debug.DEBUG;
+import de.primeapi.primeplugins.spigotapi.api.plugins.friends.FriendsAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.nick.NickAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.perms.PermsAPI;
+import de.primeapi.primeplugins.spigotapi.api.placeholders.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
-import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
-import de.primeapi.primeplugins.spigotapi.managers.api.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.managers.chat.ChatManager;
 import de.primeapi.primeplugins.spigotapi.managers.cloud.CloudManager;
 import de.primeapi.primeplugins.spigotapi.managers.commands.CommandsManager;
@@ -18,6 +24,7 @@ import de.primeapi.primeplugins.spigotapi.managers.scoreboard.ScoreboardManager;
 import de.primeapi.primeplugins.spigotapi.managers.vault.VaultManager;
 import de.primeapi.primeplugins.spigotapi.managers.versions.VersionManager;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -34,6 +41,11 @@ import java.util.logging.Level;
 public class PrimeCore extends JavaPlugin {
 
     private static PrimeCore instance;
+
+    public static PrimeCore getInstance() {
+        return instance;
+    }
+
     private MessageManager messageManager;
     private ConfigManager configManager;
     private Connection connection;
@@ -55,10 +67,8 @@ public class PrimeCore extends JavaPlugin {
     private CloudManager cloudManager;
     private VersionManager versionManager;
     private boolean mysql;
-
-    public static PrimeCore getInstance() {
-        return instance;
-    }
+    @DEBUG(debug = "IMPORTANT BEFORE RELEASE == false")
+    private boolean debug = true;
 
     @Override
     public void onEnable() {
@@ -109,15 +119,16 @@ public class PrimeCore extends JavaPlugin {
         registerEvents();
     }
 
+    @SneakyThrows
     @Override
     public void onDisable() {
-        try {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                getNickAPI().removeFromDatabase(player);
+        if (getConnection() != null) {
+            if (getNickAPI().isOnline()) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    getNickAPI().removeFromDatabase(player);
+                }
             }
             getConnection().close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 

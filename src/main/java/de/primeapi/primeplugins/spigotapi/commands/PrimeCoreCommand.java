@@ -2,8 +2,8 @@ package de.primeapi.primeplugins.spigotapi.commands;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
-import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
-import de.primeapi.primeplugins.spigotapi.api.debugmessage.DebugMessage;
+import de.primeapi.primeplugins.spigotapi.api.plugin.RestPlugin;
+import de.primeapi.primeplugins.spigotapi.managers.debugmessage.DebugMessage;
 import de.primeapi.primeplugins.spigotapi.managers.rest.PluginInfo;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

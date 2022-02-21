@@ -2,9 +2,10 @@ package de.primeapi.primeplugins.spigotapi.events;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
-import de.primeapi.primeplugins.spigotapi.api.RestPlugin;
+import de.primeapi.primeplugins.spigotapi.api.plugin.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -24,6 +25,7 @@ public class PlayerJoinListener implements Listener {
                 sqlPlayer.updateName(e.getPlayer().getName());
             });
         }
+
         PrimePlayer p = new PrimePlayer(e.getPlayer());
 
         if (CoreConfig.getInstance().getBoolean("scoreboard.default.applyOnJoin")) {
@@ -65,6 +67,10 @@ public class PlayerJoinListener implements Listener {
             e.getPlayer().sendMessage(msg);
         }
         MoveListener.lastMove.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+        if(PrimeCore.getInstance().isDebug()) {
+            Bukkit.broadcastMessage("§8[§cIMPORTANT§8] " +
+                    "Running on TestVersion - " + PrimeCore.getInstance().getDescription().getVersion() + "! Mistake? Contact - dc.primeapi.de");
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 package de.primeapi.primeplugins.spigotapi.managers.vault;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.api.PermsAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.perms.PermsAPI;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

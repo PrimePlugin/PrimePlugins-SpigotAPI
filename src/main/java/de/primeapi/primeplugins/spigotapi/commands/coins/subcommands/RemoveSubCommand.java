@@ -1,7 +1,7 @@
 package de.primeapi.primeplugins.spigotapi.commands.coins.subcommands;
 
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
-import de.primeapi.primeplugins.spigotapi.api.SubCommand;
+import de.primeapi.primeplugins.spigotapi.api.command.SubCommand;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
 import de.primeapi.primeplugins.spigotapi.utils.PrimeUtils;

@@ -1,7 +1,7 @@
 package de.primeapi.primeplugins.spigotapi.managers.vault;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.api.PermsAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.perms.PermsAPI;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 
 import java.util.logging.Level;
