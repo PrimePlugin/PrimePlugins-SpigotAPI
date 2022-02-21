@@ -1,4 +1,4 @@
-package de.primeapi.primeplugins.spigotapi.utils;
+package de.primeapi.primeplugins.spigotapi.gui;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
