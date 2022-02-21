@@ -22,6 +22,6 @@ public class CloudGroupOnlinePlaceholder extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player p, String params) {
-        return String.valueOf(PrimeCore.getInstance().getCloudNetAdapter().getPlayersInGroup(params));
+        return String.valueOf(PrimeCore.getInstance().getCloudManager().getPlayersInGroup(params));
     }
 }
