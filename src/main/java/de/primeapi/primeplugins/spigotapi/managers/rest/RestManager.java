@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mashape.unirest.http.Unirest;
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
+import de.primeapi.primeplugins.spigotapi.api.info.Info;
 import de.primeapi.primeplugins.spigotapi.api.plugin.RestPlugin;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +30,7 @@ import java.util.logging.Level;
 @Getter
 public class RestManager {
 
-//    private final static String SERVER = "https://cp.primeapi.de/api.php";
-
+	@Info(info = "https://cp.primeapi.de/api.php")
 	private final static String HOST = "https://api.primeapi.de";
 
 	private final Set<RestPlugin> plugins = new HashSet<>();
