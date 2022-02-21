@@ -5,7 +5,6 @@ import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.api.plugin.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -66,7 +65,7 @@ public class PlayerJoinListener implements Listener {
         if (update && e.getPlayer().hasPermission("primeplugins.update")) {
             e.getPlayer().sendMessage(msg);
         }
-        MoveListener.lastMove.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+        PlayerMoveEventListener.lastMove.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
     }
 
 }

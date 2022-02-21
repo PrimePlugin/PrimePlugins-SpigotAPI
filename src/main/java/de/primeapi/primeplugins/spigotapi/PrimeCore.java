@@ -141,7 +141,7 @@ public class PrimeCore extends JavaPlugin {
         pm.registerEvents(new GroupChanceListener(), this);
         pm.registerEvents(new PlayerQuitListener(), this);
         pm.registerEvents(new PlayerChatListener(), this);
-        pm.registerEvents(new MoveListener(), this);
+        pm.registerEvents(new PlayerMoveEventListener(), this);
     }
 
 

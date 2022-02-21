@@ -21,7 +21,7 @@ import java.util.UUID;
  * created on 02.06.2021
  * crated for PrimePlugins
  */
-public class MoveListener implements Listener {
+public class PlayerMoveEventListener implements Listener {
 
     public static HashMap<UUID, Long> lastMove = new HashMap<>();
     boolean active = false;
@@ -29,7 +29,7 @@ public class MoveListener implements Listener {
     int delay;
     private final Set<UUID> blocked = new HashSet<>();
 
-    public MoveListener() {
+    public PlayerMoveEventListener() {
         active = (BungeeAPI.getInstance().isOnline() && CoreConfig.getInstance().getBoolean("autoafk.use"));
         if (active) {
             sec = CoreConfig.getInstance().getInt("autoafk.detect.seconds");
