@@ -3,7 +3,6 @@ package de.primeapi.primeplugins.spigotapi;
 import com.github.davidmoten.rx.jdbc.Database;
 import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
-import de.primeapi.primeplugins.spigotapi.api.cloudnet.CloudNetAdapter;
 import de.primeapi.primeplugins.spigotapi.api.plugins.coins.CoinsAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.friends.FriendsAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.nick.NickAPI;
@@ -53,7 +52,6 @@ public class PrimeCore extends JavaPlugin {
     private PlaceholderAPIManager placeholderAPIManager;
     private ScoreboardManager scoreboardManager;
     private ChatManager chatManager;
-    private CloudNetAdapter cloudNetAdapter;
     private Database db;
     private ClanAPI clanAPI;
     private CoinsAPI coinsAPI;
@@ -94,7 +92,6 @@ public class PrimeCore extends JavaPlugin {
             return;
         }
         commandsManager = new CommandsManager();
-        cloudNetAdapter = new CloudNetAdapter();
         clanAPI = new ClanAPI();
         placeholderAPIManager = new PlaceholderAPIManager();
         scoreboardManager = new ScoreboardManager();
