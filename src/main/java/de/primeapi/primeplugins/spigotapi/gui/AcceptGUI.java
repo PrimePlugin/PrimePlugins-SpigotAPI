@@ -2,8 +2,7 @@ package de.primeapi.primeplugins.spigotapi.gui;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
-import gui.GUIBuilder;
-import gui.itembuilder.ItemBuilder;
+import de.primeapi.primeplugins.spigotapi.gui.itembuilder.ItemBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

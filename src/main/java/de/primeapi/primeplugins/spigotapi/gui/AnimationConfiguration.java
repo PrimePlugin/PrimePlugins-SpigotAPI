@@ -1,4 +1,4 @@
-package gui;
+package de.primeapi.primeplugins.spigotapi.gui;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

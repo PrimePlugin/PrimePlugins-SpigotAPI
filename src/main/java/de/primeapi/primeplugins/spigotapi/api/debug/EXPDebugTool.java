@@ -24,7 +24,8 @@ public class EXPDebugTool {
 
     public void executeTestMethode(String methode, Object... object) {
         if(PrimeCore.getInstance().isDebug()) {
-            Bukkit.broadcastMessage("§8[Debug§8] §e" + methode + " was executed! " + "\n§8[§eValue§8] §8->§7 " + object + "\n§8[§eInt§8] §c" + DebugUtils.cache(methode));
+            int i = DebugUtils.cache(methode);
+            Bukkit.broadcastMessage("§8[Debug§8] §e" + methode + " was executed! " + "\n§8[§eValue§8] §8->§7 " + object + "\n§8[§eInt§8] §c" + i);
         }
     }
 

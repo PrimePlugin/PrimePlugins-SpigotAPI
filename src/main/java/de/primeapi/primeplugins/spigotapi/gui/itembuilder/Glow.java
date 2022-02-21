@@ -1,4 +1,4 @@
-package gui.itembuilder;
+package de.primeapi.primeplugins.spigotapi.gui.itembuilder;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;

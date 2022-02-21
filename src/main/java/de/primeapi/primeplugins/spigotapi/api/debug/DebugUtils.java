@@ -20,6 +20,7 @@ public class DebugUtils {
             int i = stringIntegerHashMap.get(s);
             stringIntegerHashMap.remove(s);
             stringIntegerHashMap.put(s, i++);
+            System.out.println(i++);
             return stringIntegerHashMap.get(s);
         } else {
             stringIntegerHashMap.put(s, 1);

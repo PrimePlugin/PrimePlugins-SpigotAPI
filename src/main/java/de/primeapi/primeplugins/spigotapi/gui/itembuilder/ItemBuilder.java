@@ -1,11 +1,10 @@
-package gui.itembuilder;
+package de.primeapi.primeplugins.spigotapi.gui.itembuilder;
 
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

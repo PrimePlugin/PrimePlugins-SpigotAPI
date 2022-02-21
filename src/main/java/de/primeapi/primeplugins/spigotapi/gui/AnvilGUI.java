@@ -17,9 +17,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 
-/**
- * Created by chasechocolate.
- */
 public class AnvilGUI {
     private Player player;
     private AnvilClickEventHandler handler;
