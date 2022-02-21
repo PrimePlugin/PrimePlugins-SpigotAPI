@@ -22,6 +22,6 @@ public class CloudServerOnlinePlaceholder extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player p, String params) {
-        return String.valueOf(PrimeCore.getInstance().getCloudNetAdapter().getPlayersOnServer(params));
+        return String.valueOf(PrimeCore.getInstance().getCloudManager().getPlayersOnServer(params));
     }
 }
