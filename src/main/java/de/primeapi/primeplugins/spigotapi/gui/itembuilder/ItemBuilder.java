@@ -126,19 +126,6 @@ public class ItemBuilder {
         return this;
     }
 
-    public net.minecraft.server.v1_8_R3.ItemStack buildSkull() {
-        if(!ItemUtils.getSkullCache().containsKey(skullOwner)) {
-            ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-            SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
-            skullMeta.setOwner(skullOwner);
-            head.setItemMeta(skullMeta);
-            ItemUtils.getSkullCache().put(skullOwner, CraftItemStack.asNMSCopy(head));
-            return CraftItemStack.asNMSCopy(head);
-        } else {
-            return ItemUtils.getSkullCache().get(skullOwner);
-        }
-    }
-
     public ItemStack build() {
         if (this.amount == null) this.amount = 1;
         if (this.damage == null) this.damage = 0;
@@ -164,7 +151,6 @@ public class ItemBuilder {
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
             skullMeta.setOwner(this.skullOwner);
             if (skullTexture != null) {
-
                 GameProfile profile = new GameProfile(UUID.randomUUID(), "");
                 profile.getProperties().put("textures", new Property("textures", skullTexture));
                 Field profileField;
