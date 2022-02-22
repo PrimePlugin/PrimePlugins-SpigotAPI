@@ -2,6 +2,7 @@ package de.primeapi.primeplugins.spigotapi;
 
 import com.github.davidmoten.rx.jdbc.Database;
 import de.primeapi.primeplugins.spigotapi.api.placeholders.PlaceholderAPIManager;
+import de.primeapi.primeplugins.spigotapi.api.plugin.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.coins.CoinsAPI;
@@ -75,16 +76,14 @@ public class PrimeCore extends JavaPlugin {
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("---------------[ PrimeAPI | core ]---------------");
 
-
         versionManager = new VersionManager();
-
         messageManager = new MessageManager();
         configManager = new ConfigManager();
         registerConfigs();
         registerCommands();
         initSql();
         restManager = new RestManager();
-        restManager.registerPlugin(new RestCore(this));
+        new RestPlugin("SpigotAPI", this);
         if (!mysql) {
             Bukkit.getPluginManager().registerEvents(new InvalidListener("§4§lFehler: §cDie MySQL Verbindung ist Fehlerhaft!"), this);
             return;
