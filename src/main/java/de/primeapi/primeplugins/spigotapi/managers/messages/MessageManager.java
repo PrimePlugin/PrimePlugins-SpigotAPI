@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class MessageManager {
 
-    private YamlConfiguration cfg;
     private final File file;
+    private YamlConfiguration cfg;
 
     @SneakyThrows
     public MessageManager() {
@@ -20,7 +20,6 @@ public class MessageManager {
         if (!file.exists()) file.createNewFile();
         reload();
     }
-
 
     public void reload() {
         cfg = YamlConfiguration.loadConfiguration(file);

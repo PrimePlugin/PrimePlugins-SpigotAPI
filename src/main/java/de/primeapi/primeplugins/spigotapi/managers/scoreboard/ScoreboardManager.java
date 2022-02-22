@@ -1,9 +1,9 @@
 package de.primeapi.primeplugins.spigotapi.managers.scoreboard;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.api.ClanAPI;
-import de.primeapi.primeplugins.spigotapi.api.NickAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
+import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.nick.NickAPI;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.*;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.objects.utils.BPlayerBoard;
@@ -42,14 +42,10 @@ public class ScoreboardManager {
 
     public void sendScoreboard(@Nonnull Player p) {
         if (!CoreConfig.getInstance().getBoolean("scoreboard.use")) return;
-        if (PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_17)) return;
-        try {
-            if (CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")) {
-                if (!Objects.equals(CoreConfig.getInstance().getString("scoreboard.onlyOnState.state"), PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName()))) {
-                    return;
-                }
+        if (CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")) {
+            if (CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName())) {
+                return;
             }
-        } catch (Exception ignored) {
         }
         ScoreboardSettings settings;
         if (!customScoreboard.containsKey(p.getUniqueId())) {
@@ -79,7 +75,7 @@ public class ScoreboardManager {
 
     public void sendTeams(@Nonnull Player p) {
         if (!CoreConfig.getInstance().getBoolean("prefix.use")) return;
-        if (CoreConfig.getInstance().getBoolean("prefix.onlyOnState.use") && !PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_17)) {
+        if (CoreConfig.getInstance().getBoolean("prefix.onlyOnState.use")) {
             String state = PrimeCore.getInstance().getCloudManager().getServerState(Bukkit.getServerName());
             String isState = CoreConfig.getInstance().getString("prefix.onlyOnState.state");
             if (!Objects.equals(state, isState)) {

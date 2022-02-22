@@ -22,8 +22,8 @@ public class PlayerParty {
     public DatabaseTask<List<SQLPlayer>> getPlayers(boolean inludeOwner) {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             List<String> stringList = PrimeCore.getInstance().getDb().select(
-                            "SELECT uuid FROM prime_bungee_online WHERE party = ?"
-                    ).parameters(owner.toString())
+                    "SELECT uuid FROM prime_bungee_online WHERE party = ?"
+            ).parameters(owner.toString())
                     .getAs(String.class)
                     .toList().toBlocking().singleOrDefault(new ArrayList<>());
             return stringList.stream()

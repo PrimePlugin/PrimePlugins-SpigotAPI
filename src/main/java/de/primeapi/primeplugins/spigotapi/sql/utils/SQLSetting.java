@@ -20,8 +20,8 @@ public enum SQLSetting {
     public DatabaseTask<String> getValue() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
             String s = PrimeCore.getInstance().getDb().select(
-                            "SELECT value FROM prime_bungee_settings WHERE identifier = ?"
-                    ).parameters(this.toString()).getAs(String.class)
+                    "SELECT value FROM prime_bungee_settings WHERE identifier = ?"
+            ).parameters(this.toString()).getAs(String.class)
                     .toBlocking().singleOrDefault(null);
             if (s == null) return standardValue;
             else return s;
@@ -31,8 +31,8 @@ public enum SQLSetting {
     public void setValue(String value) {
         PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
             String s = PrimeCore.getInstance().getDb().select(
-                            "SELECT value FROM prime_bungee_settings WHERE identifier = ?"
-                    ).parameters(this.toString()).getAs(String.class)
+                    "SELECT value FROM prime_bungee_settings WHERE identifier = ?"
+            ).parameters(this.toString()).getAs(String.class)
                     .toBlocking().singleOrDefault(null);
             if (s == null) {
                 PrimeCore.getInstance().getDb().update(

@@ -1,11 +1,15 @@
 package de.primeapi.primeplugins.spigotapi;
 
 import com.github.davidmoten.rx.jdbc.Database;
-import de.primeapi.primeplugins.spigotapi.api.*;
+import de.primeapi.primeplugins.spigotapi.api.placeholders.PlaceholderAPIManager;
+import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.clan.ClanAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.coins.CoinsAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.friends.FriendsAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.nick.NickAPI;
+import de.primeapi.primeplugins.spigotapi.api.plugins.perms.PermsAPI;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
-import de.primeapi.primeplugins.spigotapi.managers.api.CloudNetAdapter;
-import de.primeapi.primeplugins.spigotapi.managers.api.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.managers.chat.ChatManager;
 import de.primeapi.primeplugins.spigotapi.managers.cloud.CloudManager;
 import de.primeapi.primeplugins.spigotapi.managers.commands.CommandsManager;
@@ -18,6 +22,7 @@ import de.primeapi.primeplugins.spigotapi.managers.scoreboard.ScoreboardManager;
 import de.primeapi.primeplugins.spigotapi.managers.vault.VaultManager;
 import de.primeapi.primeplugins.spigotapi.managers.versions.VersionManager;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -42,7 +47,6 @@ public class PrimeCore extends JavaPlugin {
     private PlaceholderAPIManager placeholderAPIManager;
     private ScoreboardManager scoreboardManager;
     private ChatManager chatManager;
-    private CloudNetAdapter cloudNetAdapter;
     private Database db;
     private ClanAPI clanAPI;
     private CoinsAPI coinsAPI;
@@ -77,8 +81,7 @@ public class PrimeCore extends JavaPlugin {
         messageManager = new MessageManager();
         configManager = new ConfigManager();
         registerConfigs();
-        getCommand("primecore").setExecutor(new PrimeCoreCommand());
-        getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
+        registerCommands();
         initSql();
         restManager = new RestManager();
         restManager.registerPlugin(new RestCore(this));
@@ -87,38 +90,46 @@ public class PrimeCore extends JavaPlugin {
             return;
         }
         commandsManager = new CommandsManager();
-        cloudNetAdapter = new CloudNetAdapter();
-        clanAPI = new ClanAPI();
-        placeholderAPIManager = new PlaceholderAPIManager();
         scoreboardManager = new ScoreboardManager();
         chatManager = new ChatManager();
+        registerApis();
+        registerChannels();
+        vaultManager = new VaultManager();
+        cloudManager = new CloudManager();
+        registerEvents();
+    }
 
+    @SneakyThrows
+    @Override
+    public void onDisable() {
+        if (getConnection() != null) {
+            if (getNickAPI().isOnline()) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    getNickAPI().removeFromDatabase(player);
+                }
+            }
+            getConnection().close();
+        }
+    }
 
+    private void registerChannels() {
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "prime:primemessaging");
+    }
+
+    private void registerApis() {
+        clanAPI = new ClanAPI();
+        placeholderAPIManager = new PlaceholderAPIManager();
         coinsAPI = new CoinsAPI();
         friendsAPI = new FriendsAPI();
         bungeeAPI = new BungeeAPI();
         permsAPI = new PermsAPI();
         nickAPI = new NickAPI();
-
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "prime:primemessaging");
-
-        vaultManager = new VaultManager();
-        cloudManager = new CloudManager();
-
-        registerEvents();
     }
 
-    @Override
-    public void onDisable() {
-        try {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                getNickAPI().removeFromDatabase(player);
-            }
-            getConnection().close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    private void registerCommands() {
+        getCommand("primecore").setExecutor(new PrimeCoreCommand());
+        getCommand("spigotapi").setExecutor(new PrimeCoreCommand());
     }
 
     private void registerConfigs() {
@@ -127,13 +138,13 @@ public class PrimeCore extends JavaPlugin {
     }
 
     private void registerEvents() {
-        PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new PlayerJoinListener(), this);
-        pm.registerEvents(new CoinsChanceListener(), this);
-        pm.registerEvents(new GroupChanceListener(), this);
-        pm.registerEvents(new PlayerQuitListener(), this);
-        pm.registerEvents(new PlayerChatListener(), this);
-        pm.registerEvents(new MoveListener(), this);
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new CoinsChanceListener(), this);
+        pluginManager.registerEvents(new GroupChanceListener(), this);
+        pluginManager.registerEvents(new PlayerQuitListener(), this);
+        pluginManager.registerEvents(new PlayerChatListener(), this);
+        pluginManager.registerEvents(new PlayerMoveEventListener(), this);
     }
 
 

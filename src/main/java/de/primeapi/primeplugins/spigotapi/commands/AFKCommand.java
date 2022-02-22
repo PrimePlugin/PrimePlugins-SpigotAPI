@@ -1,7 +1,7 @@
 package de.primeapi.primeplugins.spigotapi.commands;
 
-import de.primeapi.primeplugins.spigotapi.api.BungeeAPI;
 import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
+import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
 import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import org.bukkit.command.Command;
@@ -23,7 +23,7 @@ public class AFKCommand implements CommandExecutor {
         PrimePlayer p = new PrimePlayer((Player) commandSender);
 
         if (!BungeeAPI.getInstance().isOnline()) {
-            p.thePlayer().sendMessage("§cDiese Funktion ist nur mit dem BungeeSystem kompatibel!");
+            p.thePlayer().sendMessage("§bSystem §7● §cDiese Funktion ist nur mit dem BungeeSystem kompatibel!");
             return true;
         }
 

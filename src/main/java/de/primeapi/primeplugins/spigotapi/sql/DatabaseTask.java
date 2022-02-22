@@ -11,7 +11,7 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class DatabaseTask<T> {
 
-    private CompletableFuture<T> future;
+    private final CompletableFuture<T> future;
 
     /**
      * Runs the consumer async as soon as the Database returns a value

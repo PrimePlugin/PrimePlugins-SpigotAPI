@@ -99,7 +99,7 @@ public class CloudManager implements CloudAdapter {
             case SIMPLECLOUD:
                 return new SimpleCloud().getServerState(name);
             default:
-                return null;
+                return Bukkit.getServer().getName();
         }
     }
 
