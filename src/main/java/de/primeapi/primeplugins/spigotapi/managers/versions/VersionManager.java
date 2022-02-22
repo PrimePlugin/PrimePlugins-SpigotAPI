@@ -1,7 +1,10 @@
 package de.primeapi.primeplugins.spigotapi.managers.versions;
 
+import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+
+import java.util.logging.Level;
 
 @Getter
 public class VersionManager {
@@ -22,7 +25,7 @@ public class VersionManager {
             currentVersion = MinecraftVersion.V_OTHER;
         }
         nmsVersion = Bukkit.getServer().getClass().getPackage().getName().substring(23);
-        System.out.println("Registered Minecraft-Version: " + currentVersion);
+        PrimeCore.getInstance().getLogger().log(Level.INFO, "Registered Minecraft-Version: " + currentVersion.getName());
     }
 
     public Class<?> getNMSClass(String name) throws ClassNotFoundException {
