@@ -11,7 +11,6 @@ import de.primeapi.primeplugins.spigotapi.api.plugins.nick.NickAPI;
 import de.primeapi.primeplugins.spigotapi.api.plugins.perms.PermsAPI;
 import de.primeapi.primeplugins.spigotapi.commands.PrimeCoreCommand;
 import de.primeapi.primeplugins.spigotapi.events.*;
-import de.primeapi.primeplugins.spigotapi.gui.itembuilder.SkullBuilder;
 import de.primeapi.primeplugins.spigotapi.managers.chat.ChatManager;
 import de.primeapi.primeplugins.spigotapi.managers.cloud.CloudManager;
 import de.primeapi.primeplugins.spigotapi.managers.commands.CommandsManager;
@@ -77,8 +76,6 @@ public class PrimeCore extends JavaPlugin {
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("---------------[ PrimeAPI | core ]---------------");
 
-
-        SkullBuilder.startCacheClear(this);
         versionManager = new VersionManager();
         messageManager = new MessageManager();
         configManager = new ConfigManager();
@@ -147,6 +144,7 @@ public class PrimeCore extends JavaPlugin {
         pluginManager.registerEvents(new PlayerQuitListener(), this);
         pluginManager.registerEvents(new PlayerChatListener(), this);
         pluginManager.registerEvents(new PlayerMoveEventListener(), this);
+
     }
 
 

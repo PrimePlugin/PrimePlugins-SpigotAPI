@@ -3,13 +3,13 @@ package de.primeapi.primeplugins.spigotapi.gui.itembuilder;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -18,12 +18,12 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.lang.reflect.Field;
 import java.util.*;
 
+@Setter
 @Getter
 @AllArgsConstructor
 public class ItemBuilder {
 
 
-    //vars
     Material material;
     Integer amount;
     Short damage;
