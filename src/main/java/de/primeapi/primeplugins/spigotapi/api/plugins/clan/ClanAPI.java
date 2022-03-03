@@ -59,6 +59,15 @@ public class ClanAPI {
         }));
     }
 
+    public DatabaseTask<String> getClanColorFromPlayer(@NonNull SQLPlayer sqlPlayer) {
+        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+            if(!online) return null;
+            SQLPlayerAllocation sqlPlayerAllocation = SQLPlayerAllocation.fromPlayer(sqlPlayer).complete();
+            if(sqlPlayerAllocation == null) return "§e";
+            return sqlPlayerAllocation.getClan().complete().getColor().complete();
+        }));
+    }
+
     /**
      * Inserts a clan into the Database
      *
