@@ -12,13 +12,13 @@ public class PlayerChatListener implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        PrimePlayer p = new PrimePlayer(e.getPlayer());
+        PrimePlayer primePlayer = PrimePlayer.fromPlayer(e.getPlayer());
         if (CoreConfig.getInstance().getBoolean("chatformat.use")) {
             String s = e.getMessage();
-            if (p.hasPermission("chat.color")) {
+            if (primePlayer.hasPermission("chat.color")) {
                 s = ChatColor.translateAlternateColorCodes('&', s);
             }
-            e.setFormat(PrimeCore.getInstance().getChatManager().format(p, s));
+            e.setFormat(PrimeCore.getInstance().getChatManager().format(primePlayer, s));
         }
     }
 

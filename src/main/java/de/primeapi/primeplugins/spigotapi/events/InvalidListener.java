@@ -13,17 +13,16 @@ public class InvalidListener implements Listener {
     String message;
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        e.getPlayer().sendMessage(message);
-        e.getPlayer().sendMessage(message);
-        e.getPlayer().sendMessage(message);
-        e.getPlayer().sendMessage(message);
-        e.getPlayer().sendMessage(message);
-        e.getPlayer().sendMessage(message);
-        e.getPlayer().sendMessage(message);
-        e.getPlayer().sendMessage(message);
-        e.getPlayer().sendMessage(message);
-        e.getPlayer().sendMessage(message);
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
+        event.getPlayer().sendMessage(message);
     }
-
 }

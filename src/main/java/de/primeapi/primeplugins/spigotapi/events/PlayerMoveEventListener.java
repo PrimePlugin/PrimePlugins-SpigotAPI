@@ -1,6 +1,7 @@
 package de.primeapi.primeplugins.spigotapi.events;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
+import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.managers.messages.CoreMessage;
@@ -39,18 +40,20 @@ public class PlayerMoveEventListener implements Listener {
     }
 
     @EventHandler
-    public void onMove(PlayerMoveEvent e) {
-        if (active && !blocked.contains(e.getPlayer().getUniqueId())) {
-            blocked.add(e.getPlayer().getUniqueId());
-            OnlineStats.getAFK(e.getPlayer().getUniqueId()).submit(aBoolean -> {
-                if (aBoolean) {
-                    OnlineStats.setAFK(e.getPlayer().getUniqueId(), false);
-                    e.getPlayer().sendMessage(CoreMessage.AFK_OFF.getContent());
-                }
-                lastMove.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
-                blocked.remove(e.getPlayer().getUniqueId());
-            });
-        }
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Bukkit.getScheduler().runTaskAsynchronously(PrimeCore.getInstance(), () -> {
+            if (active && !blocked.contains(event.getPlayer().getUniqueId())) {
+                blocked.add(event.getPlayer().getUniqueId());
+                OnlineStats.getAFK(event.getPlayer().getUniqueId()).submit(aBoolean -> {
+                    if (aBoolean) {
+                        OnlineStats.setAFK(event.getPlayer().getUniqueId(), false);
+                        event.getPlayer().sendMessage(CoreMessage.AFK_OFF.getContent());
+                    }
+                    lastMove.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+                    blocked.remove(event.getPlayer().getUniqueId());
+                });
+            }
+        });
     }
 
     private void runCheck() {

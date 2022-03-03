@@ -11,11 +11,10 @@ import org.bukkit.event.Listener;
 public class GroupChanceListener implements Listener {
 
     @EventHandler
-    public void onGroupChance(GroupChanceEvent e) {
+    public void onGroupChance(GroupChanceEvent event) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            new PrimePlayer(onlinePlayer).sendScoreboard();
+            PrimePlayer.fromPlayer(onlinePlayer).sendScoreboard();
             PrimeCore.getInstance().getScoreboardManager().sendTeams();
         }
     }
-
 }

@@ -85,7 +85,7 @@ public class PrimeCore extends JavaPlugin {
         restManager = new RestManager();
         new RestPlugin("SpigotAPI", this);
         if (!mysql) {
-            Bukkit.getPluginManager().registerEvents(new InvalidListener("§4§lFehler: §cDie MySQL Verbindung ist Fehlerhaft!"), this);
+            Bukkit.getPluginManager().registerEvents(new InvalidListener("§4§lFehler §7● §cDie MySQL Verbindung ist fehlerhaft!"), this);
             return;
         }
         commandsManager = new CommandsManager();
@@ -96,6 +96,7 @@ public class PrimeCore extends JavaPlugin {
         vaultManager = new VaultManager();
         cloudManager = new CloudManager();
         registerEvents();
+        this.getLogger().log(Level.INFO, () -> "Das ist ein Test");
     }
 
     @SneakyThrows

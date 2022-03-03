@@ -18,23 +18,22 @@ public class PlayerJoinListener implements Listener {
     private String msg = "";
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         {
-            SQLPlayer.create(e.getPlayer().getUniqueId(), e.getPlayer().getName()).submit(sqlPlayer -> {
-                sqlPlayer.updateName(e.getPlayer().getName());
+            SQLPlayer.create(event.getPlayer().getUniqueId(), event.getPlayer().getName()).submit(sqlPlayer -> {
+                sqlPlayer.updateName(event.getPlayer().getName());
             });
         }
 
-        PrimePlayer p = new PrimePlayer(e.getPlayer());
+        PrimePlayer primePlayer = PrimePlayer.fromPlayer(event.getPlayer());
 
         if (CoreConfig.getInstance().getBoolean("scoreboard.default.applyOnJoin")) {
-            p.sendScoreboard();
+            primePlayer.sendScoreboard();
         }
-
 
         if (!PrimeCore.getInstance().isMysql()) {
             for (int i = 0; i < 5; i++) {
-                p.getPlayer().sendMessage("§8[§ePrimeCore§8] §4§lDie MySQL ist nicht verbunden§8! §7Bitte überprüfe deine Daten!");
+                primePlayer.getPlayer().sendMessage("§8[§ePrimeCore§8] §4§lDie MySQL ist nicht verbunden§8! §7Bitte überprüfe deine Daten!");
             }
         }
 
@@ -62,10 +61,10 @@ public class PlayerJoinListener implements Listener {
             PrimeCore.getInstance().getRestManager().setChecked(true);
         }
 
-        if (update && e.getPlayer().hasPermission("primeplugins.update")) {
-            e.getPlayer().sendMessage(msg);
+        if (update && event.getPlayer().hasPermission("primeplugins.update")) {
+            event.getPlayer().sendMessage(msg);
         }
-        PlayerMoveEventListener.lastMove.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+        PlayerMoveEventListener.lastMove.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
     }
 
 }
