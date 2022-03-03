@@ -118,8 +118,9 @@ public class ScoreboardManager {
                 } else {
                     PrimePlayer primePlayer = new PrimePlayer(team.getPlayer());
                     SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(primePlayer).complete();
+                    String color = ClanAPI.getInstance().getClanColorFromPlayer(primePlayer).complete();
                     if (clan != null) {
-                        scoreTeam.setSuffix(CoreConfig.getInstance().getString("prefix.clanTagFormat").replace("%tag%", clan.getTag().complete()));
+                        scoreTeam.setSuffix(CoreConfig.getInstance().getString("prefix.clanTagFormat").replace("%color%", color).replace("%tag%", clan.getTag().complete()));
                     } else {
                         scoreTeam.setSuffix(team.getSuffix());
                     }
