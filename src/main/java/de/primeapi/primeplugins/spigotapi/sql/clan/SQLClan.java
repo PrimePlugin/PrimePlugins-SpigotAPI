@@ -74,6 +74,14 @@ public class SQLClan {
         ));
     }
 
+    public DatabaseTask<String> getColor() {
+        return new DatabaseTask<>(CompletableFuture.supplyAsync(() ->
+                PrimeCore.getInstance().getDb().select("SELECT color FROM prime_clan_clans WHERE id=?")
+                        .parameters(id)
+                        .getAs(String.class).toBlocking().singleOrDefault(null)
+        ));
+    }
+
     public DatabaseTask<Integer> getCoins() {
         return new DatabaseTask<>(CompletableFuture.supplyAsync(() ->
                 PrimeCore.getInstance().getDb().select("SELECT coins FROM prime_clan_clans WHERE id=?")
