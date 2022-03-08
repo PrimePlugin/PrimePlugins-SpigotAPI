@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 @Getter
 @AllArgsConstructor
+@Deprecated
 public class DatabaseTask<T> {
 
     private final CompletableFuture<T> future;
