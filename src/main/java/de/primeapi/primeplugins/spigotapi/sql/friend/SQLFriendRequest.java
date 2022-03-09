@@ -1,8 +1,10 @@
 package de.primeapi.primeplugins.spigotapi.sql.friend;
 
+
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
 import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
+import de.primeapi.util.sql.queries.Retriever;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -21,8 +23,8 @@ public class SQLFriendRequest {
     public final int id;
 
 
-    public static DatabaseTask<List<SQLFriendRequest>> getRequestsFromPlayer(SQLPlayer p) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+    public static Retriever<List<SQLFriendRequest>> getRequestsFromPlayer(SQLPlayer p) {
+        return new Retriever<>(() -> {
             List<SQLFriendRequest> list = new ArrayList<>();
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
@@ -39,11 +41,11 @@ public class SQLFriendRequest {
                 throwables.printStackTrace();
             }
             return list;
-        }));
+        });
     }
 
-    public static DatabaseTask<SQLFriendRequest> create(SQLPlayer target, SQLPlayer requester, Long time) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+    public static Retriever<SQLFriendRequest> create(SQLPlayer target, SQLPlayer requester, Long time) {
+        return new Retriever<>(() -> {
             SQLFriendRequest request = null;
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
@@ -64,11 +66,11 @@ public class SQLFriendRequest {
                 throwables.printStackTrace();
             }
             return request;
-        }));
+        });
     }
 
-    public DatabaseTask<SQLPlayer> retrieveRequester() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+    public Retriever<SQLPlayer> retrieveRequester() {
+        return new Retriever<>(() -> {
             SQLPlayer player = null;
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
@@ -85,11 +87,11 @@ public class SQLFriendRequest {
                 throwables.printStackTrace();
             }
             return player;
-        }));
+        });
     }
 
-    public DatabaseTask<Long> retrieveTime() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+    public Retriever<Long> retrieveTime() {
+        return new Retriever<>(() -> {
             Long l = null;
             try {
                 PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
@@ -106,7 +108,7 @@ public class SQLFriendRequest {
                 throwables.printStackTrace();
             }
             return l;
-        }));
+        });
     }
 
     public void delete() {

@@ -1,12 +1,11 @@
 package de.primeapi.primeplugins.spigotapi.sql.utils;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.party.PlayerParty;
+import de.primeapi.util.sql.queries.Retriever;
 import lombok.NonNull;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public class OnlineStats {
 
@@ -41,38 +40,36 @@ public class OnlineStats {
     public static void setParty(@NonNull UUID uuid, UUID party) {
         if (party == null) {
             PrimeCore.getInstance().getDb().update("UPDATE prime_bungee_online SET party = null WHERE uuid = ?")
-                    .parameters(uuid.toString())
-                    .execute();
+                     .parameters(uuid.toString())
+                     .execute();
         } else {
             PrimeCore.getInstance().getDb().update("UPDATE prime_bungee_online SET party = ? WHERE uuid = ?")
-                    .parameters(party.toString(), uuid.toString())
-                    .execute();
+                     .parameters(party.toString(), uuid.toString())
+                     .execute();
         }
     }
 
-    public static DatabaseTask<String> getServer(@NonNull UUID uuid) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> PrimeCore.getInstance().getDb().select("SELECT server FROM prime_bungee_online WHERE uuid = ?")
-                .parameters(uuid.toString())
-                .getAs(String.class)
-                .toBlocking().singleOrDefault(null)));
+    public static Retriever<String> getServer(@NonNull UUID uuid) {
+        return PrimeCore.getInstance().getDb().select("SELECT server FROM prime_bungee_online WHERE uuid = ?")
+                        .parameters(uuid.toString())
+                        .execute(String.class)
+                        .get();
     }
 
-    public static DatabaseTask<Boolean> getAFK(@NonNull UUID uuid) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> PrimeCore.getInstance().getDb().select("SELECT afk FROM prime_bungee_online WHERE uuid = ?")
-                .parameters(uuid.toString())
-                .getAs(Integer.class)
-                .toBlocking().singleOrDefault(null) == 1));
+    public static Retriever<Boolean> getAFK(@NonNull UUID uuid) {
+        return PrimeCore.getInstance().getDb().select("SELECT afk FROM prime_bungee_online WHERE uuid = ?")
+                        .parameters(uuid.toString())
+                        .execute(Integer.class)
+                        .get()
+                        .map(integer -> integer == 1);
     }
 
-    public static DatabaseTask<PlayerParty> getParty(@NonNull UUID uuid) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            String s = PrimeCore.getInstance().getDb().select("SELECT party FROM prime_bungee_online WHERE uuid = ?")
-                    .parameters(uuid.toString())
-                    .getAs(String.class)
-                    .toBlocking().singleOrDefault(null);
-            if (s == null) return null;
-            return new PlayerParty(UUID.fromString(s));
-        }));
+    public static Retriever<PlayerParty> getParty(@NonNull UUID uuid) {
+        return PrimeCore.getInstance().getDb().select("SELECT party FROM prime_bungee_online WHERE uuid = ?")
+                        .parameters(uuid.toString())
+                        .execute(String.class)
+                        .get()
+                        .map(s -> new PlayerParty(UUID.fromString(s)));
     }
 
 

@@ -1,6 +1,5 @@
 package de.primeapi.primeplugins.spigotapi;
 
-import com.github.davidmoten.rx.jdbc.Database;
 import de.primeapi.primeplugins.spigotapi.api.placeholders.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.api.plugin.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
@@ -22,6 +21,7 @@ import de.primeapi.primeplugins.spigotapi.managers.rest.RestManager;
 import de.primeapi.primeplugins.spigotapi.managers.scoreboard.ScoreboardManager;
 import de.primeapi.primeplugins.spigotapi.managers.vault.VaultManager;
 import de.primeapi.primeplugins.spigotapi.managers.versions.VersionManager;
+import de.primeapi.util.sql.Database;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -162,7 +162,7 @@ public class PrimeCore extends JavaPlugin {
                             "`value` INT," +
                             "PRIMARY KEY (`id`));"
             ).execute();
-            db = Database.from(connection).asynchronous();
+            db = new Database(connection);
             mysql = true;
             getLogger().log(Level.INFO, "Asynchronous MySQL-Connection established");
         } catch (SQLException throwables) {

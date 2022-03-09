@@ -1,72 +1,66 @@
 package de.primeapi.primeplugins.spigotapi.sql.clan;
 
+
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
+import de.primeapi.util.sql.queries.Retriever;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @Getter
 public class SQLPlayerAllocation {
     final int id;
 
-    public static DatabaseTask<SQLPlayerAllocation> create(SQLPlayer player, SQLClan clan, Integer i) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            Integer id = PrimeCore.getInstance().getDb().update("INSERT INTO prime_clan_players value (id,?,?,?)")
-                    .parameters(player.retrieveUniqueId().complete().toString(), clan.getId(), i)
-                    .returnGeneratedKeys()
-                    .getAs(Integer.class)
-                    .toBlocking().singleOrDefault(null);
-            if (id != null) {
-                return new SQLPlayerAllocation(id);
-            }
-            return null;
-        }));
+    public static Retriever<SQLPlayerAllocation> create(SQLPlayer player, SQLClan clan, Integer rank) {
+        return PrimeCore.getInstance().getDb().update("INSERT INTO prime_clan_players value (id,?,?,?)")
+                        .parameters(player.retrieveUniqueId().complete().toString(), clan.getId(), rank)
+                        .returnGeneratedKeys(Integer.class)
+                        .get()
+                        .map(SQLPlayerAllocation::new);
     }
 
-    public static DatabaseTask<SQLPlayerAllocation> fromPlayer(SQLPlayer player) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            Integer id = PrimeCore.getInstance().getDb().select("SELECT id FROM prime_clan_players WHERE uuid = ?")
-                    .parameters(player.retrieveUniqueId().complete().toString())
-                    .getAs(Integer.class)
-                    .toBlocking().firstOrDefault(null);
-            if (id != null) {
-                return new SQLPlayerAllocation(id);
-            }
-            return null;
-        }));
+    public static Retriever<SQLPlayerAllocation> fromPlayer(SQLPlayer player) {
+        return PrimeCore.getInstance().getDb().select("SELECT id FROM prime_clan_players WHERE uuid = ?")
+                        .parameters(player.retrieveUniqueId().complete().toString())
+                        .execute(Integer.class)
+                        .get()
+                        .map(SQLPlayerAllocation::new);
     }
 
-    private <T> DatabaseTask<T> readDatabase(String column, Class<T> type) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> PrimeCore.getInstance().getDb().select(
-                "SELECT " + column + " FROM prime_clan_players WHERE id = ?"
-        )
-                .parameters(id).getAs(type).toBlocking().singleOrDefault(null)));
+    private <T> Retriever<T> readDatabase(String column, Class<T> type) {
+        return PrimeCore.getInstance().getDb().select(
+                                "SELECT " + column + " FROM prime_clan_players WHERE id = ?"
+                                                           )
+                        .parameters(id)
+                        .execute(type)
+                        .get();
     }
 
-    public DatabaseTask<UUID> getUUID() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> UUID.fromString(readDatabase("uuid", String.class).complete())));
+    public Retriever<UUID> getUUID() {
+        return new Retriever<>(() -> UUID.fromString(readDatabase("uuid", String.class).complete()));
     }
 
-    public DatabaseTask<SQLClan> getClan() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> new SQLClan(readDatabase("clan", Integer.class).complete())));
+    public Retriever<SQLClan> getClan() {
+        return PrimeCore.getInstance().getDb().select("SELECT clan FROM prime_clan_players WHERE id = ?")
+                .parameter(id)
+                .execute(Integer.class)
+                .get().map(SQLClan::new);
     }
 
-    public DatabaseTask<Integer> getRank() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> (readDatabase("rank", Integer.class).complete())));
+    public Retriever<Integer> getRank() {
+        return readDatabase("rank", Integer.class);
     }
 
     public void delete() {
         PrimeCore.getInstance().getDb().update("DELETE FROM prime_clan_players WHERE id = ?")
-                .parameters(id).execute();
+                 .parameters(id).execute();
     }
 
-    public void updateRank(Integer i) {
+    public void updateRank(int rank) {
         PrimeCore.getInstance().getDb().update("UPDATE prime_clan_players SET `rank` = ? WHERE id = ?")
-                .parameters(i, id).execute();
+                 .parameters(rank, id).execute();
     }
 }

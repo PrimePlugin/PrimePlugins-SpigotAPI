@@ -1,13 +1,12 @@
 package de.primeapi.primeplugins.spigotapi.sql.clan;
 
+
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
+import de.primeapi.util.sql.queries.Retriever;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -15,103 +14,95 @@ import java.util.stream.Collectors;
 public class SQLClan {
     final int id;
 
-    public static DatabaseTask<SQLClan> create(String name, String tag) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            Integer id = PrimeCore.getInstance().getDb().update("INSERT INTO prime_clan_clans values(id,?,?,?,?)")
-                    .parameters(name.toLowerCase(), name, tag, 0)
-                    .returnGeneratedKeys()
-                    .getAs(Integer.class).toBlocking().firstOrDefault(null);
-            return new SQLClan(id);
-        }));
+    public static Retriever<SQLClan> create(String name, String tag) {
+        return PrimeCore.getInstance().getDb().update("INSERT INTO prime_clan_clans values(id,?,?,?,?)")
+                        .parameters(name.toLowerCase(), name, tag, 0)
+                        .returnGeneratedKeys(Integer.class)
+                        .get()
+                        .map(SQLClan::new);
     }
 
-    public static DatabaseTask<SQLClan> fromName(String name) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            Integer id = PrimeCore.getInstance().getDb().select("SELECT id FROM prime_clan_clans WHERE name = ?")
-                    .parameters(name.toLowerCase())
-                    .getAs(Integer.class).toBlocking().singleOrDefault(null);
-            if (id != null) {
-                return new SQLClan(id);
-            }
-            return null;
-        }));
+    public static Retriever<SQLClan> fromName(String name) {
+        return PrimeCore.getInstance().getDb().select("SELECT id FROM prime_clan_clans WHERE name = ?")
+                        .parameters(name.toLowerCase())
+                        .execute(Integer.class)
+                        .get()
+                        .map(SQLClan::new);
     }
 
-    public static DatabaseTask<SQLClan> fromTag(String tag) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            Integer id = PrimeCore.getInstance().getDb().select("SELECT id FROM prime_clan_clans WHERE UPPER(tag) = UPPER(?)")
-                    .parameters(tag.toUpperCase())
-                    .getAs(Integer.class).toBlocking().singleOrDefault(null);
-            if (id != null) {
-                return new SQLClan(id);
-            }
-            return null;
-        }));
+    public static Retriever<SQLClan> fromTag(String tag) {
+        return PrimeCore.getInstance()
+                        .getDb()
+                        .select("SELECT id FROM prime_clan_clans WHERE UPPER(tag) = UPPER(?)")
+                        .parameters(tag.toUpperCase())
+                        .execute(Integer.class)
+                        .get()
+                        .map(SQLClan::new);
     }
 
-    public DatabaseTask<String> getName() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> PrimeCore.getInstance().getDb().select(
-                "SELECT name FROM prime_clan_clans WHERE id = ?"
-        )
-                .parameters(id)
-                .getAs(String.class).toBlocking().singleOrDefault(null)));
-    }
-
-    public DatabaseTask<String> getRealname() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() ->
-                PrimeCore.getInstance().getDb().select("SELECT realname FROM prime_clan_clans WHERE id = ?")
+    public Retriever<String> getName() {
+        return PrimeCore.getInstance().getDb().select(
+                                "SELECT name FROM prime_clan_clans WHERE id = ?"
+                                                     )
                         .parameters(id)
-                        .getAs(String.class).toBlocking().singleOrDefault(null)
-        )
-        );
+                        .execute(String.class)
+                        .get();
     }
 
-    public DatabaseTask<String> getTag() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() ->
-                PrimeCore.getInstance().getDb().select("SELECT tag FROM prime_clan_clans WHERE id=?")
+    public Retriever<String> getRealname() {
+        return PrimeCore.getInstance().getDb().select("SELECT realname FROM prime_clan_clans WHERE id = ?")
                         .parameters(id)
-                        .getAs(String.class).toBlocking().singleOrDefault(null)
-        ));
+                        .execute(String.class)
+                        .get();
     }
 
-    public DatabaseTask<String> getColor() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() ->
-                PrimeCore.getInstance().getDb().select("SELECT color FROM prime_clan_clans WHERE id=?")
+    public Retriever<String> getTag() {
+        return PrimeCore.getInstance().getDb().select("SELECT tag FROM prime_clan_clans WHERE id=?")
                         .parameters(id)
-                        .getAs(String.class).toBlocking().singleOrDefault(null)
-        ));
+                        .execute(String.class)
+                        .get();
     }
 
-    public DatabaseTask<Integer> getCoins() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() ->
-                PrimeCore.getInstance().getDb().select("SELECT coins FROM prime_clan_clans WHERE id=?")
+    public Retriever<Integer> getCoins() {
+        return PrimeCore.getInstance().getDb().select("SELECT coins FROM prime_clan_clans WHERE id=?")
                         .parameters(id)
-                        .getAs(Integer.class).toBlocking().singleOrDefault(null)
-        ));
+                        .execute(Integer.class)
+                        .get();
     }
 
-    public DatabaseTask<List<SQLPlayerAllocation>> getMembers() {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() ->
-                PrimeCore.getInstance().getDb().select("SELECT id FROM prime_clan_players WHERE clan = ?")
+    public Retriever<List<SQLPlayerAllocation>> getMembers() {
+        return PrimeCore.getInstance().getDb().select("SELECT id FROM prime_clan_players WHERE clan = ?")
                         .parameters(id)
-                        .getAs(Integer.class)
-                        .toList()
-                        .toBlocking()
-                        .singleOrDefault(new ArrayList<>())
-                        .stream()
-                        .map(SQLPlayerAllocation::new)
-                        .sorted((o1, o2) -> Integer.compare(o2.getRank().complete(), o1.getRank().complete()))
-                        .collect(Collectors.toList())));
+                        .execute(Integer.class)
+                        .getAsSet()
+                        .map(integers -> integers.stream()
+                                                 .map(SQLPlayerAllocation::new)
+                                                 .sorted((o1, o2) -> Integer.compare(
+                                                         o2.getRank().complete(),
+                                                         o1.getRank().complete()
+                                                                                    ))
+                                                 .collect(Collectors.toList()));
+    }
+
+    public Retriever<String> getColor() {
+        return PrimeCore.getInstance().getDb().select("SELECT color FROM prime_clan_clans WHERE id=?")
+                 .parameters(id)
+                 .execute(String.class).get();
+    }
+
+    public void updateColor(String color) {
+        PrimeCore.getInstance().getDb().update("UPDATE prime_clan_clans SET color = ? WHERE id = ?")
+                 .parameters(color.toLowerCase(), color, id).execute();
     }
 
     public void updateName(String name) {
         PrimeCore.getInstance().getDb().update("UPDATE prime_clan_clans SET name = ?, realname = ? WHERE id = ?")
-                .parameters(name.toLowerCase(), name, id).execute();
+                 .parameters(name.toLowerCase(), name, id).execute();
     }
 
     public void updateTag(String tag) {
         PrimeCore.getInstance().getDb().update("UPDATE prime_clan_clans SET tag = ? WHERE id = ?")
-                .parameters(tag, id).execute();
+                 .parameters(tag, id).execute();
     }
 
     public void updateCoins(Integer coins) {

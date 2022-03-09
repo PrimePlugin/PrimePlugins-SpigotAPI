@@ -1,16 +1,15 @@
 package de.primeapi.primeplugins.spigotapi.api.plugins.friends;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
 import de.primeapi.primeplugins.spigotapi.sql.friend.SQLFriendEntry;
 import de.primeapi.primeplugins.spigotapi.sql.friend.SQLFriendRequest;
+import de.primeapi.util.sql.queries.Retriever;
 import lombok.Getter;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -51,13 +50,13 @@ public class FriendsAPI {
      * @param player {@link SQLPlayer}
      * @return A List of {@link SQLPlayer} who are friends of player
      */
-    public DatabaseTask<List<SQLPlayer>> getFriends(SQLPlayer player) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLFriendEntry.getFriendsFromPlayer(player).complete().stream()
-                    .map(sqlFriendEntry -> sqlFriendEntry.retrieveFriend().complete())
-                    .collect(Collectors.toList());
-        }));
+    public Retriever<List<SQLPlayer>> getFriends(SQLPlayer player) {
+        return SQLFriendEntry.getFriendsFromPlayer(player)
+                             .map(sqlFriendEntries -> sqlFriendEntries.stream()
+                                                                      .map(sqlFriendEntry -> sqlFriendEntry.retrieveFriend()
+                                                                                                           .complete())
+                                                                      .collect(
+                                                                              Collectors.toList()));
     }
 
     /**
@@ -83,11 +82,9 @@ public class FriendsAPI {
      * @param time    The Time as Unix timestamp as the creation time of the friendship
      * @return The created {@link SQLFriendEntry}
      */
-    public DatabaseTask<SQLFriendEntry> createFriendship(SQLPlayer player1, SQLPlayer player2, Long time) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLFriendEntry.create(player1, player2, time).complete();
-        }));
+    public Retriever<SQLFriendEntry> createFriendship(SQLPlayer player1, SQLPlayer player2, Long time) {
+        return SQLFriendEntry.create(player1, player2, time)
+                             .map(sqlFriendEntry -> online ? sqlFriendEntry : null);
     }
 
 
@@ -95,11 +92,9 @@ public class FriendsAPI {
      * @param player {@link SQLPlayer}
      * @return A List of {@link SQLFriendRequest} of the player
      */
-    public DatabaseTask<List<SQLFriendRequest>> getRequestsFromPlayer(SQLPlayer player) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLFriendRequest.getRequestsFromPlayer(player).complete();
-        }));
+    public Retriever<List<SQLFriendRequest>> getRequestsFromPlayer(SQLPlayer player) {
+        if (!online) return null;
+        return SQLFriendRequest.getRequestsFromPlayer(player);
     }
 
     /**
@@ -110,11 +105,9 @@ public class FriendsAPI {
      * @param time      The Time as UNIX timestamp of the creation of the Request
      * @return The generated {@link SQLFriendRequest}
      */
-    public DatabaseTask<SQLFriendRequest> createRequest(SQLPlayer target, SQLPlayer requester, Long time) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLFriendRequest.create(target, requester, time).complete();
-        }));
+    public Retriever<SQLFriendRequest> createRequest(SQLPlayer target, SQLPlayer requester, Long time) {
+        if (!online) return null;
+        return SQLFriendRequest.create(target, requester, time);
     }
 
 

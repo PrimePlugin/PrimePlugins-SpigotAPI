@@ -6,6 +6,7 @@ import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClan;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClanInvitation;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLPlayerAllocation;
+import de.primeapi.util.sql.queries.Retriever;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -50,22 +51,19 @@ public class ClanAPI {
      * @return The {@link SQLClan} of the player <br> returns null if player has not joined any clan
      */
     @Nullable
-    public DatabaseTask<SQLClan> getClanFromPlayer(@Nonnull SQLPlayer player) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            SQLPlayerAllocation allocation = SQLPlayerAllocation.fromPlayer(player).complete();
-            if (allocation == null) return null;
-            return allocation.getClan().complete();
-        }));
+    public Retriever<SQLClan> getClanFromPlayer(@Nonnull SQLPlayer player) {
+        if (!online) return null;
+        return SQLPlayerAllocation.fromPlayer(player)
+                           .map(sqlPlayerAllocation -> sqlPlayerAllocation == null
+                                                       ? null
+                                                       : sqlPlayerAllocation.getClan().complete());
     }
 
-    public DatabaseTask<String> getClanColorFromPlayer(@NonNull SQLPlayer sqlPlayer) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if(!online) return null;
-            SQLPlayerAllocation sqlPlayerAllocation = SQLPlayerAllocation.fromPlayer(sqlPlayer).complete();
-            if(sqlPlayerAllocation == null) return "§e";
+    public Retriever<String> getClanColorFromPlayer(@NonNull SQLPlayer sqlPlayer) {
+        return SQLPlayerAllocation.fromPlayer(sqlPlayer).map(sqlPlayerAllocation -> {
+            if (sqlPlayerAllocation == null) return "&e";
             return sqlPlayerAllocation.getClan().complete().getColor().complete();
-        }));
+        });
     }
 
     /**

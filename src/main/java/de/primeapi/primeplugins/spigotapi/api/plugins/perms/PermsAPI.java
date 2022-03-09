@@ -6,6 +6,7 @@ import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLGroup;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLGroupPermission;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLRanking;
 import de.primeapi.primeplugins.spigotapi.sql.permissions.SQLUserPermission;
+import de.primeapi.util.sql.queries.Retriever;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -53,20 +54,18 @@ public class PermsAPI { //TOOD
     }
 
 
-    public DatabaseTask<SQLGroup> getHighestGroup(UUID uuid) {
+    public Retriever<SQLGroup> getHighestGroup(UUID uuid) {
         if (!online) throw new IllegalStateException("PermsAPI was not loaded");
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            List<SQLRanking> list = SQLRanking.fromUser(uuid).complete();
-            if (list.size() == 0) {
-                return SQLGroup.fromName("default").complete();
-            }
-            return list.get(0).getGroup().complete();
-        }));
+        return SQLRanking.fromUser(uuid)
+                .map(sqlRankings -> {
+                    if(sqlRankings.size() == 0) return SQLGroup.fromName("default").complete();
+                    return sqlRankings.get(0).getGroup().complete();
+                });
     }
 
-    public DatabaseTask<List<String>> getPermissions(UUID uuid) {
+    public Retriever<List<String>> getPermissions(UUID uuid) {
         if (!online) throw new IllegalStateException("PermsAPI was not loaded");
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+        return new Retriever<>(() -> {
             SQLGroup defaultGroup = SQLGroup.fromName("default").complete();
             List<String> list;
             if (defaultGroup == null) {
@@ -88,7 +87,7 @@ public class PermsAPI { //TOOD
                 }
             }
             return list;
-        }));
+        });
     }
 
     /**
@@ -182,13 +181,13 @@ public class PermsAPI { //TOOD
      * @param uuid The UUID of the Player
      * @return A {@link DatabaseTask} of a List containing all {@link SQLGroup SQLGroups}
      */
-    public DatabaseTask<List<SQLGroup>> getGroups(UUID uuid) {
+    public Retriever<List<SQLGroup>> getGroups(UUID uuid) {
         return SQLRanking.fromUser(uuid).map(sqlRankings -> sqlRankings.stream().map(sqlRanking -> sqlRanking.getGroup().complete()).collect(Collectors.toList()));
     }
 
-    public DatabaseTask<Boolean> hasSelfPermission(UUID uuid, String permission) {
+    public Retriever<Boolean> hasSelfPermission(UUID uuid, String permission) {
         if (!online) throw new IllegalStateException("PermsAPI was not loaded");
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+        return new Retriever<>(() -> {
             List<String> list = getPermissions(uuid).complete();
             if (list.contains("*")) {
                 return true;
@@ -214,7 +213,7 @@ public class PermsAPI { //TOOD
 
 
             return false;
-        }));
+        });
     }
 
 }

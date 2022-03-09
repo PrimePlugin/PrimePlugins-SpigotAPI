@@ -8,6 +8,7 @@ import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
 import de.primeapi.primeplugins.spigotapi.sql.party.PlayerParty;
 import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
+import de.primeapi.util.sql.queries.Retriever;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -82,7 +83,7 @@ public class PrimePlayer extends SQLPlayer {
         }
     }
 
-    public DatabaseTask<Boolean> getAFK() {
+    public Retriever<Boolean> getAFK() {
         return OnlineStats.getAFK(getUniqueId());
     }
 
@@ -90,7 +91,7 @@ public class PrimePlayer extends SQLPlayer {
         OnlineStats.setAFK(getUniqueId(), b);
     }
 
-    public DatabaseTask<PlayerParty> getParty() {
+    public Retriever<PlayerParty> getParty() {
         return OnlineStats.getParty(getUniqueId());
     }
 
