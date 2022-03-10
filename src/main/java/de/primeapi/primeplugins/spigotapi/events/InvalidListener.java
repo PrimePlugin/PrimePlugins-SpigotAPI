@@ -10,19 +10,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
 @AllArgsConstructor
 public class InvalidListener implements Listener {
 
-    String message;
+	String message;
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage(message);
-        event.getPlayer().sendMessage(message);
-        event.getPlayer().sendMessage(message);
-        event.getPlayer().sendMessage(message);
-        event.getPlayer().sendMessage(message);
-        event.getPlayer().sendMessage(message);
-        event.getPlayer().sendMessage(message);
-        event.getPlayer().sendMessage(message);
-        event.getPlayer().sendMessage(message);
-        event.getPlayer().sendMessage(message);
-    }
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		event.getPlayer().sendMessage(message);
+		event.getPlayer().sendMessage(message);
+		event.getPlayer().sendMessage(message);
+		event.getPlayer().sendMessage(message);
+		event.getPlayer().sendMessage(message);
+		event.getPlayer().sendMessage(message);
+		event.getPlayer().sendMessage(message);
+		event.getPlayer().sendMessage(message);
+		event.getPlayer().sendMessage(message);
+		event.getPlayer().sendMessage(message);
+	}
 }

@@ -14,28 +14,28 @@ import java.util.UUID;
 @Getter
 public class CoinsAPI {
 
-    private static CoinsAPI instance;
-    boolean online;
+	private static CoinsAPI instance;
+	boolean online;
 
-    public CoinsAPI() {
-        instance = this;
-        online = true;
-    }
+	public CoinsAPI() {
+		instance = this;
+		online = true;
+	}
 
-    public static CoinsAPI getInstance() {
-        return instance;
-    }
+	public static CoinsAPI getInstance() {
+		return instance;
+	}
 
-    public void setCoins(UUID uuid, int coins) {
-        new SQLPlayer(uuid).setCoins(coins);
-    }
+	public void setCoins(UUID uuid, int coins) {
+		new SQLPlayer(uuid).setCoins(coins);
+	}
 
-    public void addCoins(UUID uuid, int coins) {
-        new SQLPlayer(uuid).addCoins(coins);
-    }
+	public void addCoins(UUID uuid, int coins) {
+		new SQLPlayer(uuid).addCoins(coins);
+	}
 
-    public DatabaseTask<Integer> getCoins(UUID uuid) {
-        return new SQLPlayer(uuid).retrieveCoins();
-    }
+	public DatabaseTask<Integer> getCoins(UUID uuid) {
+		return new SQLPlayer(uuid).retrieveCoins();
+	}
 
 }

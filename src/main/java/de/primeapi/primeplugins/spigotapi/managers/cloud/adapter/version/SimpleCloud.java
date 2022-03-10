@@ -12,25 +12,25 @@ import java.util.List;
 
 public class SimpleCloud implements CloudAdapter {
 
-    //TODO SIMPLECLOUD
+	//TODO SIMPLECLOUD
 
-    @Override
-    public int getPlayersInGroup(String name) {
-        return 0;
-    }
+	@Override
+	public int getPlayersInGroup(String name) {
+		return 0;
+	}
 
-    @Override
-    public List<String> getAllLobbies(String name) {
-        return null;
-    }
+	@Override
+	public List<String> getAllLobbies(String name) {
+		return null;
+	}
 
-    @Override
-    public int getPlayersOnServer(String name) {
-        return 0;
-    }
+	@Override
+	public int getPlayersOnServer(String name) {
+		return 0;
+	}
 
-    @Override
-    public String getServerState(String name) {
-        return null;
-    }
+	@Override
+	public String getServerState(String name) {
+		return null;
+	}
 }

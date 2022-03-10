@@ -4,5 +4,5 @@ import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 
 public interface ChatFormatter {
 
-    String formatString(PrimePlayer player, String message);
+	String formatString(PrimePlayer player, String message);
 }

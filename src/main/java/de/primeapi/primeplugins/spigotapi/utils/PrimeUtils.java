@@ -7,20 +7,20 @@ package de.primeapi.primeplugins.spigotapi.utils;
  */
 public class PrimeUtils {
 
-    public static String formatInteger(Integer input) {
-        String number = input.toString();
-        String s = "";
-        int count = 0;
-        for (int i = number.length() - 1; i >= 0; i--) {
-            if (count >= 2 && i != 0) {
-                s = "." + number.charAt(i) + s;
-                count = 0;
-            } else {
-                s = number.charAt(i) + s;
-                count++;
-            }
-        }
-        return s;
-    }
+	public static String formatInteger(Integer input) {
+		String number = input.toString();
+		String s = "";
+		int count = 0;
+		for (int i = number.length() - 1; i >= 0; i--) {
+			if (count >= 2 && i != 0) {
+				s = "." + number.charAt(i) + s;
+				count = 0;
+			} else {
+				s = number.charAt(i) + s;
+				count++;
+			}
+		}
+		return s;
+	}
 
 }

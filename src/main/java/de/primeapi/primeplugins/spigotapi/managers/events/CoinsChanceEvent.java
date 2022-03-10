@@ -10,16 +10,16 @@ import org.bukkit.event.HandlerList;
 @Getter
 public class CoinsChanceEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList();
-    final SQLPlayer player;
-    final int newAmount;
+	private static final HandlerList handlers = new HandlerList();
+	final SQLPlayer player;
+	final int newAmount;
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 }

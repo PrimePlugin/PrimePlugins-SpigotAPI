@@ -130,20 +130,20 @@ public class SQLFriendEntry {
 			}
 			return l;
 		});
-    }
+	}
 
-    public void delete() {
-        PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
-            try {
-                PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
-                        "DELETE FROM prime_bungee_friends WHERE id=?"
-                );
-                st.setInt(1, id);
-                st.execute();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
-    }
+	public void delete() {
+		PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
+			try {
+				PreparedStatement st = PrimeCore.getInstance().getConnection().prepareStatement(
+						"DELETE FROM prime_bungee_friends WHERE id=?"
+				                                                                               );
+				st.setInt(1, id);
+				st.execute();
+			} catch (SQLException throwables) {
+				throwables.printStackTrace();
+			}
+		});
+	}
 
 }

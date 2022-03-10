@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PrefixScoreboardSetting {
 
-    List<ScoreboradTeam> getTeams(Player p);
+	List<ScoreboradTeam> getTeams(Player p);
 
 
 }

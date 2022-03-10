@@ -16,27 +16,32 @@ import java.util.List;
 
 public class CloudNetV3 implements CloudAdapter {
 
-    @Override
-    public int getPlayersInGroup(String name) {
-        return ServiceInfoSnapshotUtil.getTaskOnlineCount(name);
-    }
+	@Override
+	public int getPlayersInGroup(String name) {
+		return ServiceInfoSnapshotUtil.getTaskOnlineCount(name);
+	}
 
-    @Override
-    public List<String> getAllLobbies(String name) {
-        List<String> list = new ArrayList<>();
-        CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServices(name).forEach(serviceInfoSnapshot -> {
-            list.add(serviceInfoSnapshot.getName());
-        });
-        return list;
-    }
+	@Override
+	public List<String> getAllLobbies(String name) {
+		List<String> list = new ArrayList<>();
+		CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServices(name).forEach(serviceInfoSnapshot -> {
+			list.add(serviceInfoSnapshot.getName());
+		});
+		return list;
+	}
 
-    @Override
-    public int getPlayersOnServer(String name) {
-        return ServiceInfoSnapshotUtil.getOnlineCount(CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServiceByName(name));
-    }
+	@Override
+	public int getPlayersOnServer(String name) {
+		return ServiceInfoSnapshotUtil.getOnlineCount(
+				CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServiceByName(name));
+	}
 
-    public String getServerState(String name) {
-        return CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServiceByName(name).getProperty(BridgeServiceProperty.STATE).orElse(null);
-    }
+	public String getServerState(String name) {
+		return CloudNetDriver.getInstance()
+		                     .getCloudServiceProvider()
+		                     .getCloudServiceByName(name)
+		                     .getProperty(BridgeServiceProperty.STATE)
+		                     .orElse(null);
+	}
 
 }

@@ -5,5 +5,5 @@ import org.bukkit.inventory.Inventory;
 
 public interface ICloseAction {
 
-    void onClose(Player p, Inventory inventory);
+	void onClose(Player p, Inventory inventory);
 }

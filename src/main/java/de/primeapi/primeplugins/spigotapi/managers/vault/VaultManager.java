@@ -14,18 +14,18 @@ import java.util.logging.Level;
 public class VaultManager {
 
 
-    public VaultManager() {
-        if (PrimeCore.getInstance().getServer().getPluginManager().getPlugin("Vault") == null) {
-            PrimeCore.getInstance().getLogger().log(Level.INFO, "Economy-Hook wird NICHT geladen");
-            return;
-        }
-        if (CoreConfig.getInstance().getBoolean("vault.coins")) {
-            new VaultEconomy();
-        }
-        if (PermsAPI.getInstance().isOnline() && CoreConfig.getInstance().getBoolean("vault.permissions")) {
-            new VaultPermission();
-            PrimeCore.getInstance().getLogger().log(Level.INFO, "Permissions-Hook wurde geladen");
-        }
-        PrimeCore.getInstance().getLogger().log(Level.INFO, "Economy-Hook wurde geladen");
-    }
+	public VaultManager() {
+		if (PrimeCore.getInstance().getServer().getPluginManager().getPlugin("Vault") == null) {
+			PrimeCore.getInstance().getLogger().log(Level.INFO, "Economy-Hook wird NICHT geladen");
+			return;
+		}
+		if (CoreConfig.getInstance().getBoolean("vault.coins")) {
+			new VaultEconomy();
+		}
+		if (PermsAPI.getInstance().isOnline() && CoreConfig.getInstance().getBoolean("vault.permissions")) {
+			new VaultPermission();
+			PrimeCore.getInstance().getLogger().log(Level.INFO, "Permissions-Hook wurde geladen");
+		}
+		PrimeCore.getInstance().getLogger().log(Level.INFO, "Economy-Hook wurde geladen");
+	}
 }

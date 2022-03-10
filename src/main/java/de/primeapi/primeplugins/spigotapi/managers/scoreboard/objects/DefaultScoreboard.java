@@ -10,19 +10,22 @@ import java.util.List;
 
 public class DefaultScoreboard implements ScoreboardSettings {
 
-    @Override
-    public String getTitle() {
-        return ChatColor.translateAlternateColorCodes('&', CoreConfig.getInstance().getString("scoreboard.default.title"));
-    }
+	@Override
+	public String getTitle() {
+		return ChatColor.translateAlternateColorCodes(
+				'&', CoreConfig.getInstance().getString("scoreboard.default.title"));
+	}
 
-    @Override
-    public List<String> apply(Player p) {
-        List<String> list = CoreConfig.getInstance().getStringList("scoreboard.default.content");
-        List<String> returnValue = new ArrayList<>();
-        for (String s :
-                list) {
-            returnValue.add(ChatColor.translateAlternateColorCodes('&', PrimeCore.getInstance().getPlaceholderAPIManager().replace(p, s)));
-        }
-        return returnValue;
-    }
+	@Override
+	public List<String> apply(Player p) {
+		List<String> list = CoreConfig.getInstance().getStringList("scoreboard.default.content");
+		List<String> returnValue = new ArrayList<>();
+		for (String s :
+				list) {
+			returnValue.add(ChatColor.translateAlternateColorCodes('&', PrimeCore.getInstance()
+			                                                                     .getPlaceholderAPIManager()
+			                                                                     .replace(p, s)));
+		}
+		return returnValue;
+	}
 }

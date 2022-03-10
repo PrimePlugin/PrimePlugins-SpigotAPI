@@ -14,33 +14,36 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public class RestPlugin {
 
-    private final String name;
-    public JavaPlugin plugin;
-    @Setter
-    public String license = "";
+	private final String name;
+	public JavaPlugin plugin;
+	@Setter
+	public String license = "";
 
-    public RestPlugin(String name, JavaPlugin plugin) {
-        this.name = name;
-        this.plugin = plugin;
-        PrimeCore.getInstance().getRestManager().registerPlugin(this);
-    }
+	public RestPlugin(String name, JavaPlugin plugin) {
+		this.name = name;
+		this.plugin = plugin;
+		PrimeCore.getInstance().getRestManager().registerPlugin(this);
+	}
 
-    public boolean isNewUpdateAvailable() {
-        try {
-            return PrimeCore.getInstance().getRestManager().getPlugininfo(name).isNeverVersion(plugin.getDescription().getVersion());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
+	public boolean isNewUpdateAvailable() {
+		try {
+			return PrimeCore.getInstance()
+			                .getRestManager()
+			                .getPlugininfo(name)
+			                .isNeverVersion(plugin.getDescription().getVersion());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
 
-    public boolean downloadLatestVersion(String path) {
-        return PrimeCore.getInstance().getRestManager().downloadPlugin(getPluginInfo(), license, path);
-    }
+	public boolean downloadLatestVersion(String path) {
+		return PrimeCore.getInstance().getRestManager().downloadPlugin(getPluginInfo(), license, path);
+	}
 
-    public PluginInfo getPluginInfo() {
-        return PrimeCore.getInstance().getRestManager().getPlugininfo(name);
-    }
+	public PluginInfo getPluginInfo() {
+		return PrimeCore.getInstance().getRestManager().getPlugininfo(name);
+	}
 
 
 }

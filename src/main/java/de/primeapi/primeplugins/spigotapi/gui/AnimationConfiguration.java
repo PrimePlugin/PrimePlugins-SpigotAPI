@@ -11,10 +11,10 @@ import org.bukkit.Sound;
 public class AnimationConfiguration {
 
 
-    GUIBuilder.Animation animation;
-    int tickSpeed;
-    Sound tickSound;
-    Sound finalSound;
+	GUIBuilder.Animation animation;
+	int tickSpeed;
+	Sound tickSound;
+	Sound finalSound;
 
 
 }

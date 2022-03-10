@@ -8,22 +8,22 @@ import org.bukkit.command.TabCompleter;
 
 @Getter
 public enum Command {
-    COINS("coins", new CoinsCommand()),
-    AFK("afk", new AFKCommand()),
-    ;
+	COINS("coins", new CoinsCommand()),
+	AFK("afk", new AFKCommand()),
+	;
 
-    String name;
-    CommandExecutor command;
-    TabCompleter completer;
+	String name;
+	CommandExecutor command;
+	TabCompleter completer;
 
-    Command(String name, CommandExecutor command) {
-        this.name = name;
-        this.command = command;
-    }
+	Command(String name, CommandExecutor command) {
+		this.name = name;
+		this.command = command;
+	}
 
-    Command(String name, CommandExecutor command, TabCompleter completer) {
-        this.name = name;
-        this.command = command;
-        this.completer = completer;
-    }
+	Command(String name, CommandExecutor command, TabCompleter completer) {
+		this.name = name;
+		this.command = command;
+		this.completer = completer;
+	}
 }

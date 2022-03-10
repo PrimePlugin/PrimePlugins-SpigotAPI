@@ -16,40 +16,40 @@ import java.io.DataOutputStream;
 @Setter
 public class PluginMessage {
 
-    String channel;
-    String subChannel;
-    String[] data;
+	String channel;
+	String subChannel;
+	String[] data;
 
-    private PluginMessage(String channel, String subChannel, String[] data) {
-        this.channel = channel;
-        this.subChannel = subChannel;
-        this.data = data;
-    }
+	private PluginMessage(String channel, String subChannel, String[] data) {
+		this.channel = channel;
+		this.subChannel = subChannel;
+		this.data = data;
+	}
 
-    public static PluginMessage build(String channel, String subChannel, String... data) {
-        return new PluginMessage(channel, subChannel, data);
-    }
+	public static PluginMessage build(String channel, String subChannel, String... data) {
+		return new PluginMessage(channel, subChannel, data);
+	}
 
-    public static PluginMessage build(PluginCommand command, String... data) {
-        return new PluginMessage("prime:primemessaging", command.toString(), data);
-    }
+	public static PluginMessage build(PluginCommand command, String... data) {
+		return new PluginMessage("prime:primemessaging", command.toString(), data);
+	}
 
-    public void send() {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
-            out.writeUTF(subChannel);
-            for (String in : data) {
-                out.writeUTF(in);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        PrimeCore.getInstance().getServer().sendPluginMessage(PrimeCore.getInstance(), channel, b.toByteArray());
-    }
+	public void send() {
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream(b);
+		try {
+			out.writeUTF(subChannel);
+			for (String in : data) {
+				out.writeUTF(in);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		PrimeCore.getInstance().getServer().sendPluginMessage(PrimeCore.getInstance(), channel, b.toByteArray());
+	}
 
-    public enum PluginCommand {
-        sudoPlayer, //playername, command
-    }
+	public enum PluginCommand {
+		sudoPlayer, //playername, command
+	}
 
 }

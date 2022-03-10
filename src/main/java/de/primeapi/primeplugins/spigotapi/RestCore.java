@@ -9,7 +9,7 @@ import de.primeapi.primeplugins.spigotapi.api.plugin.RestPlugin;
  */
 public class RestCore extends RestPlugin {
 
-    public RestCore(PrimeCore plugin) {
-        super("SpigotAPI", plugin);
-    }
+	public RestCore(PrimeCore plugin) {
+		super("SpigotAPI", plugin);
+	}
 }

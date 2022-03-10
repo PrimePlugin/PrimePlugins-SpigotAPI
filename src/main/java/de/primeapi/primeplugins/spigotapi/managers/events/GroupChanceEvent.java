@@ -10,16 +10,16 @@ import org.bukkit.event.HandlerList;
 @Getter
 public class GroupChanceEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList();
-    final SQLPlayer player;
-    final String groupName;
+	private static final HandlerList handlers = new HandlerList();
+	final SQLPlayer player;
+	final String groupName;
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 }

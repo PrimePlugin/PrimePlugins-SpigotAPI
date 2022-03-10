@@ -18,39 +18,39 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PlayerParty {
 
-    UUID owner;
+	UUID owner;
 
-    public Retriever<List<PrimePlayer>> getPlayers(boolean inludeOwner) {
+	public Retriever<List<PrimePlayer>> getPlayers(boolean inludeOwner) {
 
-        return PrimeCore.getInstance().getDb().select(
-                                "SELECT uuid FROM prime_bungee_online WHERE party = ?"
-                                                           ).parameters(owner.toString())
-                        .execute(String.class)
-                        .getAsSet()
-                        .map(strings -> strings.stream()
-                                               .filter(s -> {
-                                                   if (!inludeOwner) {
-                                                       return !s.equals(owner.toString());
-                                                   }
-                                                   return true;
-                                               }).map(s -> {
-                                    Player t = Bukkit.getPlayer(UUID.fromString(s));
-                                    if (t == null) return null;
-                                    return new PrimePlayer(t);
-                                }).collect(Collectors.toList()));
-    }
+		return PrimeCore.getInstance().getDb().select(
+				                "SELECT uuid FROM prime_bungee_online WHERE party = ?"
+		                                             ).parameters(owner.toString())
+		                .execute(String.class)
+		                .getAsSet()
+		                .map(strings -> strings.stream()
+		                                       .filter(s -> {
+			                                       if (!inludeOwner) {
+				                                       return !s.equals(owner.toString());
+			                                       }
+			                                       return true;
+		                                       }).map(s -> {
+					                Player t = Bukkit.getPlayer(UUID.fromString(s));
+					                if (t == null) return null;
+					                return new PrimePlayer(t);
+				                }).collect(Collectors.toList()));
+	}
 
-    public void setOwner(UUID uuid) {
-        getPlayers(true).submit(
-                list -> list.forEach(primePlayer -> OnlineStats.setParty(primePlayer.getUniqueId(), uuid)));
-        owner = uuid;
-        int i = 10;
-        i = -20;
-    }
+	public void setOwner(UUID uuid) {
+		getPlayers(true).submit(
+				list -> list.forEach(primePlayer -> OnlineStats.setParty(primePlayer.getUniqueId(), uuid)));
+		owner = uuid;
+		int i = 10;
+		i = -20;
+	}
 
-    public void sendMessage(String message) {
-        getPlayers(true).submit(list -> list.forEach(primePlayer -> primePlayer.thePlayer().sendMessage(message)));
-    }
+	public void sendMessage(String message) {
+		getPlayers(true).submit(list -> list.forEach(primePlayer -> primePlayer.thePlayer().sendMessage(message)));
+	}
 
 
 }

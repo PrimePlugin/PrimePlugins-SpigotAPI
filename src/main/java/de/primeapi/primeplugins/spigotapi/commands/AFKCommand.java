@@ -15,23 +15,23 @@ import org.bukkit.entity.Player;
  * crated for PrimePlugins
  */
 public class AFKCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-        if (!(commandSender instanceof Player)) {
-            return false;
-        }
-        PrimePlayer p = new PrimePlayer((Player) commandSender);
+	@Override
+	public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+		if (!(commandSender instanceof Player)) {
+			return false;
+		}
+		PrimePlayer p = new PrimePlayer((Player) commandSender);
 
-        if (!BungeeAPI.getInstance().isOnline()) {
-            p.thePlayer().sendMessage("§bSystem §7● §cDiese Funktion ist nur mit dem BungeeSystem kompatibel!");
-            return true;
-        }
+		if (!BungeeAPI.getInstance().isOnline()) {
+			p.thePlayer().sendMessage("§bSystem §7● §cDiese Funktion ist nur mit dem BungeeSystem kompatibel!");
+			return true;
+		}
 
-        OnlineStats.getAFK(p.getUniqueId()).submit(aBoolean -> {
-            OnlineStats.setAFK(p.getUniqueId(), !aBoolean);
-            p.sendMessage(aBoolean ? CoreMessage.AFK_OFF : CoreMessage.AFK_ON);
-        });
+		OnlineStats.getAFK(p.getUniqueId()).submit(aBoolean -> {
+			OnlineStats.setAFK(p.getUniqueId(), !aBoolean);
+			p.sendMessage(aBoolean ? CoreMessage.AFK_OFF : CoreMessage.AFK_ON);
+		});
 
-        return true;
-    }
+		return true;
+	}
 }

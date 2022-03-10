@@ -8,8 +8,8 @@ import java.util.List;
 public interface ScoreboardSettings {
 
 
-    String getTitle();
+	String getTitle();
 
-    List<String> apply(Player p);
+	List<String> apply(Player p);
 
 }

@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface CloudAdapter {
 
-    int getPlayersInGroup(String name);
+	int getPlayersInGroup(String name);
 
-    List<String> getAllLobbies(String name);
+	List<String> getAllLobbies(String name);
 
-    int getPlayersOnServer(String name);
+	int getPlayersOnServer(String name);
 
-    String getServerState(String name);
+	String getServerState(String name);
 }

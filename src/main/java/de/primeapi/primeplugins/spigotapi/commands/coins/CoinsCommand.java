@@ -13,39 +13,39 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CoinsCommand implements CommandExecutor {
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-        if (!(commandSender instanceof Player)) {
-            return false;
-        }
-        PrimePlayer p = new PrimePlayer((Player) commandSender);
+	public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+		if (!(commandSender instanceof Player)) {
+			return false;
+		}
+		PrimePlayer p = new PrimePlayer((Player) commandSender);
 
-        if (args.length == 0) {
-            p.retrieveCoins().submit(coins -> {
-                p.sendMessage(CoreMessage.COINS_AMOUNT.replace("coins", PrimeUtils.formatInteger(coins)));
-            });
-            return true;
-        }
+		if (args.length == 0) {
+			p.retrieveCoins().submit(coins -> {
+				p.sendMessage(CoreMessage.COINS_AMOUNT.replace("coins", PrimeUtils.formatInteger(coins)));
+			});
+			return true;
+		}
 
-        switch (args[0].toLowerCase()) {
-            case "add": {
-                return new AddSubCommand().execute(p, args);
-            }
-            case "set": {
-                return new SetSubCommand().execute(p, args);
-            }
-            case "remove": {
-                return new RemoveSubCommand().execute(p, args);
-            }
-            case "see":
-            case "get": {
-                return new SeeSubCommand().execute(p, args);
-            }
-            default:
-                p.sendMessage(CoreMessage.COINS_USAGE);
+		switch (args[0].toLowerCase()) {
+			case "add": {
+				return new AddSubCommand().execute(p, args);
+			}
+			case "set": {
+				return new SetSubCommand().execute(p, args);
+			}
+			case "remove": {
+				return new RemoveSubCommand().execute(p, args);
+			}
+			case "see":
+			case "get": {
+				return new SeeSubCommand().execute(p, args);
+			}
+			default:
+				p.sendMessage(CoreMessage.COINS_USAGE);
 
-        }
+		}
 
 
-        return true;
-    }
+		return true;
+	}
 }

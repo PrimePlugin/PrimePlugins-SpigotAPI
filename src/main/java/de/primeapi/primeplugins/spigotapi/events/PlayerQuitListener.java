@@ -11,17 +11,17 @@ import java.sql.SQLException;
 
 public class PlayerQuitListener implements Listener {
 
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        PrimePlayer primePlayer = PrimePlayer.fromPlayer(event.getPlayer());
-        PrimeCore.getInstance().getScoreboardManager().customScoreboard.remove(primePlayer.getUniqueId());
-        PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
-            try {
-                NickAPI.getInstance().removeFromDatabase(event.getPlayer());
-                NickAPI.getInstance().getIsNicked().unCache(event.getPlayer().getUniqueId());
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        });
-    }
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		PrimePlayer primePlayer = PrimePlayer.fromPlayer(event.getPlayer());
+		PrimeCore.getInstance().getScoreboardManager().customScoreboard.remove(primePlayer.getUniqueId());
+		PrimeCore.getInstance().getThreadPoolExecutor().submit(() -> {
+			try {
+				NickAPI.getInstance().removeFromDatabase(event.getPlayer());
+				NickAPI.getInstance().getIsNicked().unCache(event.getPlayer().getUniqueId());
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		});
+	}
 }

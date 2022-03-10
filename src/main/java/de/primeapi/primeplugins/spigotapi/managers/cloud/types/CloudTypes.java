@@ -8,18 +8,18 @@ package de.primeapi.primeplugins.spigotapi.managers.cloud.types;
 
 public enum CloudTypes {
 
-    NOCLOUD("DasPlugindarfnichtgefundenwerden"),
-    CLOUDNETV2("CloudNetAPI"),
-    CLOUDNETV3("CloudNet-Bridge"),
-    SIMPLECLOUD("SimpleCloudAPI");
+	NOCLOUD("DasPlugindarfnichtgefundenwerden"),
+	CLOUDNETV2("CloudNetAPI"),
+	CLOUDNETV3("CloudNet-Bridge"),
+	SIMPLECLOUD("SimpleCloudAPI");
 
-    String plugin;
+	String plugin;
 
-    CloudTypes(String plugin) {
-        this.plugin = plugin;
-    }
+	CloudTypes(String plugin) {
+		this.plugin = plugin;
+	}
 
-    public String getPlugin() {
-        return plugin;
-    }
+	public String getPlugin() {
+		return plugin;
+	}
 }

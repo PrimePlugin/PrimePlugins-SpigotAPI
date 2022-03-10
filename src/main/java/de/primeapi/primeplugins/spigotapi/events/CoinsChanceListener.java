@@ -9,10 +9,10 @@ import org.bukkit.event.Listener;
 
 public class CoinsChanceListener implements Listener {
 
-    @EventHandler
-    public void onCoinsChance(CoinsChanceEvent event) {
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            PrimePlayer.fromPlayer(onlinePlayer).sendScoreboard();
-        }
-    }
+	@EventHandler
+	public void onCoinsChance(CoinsChanceEvent event) {
+		for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PrimePlayer.fromPlayer(onlinePlayer).sendScoreboard();
+		}
+	}
 }

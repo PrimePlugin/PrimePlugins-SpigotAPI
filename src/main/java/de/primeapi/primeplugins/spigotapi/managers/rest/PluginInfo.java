@@ -14,38 +14,38 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PluginInfo {
 
-    int id;
-    String name;
-    String latest;
-    String displayname;
+	int id;
+	String name;
+	String latest;
+	String displayname;
 
-    public boolean isNeverVersion(String olderVersion) {
-        String[] curr = olderVersion.split("[._]");
-        String[] neww = getLatest().split("[._]");
-        for (int i = 0; i < curr.length; i++) {
-            if (neww.length > i) {
-                try {
-                    int oldI = Integer.parseInt(curr[i]);
-                    int newI = Integer.parseInt(neww[i]);
-                    if (newI > oldI) {
-                        return true;
-                    } else if (newI == oldI) {
-                        continue;
-                    } else {
-                        return false;
-                    }
-                } catch (Exception EX) {
-                    continue;
-                }
-            }
-        }
+	public boolean isNeverVersion(String olderVersion) {
+		String[] curr = olderVersion.split("[._]");
+		String[] neww = getLatest().split("[._]");
+		for (int i = 0; i < curr.length; i++) {
+			if (neww.length > i) {
+				try {
+					int oldI = Integer.parseInt(curr[i]);
+					int newI = Integer.parseInt(neww[i]);
+					if (newI > oldI) {
+						return true;
+					} else if (newI == oldI) {
+						continue;
+					} else {
+						return false;
+					}
+				} catch (Exception EX) {
+					continue;
+				}
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public String toString() {
-        return "PluginInfo{" + "id=" + id + ", name='" + name + '\'' + ", latest='" + latest + '\'' + ", displayname" +
-                "='" + displayname + '\'' + '}';
-    }
+	@Override
+	public String toString() {
+		return "PluginInfo{" + "id=" + id + ", name='" + name + '\'' + ", latest='" + latest + '\'' + ", displayname" +
+				"='" + displayname + '\'' + '}';
+	}
 }

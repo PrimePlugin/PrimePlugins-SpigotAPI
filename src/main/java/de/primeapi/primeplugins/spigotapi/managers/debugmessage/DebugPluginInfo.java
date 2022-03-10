@@ -12,27 +12,27 @@ import java.util.stream.Collectors;
 @Getter
 public class DebugPluginInfo {
 
-    String name;
-    String version;
-    String author;
+	String name;
+	String version;
+	String author;
 
-    public static List<DebugPluginInfo> getPluginInfos() {
-        return Arrays.stream(Bukkit.getPluginManager().getPlugins())
-                .filter(plugin -> !plugin.getDescription().getAuthors().contains("PrimeAPI"))
-                .map(plugin -> {
-                    try {
-                        return new DebugPluginInfo(
-                                plugin.getDescription().getName(),
-                                plugin.getDescription().getVersion(),
-                                plugin.getDescription().getAuthors().get(0)
-                        );
-                    } catch (Exception ex) {
-                        return null;
-                    }
-                })
-                .collect(Collectors.toList())
-                ;
-    }
+	public static List<DebugPluginInfo> getPluginInfos() {
+		return Arrays.stream(Bukkit.getPluginManager().getPlugins())
+		             .filter(plugin -> !plugin.getDescription().getAuthors().contains("PrimeAPI"))
+		             .map(plugin -> {
+			             try {
+				             return new DebugPluginInfo(
+						             plugin.getDescription().getName(),
+						             plugin.getDescription().getVersion(),
+						             plugin.getDescription().getAuthors().get(0)
+				             );
+			             } catch (Exception ex) {
+				             return null;
+			             }
+		             })
+		             .collect(Collectors.toList())
+				;
+	}
 
 
 }

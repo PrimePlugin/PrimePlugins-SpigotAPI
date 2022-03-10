@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 @Getter
 public class ScoreboradTeam {
 
-    public final Player player;
-    public final String prefix;
-    public final String suffix;
-    public final String color;
+	public final Player player;
+	public final String prefix;
+	public final String suffix;
+	public final String color;
 
 }

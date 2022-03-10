@@ -5,6 +5,6 @@ import org.bukkit.inventory.ItemStack;
 
 public interface IClickAction {
 
-    void onClick(Player p, ItemStack itemStack);
+	void onClick(Player p, ItemStack itemStack);
 
 }
