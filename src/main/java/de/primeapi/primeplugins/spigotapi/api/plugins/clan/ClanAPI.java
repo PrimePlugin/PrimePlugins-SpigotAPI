@@ -1,7 +1,6 @@
 package de.primeapi.primeplugins.spigotapi.api.plugins.clan;
 
 import de.primeapi.primeplugins.spigotapi.PrimeCore;
-import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClan;
 import de.primeapi.primeplugins.spigotapi.sql.clan.SQLClanInvitation;
@@ -15,7 +14,6 @@ import javax.annotation.Nullable;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 @Getter
@@ -73,11 +71,9 @@ public class ClanAPI {
      * @param tag  The Clantag of the Clan
      * @return The generated CLan
      */
-    public DatabaseTask<SQLClan> createClan(@NonNull String name, @NonNull String tag) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLClan.create(name, tag).complete();
-        }));
+    public Retriever<SQLClan> createClan(@NonNull String name, @NonNull String tag) {
+        if (!online) return null;
+        return SQLClan.create(name, tag);
     }
 
     /**
@@ -85,11 +81,9 @@ public class ClanAPI {
      * @return The {@link SQLClan} with the name <br> returns null if no clan with this
      * name exists
      */
-    public DatabaseTask<SQLClan> getClanFromName(@NonNull String name) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLClan.fromName(name).complete();
-        }));
+    public Retriever<SQLClan> getClanFromName(@NonNull String name) {
+        if (!online) return null;
+        return SQLClan.fromName(name);
     }
 
     /**
@@ -97,11 +91,9 @@ public class ClanAPI {
      * @return The {@link SQLClan} with the name <br> returns null if no clan with this
      * name exists
      */
-    public DatabaseTask<SQLClan> getClanFromTag(@NonNull String tag) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLClan.fromTag(tag).complete();
-        }));
+    public Retriever<SQLClan> getClanFromTag(@NonNull String tag) {
+        if (!online) return null;
+        return SQLClan.fromTag(tag);
     }
 
     /**
@@ -111,11 +103,9 @@ public class ClanAPI {
      * @param clan   The {@link SQLClan} to wich the player should be invited
      * @return The generated {@link SQLClanInvitation invite}
      */
-    public DatabaseTask<SQLClanInvitation> createInvite(@NonNull SQLPlayer player, @NonNull SQLClan clan) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLClanInvitation.create(player, clan).complete();
-        }));
+    public Retriever<SQLClanInvitation> createInvite(@NonNull SQLPlayer player, @NonNull SQLClan clan) {
+        if (!online) return null;
+        return SQLClanInvitation.create(player, clan);
     }
 
     /**
@@ -123,22 +113,18 @@ public class ClanAPI {
      * @param clan   The {@link SQLClan} to wich the player is being invited to
      * @return A {@link SQLClanInvitation} <br> returns null if the player is not invited to the clan
      */
-    public DatabaseTask<SQLClanInvitation> getInvite(@NonNull SQLPlayer player, @NonNull SQLClan clan) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLClanInvitation.fromPlayer(player, clan).complete();
-        }));
+    public Retriever<SQLClanInvitation> getInvite(@NonNull SQLPlayer player, @NonNull SQLClan clan) {
+        if (!online) return null;
+        return SQLClanInvitation.fromPlayer(player, clan);
     }
 
     /**
      * @param player The {@link SQLPlayer} of which all Invites should be collected
      * @return a {@link List} of {@link SQLClanInvitation} to which the player is invited to
      */
-    public DatabaseTask<List<SQLClanInvitation>> getInvite(@NonNull SQLPlayer player) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLClanInvitation.fromPlayer(player).complete();
-        }));
+    public Retriever<List<SQLClanInvitation>> getInvite(@NonNull SQLPlayer player) {
+        if (!online) return null;
+        return SQLClanInvitation.fromPlayer(player);
     }
 
     /**
@@ -149,22 +135,22 @@ public class ClanAPI {
      * @param rank   The rank as int of the player; 0 equals normal member
      * @return The generated {@link SQLPlayerAllocation}
      */
-    public DatabaseTask<SQLPlayerAllocation> addMemberToClan(@NonNull SQLPlayer player, @NonNull SQLClan clan, @NonNull Integer rank) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLPlayerAllocation.create(player, clan, rank).complete();
-        }));
+    public Retriever<SQLPlayerAllocation> addMemberToClan(
+            @NonNull SQLPlayer player,
+            @NonNull SQLClan clan,
+            @NonNull Integer rank
+                                                         ) {
+        if (!online) return null;
+        return SQLPlayerAllocation.create(player, clan, rank);
     }
 
     /**
      * @param player the {@link SQLPlayer}
      * @return The {@link SQLClan} the player is member in <br> returns null if player is not part of any clan
      */
-    public DatabaseTask<SQLPlayerAllocation> getMembership(SQLPlayer player) {
-        return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
-            if (!online) return null;
-            return SQLPlayerAllocation.fromPlayer(player).complete();
-        }));
+    public Retriever<SQLPlayerAllocation> getMembership(SQLPlayer player) {
+        if (!online) return null;
+        return SQLPlayerAllocation.fromPlayer(player);
     }
 
 }
