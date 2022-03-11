@@ -27,8 +27,8 @@ public class SQLPlayer {
 		this.id = id;
 	}
 
-	public static DatabaseTask<SQLPlayer> create(UUID uuid, String name) {
-		return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+	public static Retriever<SQLPlayer> create(UUID uuid, String name) {
+		return new Retriever<>(() -> {
 			Integer id = null;
 			try {
 				PreparedStatement st = PrimeCore.getInstance()
@@ -51,11 +51,11 @@ public class SQLPlayer {
 			}
 			assert (id != null);
 			return new SQLPlayer(id);
-		}));
+		});
 	}
 
-	public static DatabaseTask<SQLPlayer> loadPlayerByName(String name) {
-		return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+	public static Retriever<SQLPlayer> loadPlayerByName(String name) {
+		return new Retriever<>(() -> {
 			Integer id = null;
 			try {
 				PreparedStatement st = PrimeCore.getInstance()
@@ -76,7 +76,7 @@ public class SQLPlayer {
 				return null;
 			}
 			return new SQLPlayer(id);
-		}));
+		});
 	}
 
 	public void load() {
@@ -102,8 +102,8 @@ public class SQLPlayer {
 		}
 	}
 
-	public DatabaseTask<String> retrieveName() {
-		return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+	public Retriever<String> retrieveName() {
+		return new Retriever<>(() -> {
 			load();
 			String s = null;
 			try {
@@ -121,11 +121,11 @@ public class SQLPlayer {
 				throwables.printStackTrace();
 			}
 			return s;
-		}));
+		});
 	}
 
-	public DatabaseTask<UUID> retrieveUniqueId() {
-		return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+	public Retriever<UUID> retrieveUniqueId() {
+		return new Retriever<>(() -> {
 			if (uuid != null) {
 				return uuid;
 			} else {
@@ -148,11 +148,11 @@ public class SQLPlayer {
 				assert s != null;
 				return UUID.fromString(s);
 			}
-		}));
+		});
 	}
 
-	public DatabaseTask<String> retrieveRealName() {
-		return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+	public Retriever<String> retrieveRealName() {
+		return new Retriever<>(() -> {
 			load();
 			String s = null;
 			try {
@@ -170,11 +170,11 @@ public class SQLPlayer {
 				throwables.printStackTrace();
 			}
 			return s;
-		}));
+		});
 	}
 
-	public DatabaseTask<Integer> retrieveCoins() {
-		return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+	public Retriever<Integer> retrieveCoins() {
+		return new Retriever<>(() -> {
 			load();
 			int i = 0;
 			try {
@@ -192,7 +192,7 @@ public class SQLPlayer {
 				throwables.printStackTrace();
 			}
 			return i;
-		}));
+		});
 	}
 
 	public void setCoins(int i) {
@@ -229,8 +229,8 @@ public class SQLPlayer {
 		});
 	}
 
-	public DatabaseTask<Integer> retrieveOnMins() {
-		return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+	public Retriever<Integer> retrieveOnMins() {
+		return new Retriever<>(() -> {
 			load();
 			int i = 0;
 			try {
@@ -248,7 +248,7 @@ public class SQLPlayer {
 				throwables.printStackTrace();
 			}
 			return i;
-		}));
+		});
 	}
 
 	public void setOnMins(int i) {
@@ -279,8 +279,8 @@ public class SQLPlayer {
 		});
 	}
 
-	public DatabaseTask<Integer> retrieveSetting(PlayerSetting setting) {
-		return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+	public Retriever<Integer> retrieveSetting(PlayerSetting setting) {
+		return new Retriever<>(() -> {
 			load();
 			Integer i = null;
 			try {
@@ -299,18 +299,18 @@ public class SQLPlayer {
 				throwables.printStackTrace();
 			}
 			return i;
-		}));
+		});
 	}
 
-	public DatabaseTask<Integer> retrieveSettingSave(PlayerSetting setting) {
-		return new DatabaseTask<>(CompletableFuture.supplyAsync(() -> {
+	public Retriever<Integer> retrieveSettingSave(PlayerSetting setting) {
+		return new Retriever<>(() -> {
 			Integer i = retrieveSetting(setting).complete();
 			if (Objects.isNull(i)) {
 				return setting.getStandartValue();
 			} else {
 				return i;
 			}
-		}));
+		});
 	}
 
 	public Retriever<Boolean> isOnline() {
