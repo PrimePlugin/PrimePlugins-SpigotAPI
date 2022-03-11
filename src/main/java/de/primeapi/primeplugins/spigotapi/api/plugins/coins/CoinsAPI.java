@@ -2,6 +2,7 @@ package de.primeapi.primeplugins.spigotapi.api.plugins.coins;
 
 import de.primeapi.primeplugins.spigotapi.sql.DatabaseTask;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
+import de.primeapi.util.sql.queries.Retriever;
 import lombok.Getter;
 
 import java.util.UUID;
@@ -34,7 +35,7 @@ public class CoinsAPI {
 		new SQLPlayer(uuid).addCoins(coins);
 	}
 
-	public DatabaseTask<Integer> getCoins(UUID uuid) {
+	public Retriever<Integer> getCoins(UUID uuid) {
 		return new SQLPlayer(uuid).retrieveCoins();
 	}
 
