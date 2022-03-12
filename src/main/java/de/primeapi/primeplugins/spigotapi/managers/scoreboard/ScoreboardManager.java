@@ -41,39 +41,42 @@ public class ScoreboardManager {
 	}
 
 	public void sendScoreboard(@Nonnull Player p) {
-		if (!CoreConfig.getInstance().getBoolean("scoreboard.use")) return;
-		if (CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")) {
-			if (CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance()
-			                                                                                   .getCloudManager()
-			                                                                                   .getServerState(
-					                                                                                   Bukkit.getServerName())) {
-				return;
+		Bukkit.getScheduler().runTaskAsynchronously(PrimeCore.getInstance(), () -> {
+
+			if (!CoreConfig.getInstance().getBoolean("scoreboard.use")) return;
+			if (CoreConfig.getInstance().getBoolean("scoreboard.onlyOnState.use")) {
+				if (CoreConfig.getInstance().getString("scoreboard.onlyOnState.state") != PrimeCore.getInstance()
+				                                                                                   .getCloudManager()
+				                                                                                   .getServerState(
+						                                                                                   Bukkit.getServerName())) {
+					return;
+				}
 			}
-		}
-		ScoreboardSettings settings;
-		if (!customScoreboard.containsKey(p.getUniqueId())) {
-			settings = defaultSettings;
-		} else {
-			settings = customScoreboard.get(p.getUniqueId());
-		}
+			ScoreboardSettings settings;
+			if (!customScoreboard.containsKey(p.getUniqueId())) {
+				settings = defaultSettings;
+			} else {
+				settings = customScoreboard.get(p.getUniqueId());
+			}
 
-		BPlayerBoard bPlayerBoard =
-				(Board.instance().getBoard(p) != null) ?
-				Board.instance().getBoard(p) :
-				Board.instance().createBoard(p, ChatColor.translateAlternateColorCodes('&', settings.getTitle()));
+			BPlayerBoard bPlayerBoard =
+					(Board.instance().getBoard(p) != null) ?
+					Board.instance().getBoard(p) :
+					Board.instance().createBoard(p, ChatColor.translateAlternateColorCodes('&', settings.getTitle()));
 
-		List<String> list = settings.apply(p);
+			List<String> list = settings.apply(p);
 
-		if (bPlayerBoard.getLines().size() != list.size()) {
-			bPlayerBoard.clear();
-		}
+			if (bPlayerBoard.getLines().size() != list.size()) {
+				bPlayerBoard.clear();
+			}
 
-		int i = list.size();
-		for (String s :
-				list) {
-			bPlayerBoard.set(s, i);
-			i--;
-		}
+			int i = list.size();
+			for (String s :
+					list) {
+				bPlayerBoard.set(s, i);
+				i--;
+			}
+		});
 	}
 
 	public void sendTeams(@Nonnull Player p) {
@@ -102,7 +105,8 @@ public class ScoreboardManager {
 		for (ScoreboradTeam team :
 				teams) {
 			Team scoreTeam = sb.registerNewTeam(String.format("%03d", i));
-			if (PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(MinecraftVersion.V1_16)) {
+			if (PrimeCore.getInstance().getVersionManager().currentVersion.isHigherEqualThan(
+					MinecraftVersion.V1_16)) {
 				ChatColor chatColor = ChatColor.getByChar(team.getColor().replace("&", "").replace("§", ""));
 				scoreTeam.setPrefix(team.getPrefix());
 				try {
