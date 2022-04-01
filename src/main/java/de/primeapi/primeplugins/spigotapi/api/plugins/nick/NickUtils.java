@@ -89,28 +89,32 @@ public class NickUtils {
 
 
 			for (Player all : Bukkit.getServer().getOnlinePlayers()) {
-				if (all == player) {
-					continue;
+				try {
+					if (all == player) {
+						continue;
+					}
+					if (!all.canSee(player)) {
+						continue;
+					}
+
+					NMS.sendPacket(PACKET_PLAYOUT_PLAYER_INFO_CONST.newInstance(
+							PACKET_PLAYOUT_PLAYER_INFO_ENUM_BYSTRING.invoke(null, "REMOVE_PLAYER"),
+							handle
+					                                                           ), all);
+					NMS.sendPacket(PACKET_PLAYOUT_PLAYER_INFO_CONST.newInstance(
+							PACKET_PLAYOUT_PLAYER_INFO_ENUM_BYSTRING.invoke(null, "ADD_PLAYER"),
+							handle
+					                                                           ), all);
+
+
+					NMS.sendPacket(
+							PACKET_PLAYOUT_ENTITY_DESTROY_CONST.newInstance(player.getEntityId())
+							, all);
+					NMS.sendPacket(PACKET_PLAYOUT_ENTITY_SPAWN_CONST.newInstance(handle), all);
+
+				}catch(IllegalArgumentException ignored){
+
 				}
-				if (!all.canSee(player)) {
-					continue;
-				}
-
-				NMS.sendPacket(PACKET_PLAYOUT_PLAYER_INFO_CONST.newInstance(
-						PACKET_PLAYOUT_PLAYER_INFO_ENUM_BYSTRING.invoke(null, "REMOVE_PLAYER"),
-						handle
-				                                                           ), all);
-				NMS.sendPacket(PACKET_PLAYOUT_PLAYER_INFO_CONST.newInstance(
-						PACKET_PLAYOUT_PLAYER_INFO_ENUM_BYSTRING.invoke(null, "ADD_PLAYER"),
-						handle
-				                                                           ), all);
-
-
-				NMS.sendPacket(
-						PACKET_PLAYOUT_ENTITY_DESTROY_CONST.newInstance(player.getEntityId())
-						, all);
-				NMS.sendPacket(PACKET_PLAYOUT_ENTITY_SPAWN_CONST.newInstance(handle), all);
-
 
 			}
 			Location location = player.getLocation().clone();
