@@ -6,7 +6,7 @@
 
     <groupId>de.primeapi.primeplugins</groupId>
     <artifactId>SpigotAPI</artifactId>
-    <version>1.0.11_${v}</version>
+    <version>1.1.0_${v}</version>
 
     <build>
         <resources>
