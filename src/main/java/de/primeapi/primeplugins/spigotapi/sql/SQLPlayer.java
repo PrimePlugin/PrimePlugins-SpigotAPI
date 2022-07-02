@@ -6,6 +6,7 @@ import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.sql.utils.OnlineStats;
 import de.primeapi.util.sql.queries.Retriever;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -313,8 +314,12 @@ public class SQLPlayer {
 		});
 	}
 
+	@NonNull
 	public Retriever<Boolean> isOnline() {
-		return OnlineStats.getServer(retrieveUniqueId().complete()).map(Objects::nonNull);
+		return new Retriever<>(() -> {
+			String server = OnlineStats.getServer(retrieveUniqueId().complete()).complete();
+			return server != null;
+		});
 	}
 
 	public void setSetting(PlayerSetting setting, int value) {
