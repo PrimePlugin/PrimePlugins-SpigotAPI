@@ -17,8 +17,4 @@ public class TroubleController {
         PrimeCore.getInstance().getTroubleShooter().getErrorList().add(message);
         return this;
     }
-
-    public int errorSize() {
-        return PrimeCore.getInstance().getTroubleShooter().getErrorList().size();
-    }
 }

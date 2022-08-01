@@ -27,6 +27,7 @@ public class TroubleShooter {
     public void sendCheckingData(Player player) {
         player.sendMessage("§bSystem §7● §cDein Server wird nun überprüft!");
         player.sendMessage("§bSystem §7● §aErfolgreiche checks! §8[§e" + checks + "§8]");
+        player.sendMessage("§bSystem §7● §cFehler gefunden! §8[§e" + errorList.size() + "§8]");
         for (ErrorObject s : errorList) {
             TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(s.getErrorTypes().getS() + "\n§7" + s.getMessage() + " \n§8[§fHilfe§8]\n" + s.getErrorTypes().getS()));
             textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, s.getHelp()));
