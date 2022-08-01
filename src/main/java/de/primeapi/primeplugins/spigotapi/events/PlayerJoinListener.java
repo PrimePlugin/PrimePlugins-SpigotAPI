@@ -5,6 +5,7 @@ import de.primeapi.primeplugins.spigotapi.api.PrimePlayer;
 import de.primeapi.primeplugins.spigotapi.api.plugin.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.managers.config.configs.CoreConfig;
 import de.primeapi.primeplugins.spigotapi.sql.SQLPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -29,15 +30,6 @@ public class PlayerJoinListener implements Listener {
 
 		if (CoreConfig.getInstance().getBoolean("scoreboard.default.applyOnJoin")) {
 			primePlayer.sendScoreboard();
-		}
-
-		if (!PrimeCore.getInstance().isMysql()) {
-			for (int i = 0; i < 5; i++) {
-				primePlayer.getPlayer()
-				           .sendMessage(
-						           "§8[§ePrimeCore§8] §4§lDie MySQL ist nicht verbunden§8! §7Bitte überprüfe deine " +
-								           "Daten!");
-			}
 		}
 
 		if (CoreConfig.getInstance().getBoolean("prefix.use")) {
