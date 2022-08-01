@@ -34,7 +34,7 @@ public class ClanPlaceholder extends PlaceholderExpansion {
 	@Override
 	public String onPlaceholderRequest(Player player, String params) {
 		if (ClanAPI.getInstance().isOnline()) {
-			SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(new PrimePlayer(player)).complete();
+			SQLClan clan = ClanAPI.getInstance().getClanFromPlayer(PrimePlayer.fromPlayer(player)).complete();
 			if (clan == null) {
 				if (params.equalsIgnoreCase("tag_formatted")) {
 					return CoreConfig.getInstance().getString("clanplaceholder.formattedTag.noClan");
@@ -55,6 +55,9 @@ public class ClanPlaceholder extends PlaceholderExpansion {
 				}
 				case "count": {
 					return String.valueOf(clan.getMembers().complete().size());
+				}
+				case "color": {
+					return clan.getColor().complete();
 				}
 			}
 		}
