@@ -47,7 +47,7 @@ public class CoreConfig extends Config {
 			saveAddEntry("prefix.defaultColor", "§7");
 			saveAddEntry("prefix.defaultSuffix", "");
 			saveAddEntry("prefix.overrideSuffixClanTags", true);
-			saveAddEntry("prefix.clanTagFormat", " §7[§e%tag%§7]");
+			saveAddEntry("prefix.clanTagFormat", " §7[%color%%tag%§7]");
 			saveAddEntry("prefix.onlyOnState.use", false);
 			saveAddEntry("prefix.onlyOnState.state", "LOBBY");
 
