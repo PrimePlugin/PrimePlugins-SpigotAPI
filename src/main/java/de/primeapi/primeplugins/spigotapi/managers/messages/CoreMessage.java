@@ -30,6 +30,9 @@ public enum CoreMessage {
 	ACCEPTGUI_ACCEPT("§aAkzeptieren", false),
 	ACCEPTGUI_DECLINE("§cAbbrechen", false),
 
+	COMMAND_USAGE("§7 Benutze: §e/%cmd%", true),
+	COMMAND_INVALIDINPUT("§c Attribut an Stelle %pos% muss ein %type% sein!", true),
+
 	PLACEHOLDER("DO NOT TOUCH", false);
 
 	String path;

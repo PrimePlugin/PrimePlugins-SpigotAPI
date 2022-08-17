@@ -1,5 +1,6 @@
 package de.primeapi.primeplugins.spigotapi;
 
+import de.primeapi.primeplugins.spigotapi.api.command.reflections.CommandHandler;
 import de.primeapi.primeplugins.spigotapi.api.placeholders.PlaceholderAPIManager;
 import de.primeapi.primeplugins.spigotapi.api.plugin.RestPlugin;
 import de.primeapi.primeplugins.spigotapi.api.plugins.bungee.BungeeAPI;
@@ -29,6 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
