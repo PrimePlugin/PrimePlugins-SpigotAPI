@@ -48,7 +48,6 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
 			subcommands.forEach(method1 -> commandSender.sendMessage(CoreMessage.COMMAND_USAGE.replace("cmd", command.name() + " " + method1.getAnnotation(SubCommand.class).name()).getContent()));
 			return true;
 		}
-		System.out.println("method = " + method.getName());
 		String name = method.getAnnotation(SubCommand.class).name();
 		String[] names = name.toLowerCase().split(" ");
 		Parameter[] parameters = method.getParameters();
@@ -143,7 +142,6 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
 			}
 
 		}
-		System.out.println("invoking: " + method.getName());
 		try {
 			method.invoke(object, objects);
 		} catch (IllegalAccessException | InvocationTargetException e) {

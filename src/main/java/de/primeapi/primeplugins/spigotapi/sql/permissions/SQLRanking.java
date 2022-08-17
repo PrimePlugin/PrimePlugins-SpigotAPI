@@ -45,8 +45,6 @@ public class SQLRanking {
 			}
 
 			Collections.sort(list, (o1, o2) -> {
-				//System.out.println("Comparing: " + o1.getGroup().getName() + "[" + o1.getPotency() + "] & " + o2
-				// .getGroup().getName() + "[" + o2.getPotency() + "]");
 				if (o1.getPotency().complete() > o2.getPotency().complete()) return -1;
 				if (o1.getPotency().complete() < o2.getPotency().complete()) return 1;
 				return 0;

@@ -73,7 +73,6 @@ public class RestManager {
 	public boolean downloadPlugin(PluginInfo pluginInfo, String license, String path) {
 
 		String url = HOST + "/files/" + pluginInfo.getName() + "/" + pluginInfo.getLatest() + "?license=" + license;
-		System.out.println("url = " + url);
 		try {
 			InputStream in = new URL(url).openStream();
 			Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
